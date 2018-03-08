@@ -5,7 +5,7 @@ require('lemonitor-application');
 require('./');
 
 bootstrap(options => {
-	options.forceSync = false;
+	options.forceSync = true;
 });
 
 module.exports = require('lemonitor-application/webpack.dev');
