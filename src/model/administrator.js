@@ -14,6 +14,6 @@ const Administrator = module.exports = sequelize.define('ufwdAdministrator', {
             key: 'id'
         },
         allowNull: false,
-        unique: true
+        primaryKey: true
     }
 });

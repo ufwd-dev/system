@@ -15,7 +15,7 @@ const Writer = module.exports = sequelize.define('ufwdWriter', {
             key: 'id'
         },
         allowNull: false,
-        unique: true
+        primaryKey: true
     },
     channel: {
         type: Sequelize.INTEGER,

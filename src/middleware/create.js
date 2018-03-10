@@ -6,6 +6,7 @@ const Ajv = require('ajv');
 const ajv = new Ajv({
     useDefaults: true
 });
+
 const ufwdSchema = {
     properties: {
         ufwd: {
@@ -15,6 +16,7 @@ const ufwdSchema = {
     },
     required: ['ufwd']
 };
+
 const schema = {
     properties: {
         name: {
@@ -31,6 +33,7 @@ const schema = {
     },
     required: ['name', 'phone']
 };
+
 const validate = ajv.compile(schema);
 const validateUfwd = ajv.compile(ufwdSchema);
 
@@ -44,11 +47,11 @@ module.exports = function* createProfile(req, res, next) {
             phone: ''
         };
 
-        yield UfwdAccount.create(Object.assign({
-            account: account.id
-        }, req.body.ufwd));
+        // yield UfwdAccount.create(Object.assign({
+        //     account: account.id
+        // }, req.body.ufwd));
         
-        throwError('the input is error!', 400);
+        // throwError('the input is error!', 400);
     }
  
 	yield UfwdAccount.create(Object.assign({
