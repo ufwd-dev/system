@@ -18,5 +18,10 @@ const Advise = module.exports = sequelize.define('ufwdAdvise', {
     content: {
         type: Sequelize.STRING(128),
         allowNull: false
+    },
+    state: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+        allowNull: false
     }
 });

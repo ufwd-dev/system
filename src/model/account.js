@@ -6,7 +6,7 @@ const lemonitor = require('lemonitor-service');
 const sequelize = lemonitor.sequelize;
 const Account = sequelize.model('account');
 
-const Profile = module.exports = sequelize.define('ufwdAccountProfile', {
+const Profile = module.exports = sequelize.define('ufwdAccount', {
     account: {
         primaryKey: true,
         type: Sequelize.INTEGER,
@@ -21,8 +21,8 @@ const Profile = module.exports = sequelize.define('ufwdAccountProfile', {
         allowNull: false
     },
     sex: {
-        type: Sequelize.TINYINT,
-        get(value) {
+        type: Sequelize.INTEGER,
+        set(value) {
             if (value === 'female') {
                 this.setDataValue('sex', 0);
             } else if (value === 'male'){

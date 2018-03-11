@@ -18,10 +18,5 @@ const Notification = module.exports = sequelize.define('ufwdNotification', {
     content: {
         type: Sequelize.STRING(128),
         allowNull: false
-    },
-    state: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
     }
 });
