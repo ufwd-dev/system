@@ -8,21 +8,20 @@ const Account = sequelize.model('account');
 const Channel = sequelize.model('ufwdChannel');
 
 const Writer = module.exports = sequelize.define('ufwdWriter', {
-    account: {
-        type: Sequelize.INTEGER,
-        references: {
-            model: Account,
-            key: 'id'
-        },
-        allowNull: false,
-        primaryKey: true
-    },
-    channel: {
-        type: Sequelize.INTEGER,
-        references: {
-            model: Channel,
-            key: 'id'
-        },
-        allowNull: false
-    }
+	accountId: {
+		type: Sequelize.INTEGER,
+		references: {
+			model: Account,
+			key: 'id'
+		},
+		allowNull: false
+	},
+	channelId: {
+		type: Sequelize.INTEGER,
+		references: {
+			model: Channel,
+			key: 'id'
+		},
+		allowNull: false
+	}
 });

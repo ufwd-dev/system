@@ -4,13 +4,13 @@
 
     method                      url                                           describe                      attribute(req)
      get                api/ufwd/service/account                        获取所有注册的账户信息                 query:{
-                                                                                                                 state:true或false(boolean)
+                                                                                                                 examine:true或false(boolean)
                                                                                                              }
      get                api/ufwd/service/account/:aid                   获取某一指定的账户信息                 params:{
-                                                                                                                 aid:用户id(int)
+                                                                                                                 aid:用户名(string)
                                                                                                              }
      put                api/ufwd/service/account/:aid                   修改指定账户审核状态                   body:{
-                                                                                                                state:true(boolean)
+                                                                                                                examine:true(boolean)
                                                                                                              }
                                                                                                              params:{
                                                                                                                  aid:用户id(int)
@@ -22,10 +22,10 @@
                                                                                                                  password:新密码(string)
                                                                                                              }
                                                                                                              params:{
-                                                                                                                 aid:用户id(int)
+                                                                                                                 aid:用户id(string)
                                                                                                              }
      post               api/ufwd/service/administrator                  创建一个管理员                        body:{
-                                                                                                                 account:用户id(int) 
+                                                                                                                 account:用户id(string) 
                                                                                                              }
      get                api/ufwd/service/administrator                  获取所有的的管理员的信息               无参数
 
@@ -119,19 +119,12 @@
                                                                                                                  aid:账户id(int)
                                                                                                              }
      get                api/ufwd/service/advise                         获取所有的投诉                        query:{
-                                                                                                                 state:true或false(boolean)
+                                                                                                                 examine:true或false(boolean)
                                                                                                              }
      get                api/ufwd/service/advise/account/:aid            获取某个用户的所有投诉                 params:{
                                                                                                                  aid:账户id(int)
                                                                                                              }
      get                api/ufwd/service/advise/:advise/account/:aid    获取某条投诉                          params:{
-                                                                                                                 advise:advise的id(int),
-                                                                                                                 aid:账户id(int)
-                                                                                                             }
-     put                api/ufwd/service/advise/:advise/account/:aid    修改某条投诉的状态                     body:{
-                                                                                                                state:true(boolean)
-                                                                                                             }
-                                                                                                             params:{
                                                                                                                  advise:advise的id(int),
                                                                                                                  aid:账户id(int)
                                                                                                              }
@@ -191,10 +184,11 @@
                                                                                                                 name:新账户名(string)，
                                                                                                                 ufwd:{
                                                                                                                     name:新姓名(string),
+                                                                                                                    sex:性别("male"||"female")(string),
                                                                                                                     phone:新电话号码(string)
                                                                                                                 }
                                                                                                              }
-     patch              api/ufwd/app/account                                  修改密码                        body:{
+     patch              api/ufwd/app/account/password                                  修改密码                        body:{
                                                                                                                  password:新密码(int)
                                                                                                              }
 

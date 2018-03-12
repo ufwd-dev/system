@@ -7,34 +7,34 @@ const sequelize = lemonitor.sequelize;
 const Account = sequelize.model('account');
 
 const Channel = sequelize.define('ufwdChannel', {
-    name: {
-        type: Sequelize.STRING(128),
-        allowNull: false,
-        unique: true
-    },
-    description: {
-        type: Sequelize.STRING(128),
-        allowNull: false
-    }
+	name: {
+		type: Sequelize.STRING,
+		allowNull: false,
+		unique: true
+	},
+	description: {
+		type: Sequelize.TEXT,
+		allowNull: false
+	}
 });
 
 const Subscribe = sequelize.define('ufwdSubscribe', {
-    account: {
-        type: Sequelize.INTEGER,
-        references: {
-            model: Account,
-            key: 'id'
-        },
-        allowNull: false
-    },
-    channel: {
-        type: Sequelize.INTEGER,
-        references: {
-            model: Channel,
-            key: 'id'  
-        },
-        allowNull: false
-    }
+	accountId: {
+		type: Sequelize.INTEGER,
+		references: {
+			model: Account,
+			key: 'id'
+		},
+		allowNull: false
+	},
+	channelId: {
+		type: Sequelize.INTEGER,
+		references: {
+			model: Channel,
+			key: 'id'  
+		},
+		allowNull: false
+	}
 });
 
 module.exports = { Channel, Subscribe };

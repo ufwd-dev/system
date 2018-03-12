@@ -3,11 +3,11 @@
 const {throwError} = require('error-standardize');
 
 module.exports = function* createAccount(req, res, next) {
-    const {name, password, ufwd} = req.body;
-    const Account = res.sequelize.model('account');
+	const {name, password, ufwd} = req.body;
+	const Account = res.sequelize.model('account');
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
 
-    const account = yield Account.findOne({
+	const account = yield Account.findOne({
 		where: { name }
 	});
 
@@ -17,10 +17,10 @@ module.exports = function* createAccount(req, res, next) {
 
 	const newAccount = yield Account.create({
 		name, password
-    });
+	});
     
 	yield UfwdAccount.create(Object.assign({
-		account: newAccount.id
+		accountId: newAccount.id
 	}, ufwd));
 
 	next();

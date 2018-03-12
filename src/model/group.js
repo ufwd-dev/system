@@ -7,32 +7,32 @@ const sequelize = lemonitor.sequelize;
 const Account = sequelize.model('account');
 
 const Group = sequelize.define('ufwdGroup', {
-    name: {
-        type: Sequelize.STRING(128),
-        allowNull: false,
-        unique: true
-    },
-    description: {
-        type: Sequelize.STRING(128),
-        allowNull: false
-    }
+	name: {
+		type: Sequelize.STRING,
+		allowNull: false,
+		unique: true
+	},
+	description: {
+		type: Sequelize.TEXT,
+		allowNull: false
+	}
 });
 
 const Member = sequelize.define('ufwdMember', {
-    account: {
-        type: Sequelize.INTEGER,
-        references: {
-            model: Account,
-            key: 'id'
-        }
-    },
-    group: {
-        type: Sequelize.INTEGER,
-        references: {
-            model: Group,
-            key: 'id'
-        }
-    }
+	accountId: {
+		type: Sequelize.INTEGER,
+		references: {
+			model: Account,
+			key: 'id'
+		}
+	},
+	groupId: {
+		type: Sequelize.INTEGER,
+		references: {
+			model: Group,
+			key: 'id'
+		}
+	}
 });
 
 module.exports = { Group, Member };
