@@ -2,10 +2,10 @@
 
 const {throwError} = require('error-standardize');
 
-module.exports = function* createAdministrator(req, res, next) {
-	const UfwdAccount = res.sequelize.model('ufwdAccount');
+module.exports = function* createWriter(req, res, next) {
 	const Account = res.sequelize.model('account');
-	const UfwdAdministrator = res.sequelize.model('ufwdAdministrator');
+	const UfwdAccount = res.sequelize.model('ufwdAccount');
+	const UfwdWriter = res.sequelize.model('ufwdWriter');
 	const accountId = req.body.accountId;
 
 	const ufwdAccount = yield UfwdAccount.findOne({
@@ -18,24 +18,24 @@ module.exports = function* createAdministrator(req, res, next) {
 	});
 
 	if (!ufwdAccount) {
-		throwError('Account not exist', 404);
+		throwError('the account is not exist.', 404);
 	}
 
-	const admin = yield UfwdAdministrator.findOne({
+	const writer = yield UfwdWriter.findOne({
 		where: {
 			accountId: ufwdAccount.accountId
 		}
 	});
 
-	if (admin) {
-		throwError('this admini has existed', 403);
+	if (writer) {
+		throwError('the writer is existed.', 403);
 	}
 
-	const administrator = yield UfwdAdministrator.create({
+	const newWriter = yield UfwdWriter.create({
 		accountId: ufwdAccount.accountId
 	});
 
-	res.data(administrator);
-
+	res.data(newWriter);
+	
 	next();
 };

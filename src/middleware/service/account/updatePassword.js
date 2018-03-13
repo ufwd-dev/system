@@ -9,7 +9,7 @@ module.exports = function* updatePassword(req, res, next) {
 
 	const account = yield Account.findOne({
 		where: {
-			name: accountId
+			id: accountId
 		}
 	});
 

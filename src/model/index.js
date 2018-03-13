@@ -25,6 +25,12 @@ Administrator.belongsTo(UfwdAccount, {
 UfwdAccount.hasOne(Administrator, {
 	foreignKey: 'accountId'
 });
+Administrator.belongsTo(Account, {
+	foreignKey: 'accountId'
+});
+Account.hasOne(Administrator, {
+	foreignKey: 'accountId'
+});
 
 Writer.belongsTo(UfwdAccount, {
 	foreignKey: 'accountId'
@@ -37,6 +43,12 @@ UfwdAccount.hasMany(Writer, {
 });
 Channel.hasMany(Writer, {
 	foreignKey: 'channelId'
+});
+Writer.belongsTo(Account, {
+	foreignKey: 'accountId'
+});
+Account.hasOne(Writer, {
+	foreignKey: 'accountId'
 });
 
 Subscribe.belongsTo(UfwdAccount, {

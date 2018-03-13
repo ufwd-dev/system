@@ -37,6 +37,7 @@
                                                                                                              }
      post               api/ufwd/service/writer                         创建一个作家                          body:{
                                                                                                                  account:用户id(int) 
+                                                                                                                 channel:频道id
                                                                                                              } 
      get                api/ufwd/service/writer                         获取所有的作家的信息                   无参数
 
@@ -60,7 +61,7 @@
      get                api/ufwd/service/channel                        获取所有的频道的信息                   无参数
 
      get                api/ufwd/service/channel/:cid                   获取某个频道的信息                     params:{
-                                                                                                                 cid:频道id(int)
+                                                                                                                 cid:频道name(string)
                                                                                                              }
      put                api/ufwd/service/channel/:cid                   修改某个频道的信息                     body:{
                                                                                                                  name:频道名称(string)

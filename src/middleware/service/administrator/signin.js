@@ -13,7 +13,7 @@ module.exports = function* serviceSignIn(req, res, next) {
 	});
 
 	if (!account) {
-		throwError('Account is NOT existed', 404)
+		throwError('Account is NOT existed', 404);
 	}
 
 	const sha256 = createHash('sha256');

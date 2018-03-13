@@ -19,9 +19,14 @@ module.exports = function* createAccount(req, res, next) {
 		name, password
 	});
     
-	yield UfwdAccount.create(Object.assign({
+	const newUfwdAccount = yield UfwdAccount.create(Object.assign({
 		accountId: newAccount.id
 	}, ufwd));
+
+	res.data({
+		account: newAccount, 
+		ufwdAccount:newUfwdAccount
+	});
 
 	next();
 };
