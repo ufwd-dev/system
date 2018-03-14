@@ -122,9 +122,6 @@
      get                api/ufwd/service/advise                         获取所有的投诉                        query:{
                                                                                                                  examine:true或false(boolean)
                                                                                                              }
-     get                api/ufwd/service/advise/account/:aid            获取某个用户的所有投诉                 params:{
-                                                                                                                 aid:账户id(int)
-                                                                                                             }
      get                api/ufwd/service/advise/:advise/account/:aid    获取某条投诉                          params:{
                                                                                                                  advise:advise的id(int),
                                                                                                                  aid:账户id(int)
@@ -141,17 +138,6 @@
 
      get                api/ufwd/service/notification/:nid              获取某条通知的详细信息                 params:{
                                                                                                                 nid:通知的id(int)
-                                                                                                             }
-     get                api/ufwd/service/channel/:cid/writer            获取某个频道下的所有作家                params:{
-                                                                                                                cid:频道的id(int)
-                                                                                                             }
-     get                api/ufwd/service/channel/:cid/writer/:wid       获取某个频道下的某个作家                params:{
-                                                                                                                cid:频道的id(int)，
-                                                                                                                wid:账户的id(int)
-                                                                                                             }
-     delete             api/ufwd/service/channel/:cid/writer/:wid       从某个频道删除某个作家                  params:{
-                                                                                                                cid:频道的id(int)，
-                                                                                                                wid:账户的id(int)
                                                                                                              }
      post               api/ufwd/service/session/account                登陆                                  body:{
                                                                                                                 name:账户名(string)，

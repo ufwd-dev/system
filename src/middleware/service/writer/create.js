@@ -6,7 +6,8 @@ module.exports = function* createWriter(req, res, next) {
 	const Account = res.sequelize.model('account');
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
 	const UfwdWriter = res.sequelize.model('ufwdWriter');
-	const accountId = req.body.accountId;
+	const Channel = res.sequelize.model('ufwdChannel');
+	const { accountId, channelId } = req.body;
 
 	const ufwdAccount = yield UfwdAccount.findOne({
 		include: [{
@@ -17,25 +18,29 @@ module.exports = function* createWriter(req, res, next) {
 		}]
 	});
 
+
+	const channel = yield Channel.findOne({
+		where: {
+			name: channelId
+		}
+	});
+
 	if (!ufwdAccount) {
 		throwError('the account is not exist.', 404);
 	}
 
-	const writer = yield UfwdWriter.findOne({
+	if (!channel) {
+		throwError('the channel is not exist.', 404);
+	}
+
+	const writer = yield UfwdWriter.findOrCreate({
 		where: {
-			accountId: ufwdAccount.accountId
+			accountId: ufwdAccount.accountId,
+			channelId: channel.id
 		}
 	});
 
-	if (writer) {
-		throwError('the writer is existed.', 403);
-	}
-
-	const newWriter = yield UfwdWriter.create({
-		accountId: ufwdAccount.accountId
-	});
-
-	res.data(newWriter);
+	res.data(writer);
 	
 	next();
 };
