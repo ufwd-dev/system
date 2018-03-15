@@ -3,13 +3,13 @@
 const {
 	isAccountSignedIn,
 	isAccountUnsignedIn,
-	signIn,
 	signOut,
 	$testBody,
 	$testQuery
 } = require('express-handler-loader')('all');
 
 const {
+	signIn,
 	createAccount,
 	serviceSignIn,
 	getAccountList,
@@ -107,17 +107,25 @@ router.delete('/api/ufwd/service/account/session', signOut);
 
 router.get('/api/ufwd/service/account', $testQuery({
 	properties: {
+		name: {
+			type: 'string'
+		},
 		examine: {
 			type: 'string',
 			pattern: '(^true$|^false$)'
 		},
-		name: {
+		username: {
 			type: 'string'
 		},
 		phone: {
 			type: 'string'
-		}
+		},
+		sex: {
+			type: 'string',
+			pattern: '(^male$|^female$)'
+		},
 	},
+	additionalProperties: false
 }), isAccountSignedIn, getAccountList);
 
 router.get('/api/ufwd/service/account/:accountId', isAccountSignedIn, getAccount);
@@ -130,7 +138,7 @@ router.put('/api/ufwd/service/account/:accountId', $testBody({
 	},
 	additionalProperties: false,
 	required: ['examine']
-}), isAccountSignedIn, getAccount, updateAccount);
+}), isAccountSignedIn, updateAccount);
 
 router.delete('/api/ufwd/service/account/:accountId', isAccountSignedIn, getAccount, deleteAccount);
 
@@ -144,7 +152,7 @@ router.patch('/api/ufwd/service/account/:accountId/password', $testBody({
 	},
 	additionalProperties: false,
 	required: ['password']
-}), isAccountSignedIn, updatePassword);
+}), isAccountSignedIn, getAccount, updatePassword);
 
 router.post('/api/ufwd/service/administrator', isAccountSignedIn, createAdministrator);
 
@@ -168,7 +176,14 @@ router.post('/api/ufwd/service/channel', $testBody({
 	required: ['name', 'description']
 }), isAccountSignedIn, createChannel);
 
-router.get('/api/ufwd/service/channel', isAccountSignedIn, getChannelList);
+router.get('/api/ufwd/service/channel', $testQuery({
+	properties: {
+		name: {
+			type: 'string'
+		}
+	},
+	additionalProperties: false
+}), isAccountSignedIn, getChannelList);
 
 router.get('/api/ufwd/service/channel/:channelId', isAccountSignedIn, getChannel);
 
@@ -203,7 +218,14 @@ router.get('/api/ufwd/service/writer', $testQuery({
 
 router.get('/api/ufwd/service/writer/:writerId', isAccountSignedIn, getWriter);
 
-router.put('/api/ufwd/service/writer/:writerId', isAccountSignedIn, getWriter, updateWriter);
+router.put('/api/ufwd/service/writer/:writerId', $testBody({
+	properties: {
+		name: {
+			type: 'string'
+		}
+	},
+	additionalProperties: false
+}), isAccountSignedIn, getWriter, updateWriter);
 
 router.delete('/api/ufwd/service/writer/:writerId', isAccountSignedIn, getWriter, deleteWriter);
 
@@ -220,7 +242,14 @@ router.post('/api/ufwd/service/group', $testBody({
 	required: ['name', 'description']
 }), isAccountSignedIn, createGroup);
 
-router.get('/api/ufwd/service/group', isAccountSignedIn, getGroupList);
+router.get('/api/ufwd/service/group', $testQuery({
+	properties: {
+		name: {
+			type: 'string'
+		}
+	},
+	additionalProperties: false
+}), isAccountSignedIn, getGroupList);
 
 router.get('/api/ufwd/service/group/:groupId', isAccountSignedIn, getGroup);
 
@@ -264,7 +293,14 @@ router.post('/api/ufwd/service/notification', $testBody({
 	additionalProperties: false
 }), isAccountSignedIn, createNotification);
 
-router.get('/api/ufwd/service/notification', isAccountSignedIn, getNotificationList);
+router.get('/api/ufwd/service/notification', $testQuery({
+	properties: {
+		recevier: {
+			type: 'string'
+		}
+	},
+	additionalProperties: false
+}), isAccountSignedIn, getNotificationList);
 
 router.get('/api/ufwd/service/notification/:notificationId', isAccountSignedIn, getNotification);
 
@@ -283,7 +319,9 @@ router.get('/api/ufwd/app/advise/:adviseId', isAccountSignedIn, getOwnAdvise);
 
 router.get('/api/ufwd/service/advise', $testQuery({
 	properties: {
-		accountId: {}
+		accountId: {
+			type: 'string'
+		}
 	},
 	additionalProperties: false
 }), isAccountSignedIn, getAdviseList);
@@ -294,9 +332,44 @@ router.delete('/api/ufwd/service/advise/:adviseId', isAccountSignedIn, getAdvise
 
 router.get('/api/ufwd/app/account', isAccountSignedIn, getInformation);
 
-router.put('/api/ufwd/app/account', isAccountSignedIn, updateInformation);
+router.put('/api/ufwd/app/account', $testBody({
+	properties: {
+		name: {
+			type: 'string',
+			minLength: 4,
+			maxLength: 128
+		},
+		ufwd: {
+			type: 'object',
+			properties: {
+				name: {
+					type: 'string'
+				},
+				sex: {
+					type: 'string',
+					pattern: '(^male$|^female$)'
+				},
+				phone: {
+					type: 'string',
+					pattern: '(^1[3|4|5|8][0-9]{5,9}$)'
+				}
+			},
+		}
+	},
+	additionalProperties: false,
+}), isAccountSignedIn, updateInformation);
 
-router.patch('/api/ufwd/app/account/password', isAccountSignedIn, updateOwnPassword);
+router.patch('/api/ufwd/app/account/password', $testBody({
+	properties: {
+		password: {
+			type: 'string',
+			minLength: 6,
+			maxLength: 32
+		}
+	},
+	additionalProperties: false,
+	required: ['password']
+}), isAccountSignedIn, updateOwnPassword);
 
 router.post('/api/ufwd/app/channel/:channelId', isAccountSignedIn, createOwnSubscribe);
 
@@ -304,19 +377,38 @@ router.get('/api/ufwd/app/channel', isAccountSignedIn, getOwnSubscribeList);
 
 router.get('/api/ufwd/app/channel/:channelId', isAccountSignedIn, getOwnSubscribe);
 
-router.delete('/api/ufwd/app/channel/:channelId', isAccountSignedIn, deleteOwnSubscribe);
+router.delete('/api/ufwd/app/channel/:channelId', isAccountSignedIn, getOwnSubscribe, deleteOwnSubscribe);
 
 router.get('/api/ufwd/app/notification', isAccountSignedIn, getOwnNotificationList);
 
 router.get('/api/ufwd/app/notification/:notificationId', isAccountSignedIn, getOwnNotification);
 
-router.delete('/api/ufwd/app/notification/:notificationId', isAccountSignedIn, deleteOwnNotification);
+router.delete('/api/ufwd/app/notification/:notificationId', isAccountSignedIn, getOwnNotification, deleteOwnNotification);
 
 router.get('/api/ufwd/app/group', isAccountSignedIn, getOwnGroupList);
 
 router.get('/api/ufwd/app/group/:groupId', isAccountSignedIn, getOwnGroup);
 
-router.post('/api/ufwd/app/account/session', isAccountUnsignedIn, signIn);
+router.post('/api/ufwd/app/account/session', $testBody({
+	properties: {
+		name: {
+			type: 'string',
+			minLength: 4,
+			maxLength: 128
+		},
+		password: {
+			type: 'string',
+			minLength: 6,
+			maxLength: 32
+		},
+		phone: {
+			type: 'string',
+			pattern: '(^1[3|4|5|8][0-9]{5,9}$)'
+		}
+	},
+	additionalProperties: false,
+	required: ['password']
+}), isAccountUnsignedIn, signIn);
 
 router.delete('/api/ufwd/app/account/session', isAccountSignedIn, signOut);
 

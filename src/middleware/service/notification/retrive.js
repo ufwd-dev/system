@@ -13,7 +13,7 @@ module.exports = function* getNotification(req, res, next) {
 	});
 
 	if (!notification) {
-		throwError('the notification is not exist.', 403);
+		throwError('The notification is not exist.', 403);
 	}
 
 	res.data(notification);

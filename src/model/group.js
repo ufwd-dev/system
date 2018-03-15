@@ -21,17 +21,9 @@ const Group = sequelize.define('ufwdGroup', {
 const Member = sequelize.define('ufwdMember', {
 	accountId: {
 		type: Sequelize.INTEGER,
-		references: {
-			model: ufwdAccount,
-			key: 'accountId'
-		}
 	},
 	groupId: {
 		type: Sequelize.INTEGER,
-		references: {
-			model: Group,
-			key: 'id'
-		}
 	}
 });
 

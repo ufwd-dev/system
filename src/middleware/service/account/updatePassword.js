@@ -1,27 +1,14 @@
 'use strict';
 
-const {throwError} = require('error-standardize');
-
 module.exports = function* updatePassword(req, res, next) {
-	const Account = res.sequelize.model('account');
-	const accountId = req.params.accountId;
 	const password = req.body.password;
+	const account = res.data();
 
-	const account = yield Account.findOne({
-		where: {
-			id: accountId
-		}
-	});
-
-	if (!account) {
-		throwError('Account not exist', 404);
-	}
-
-	account.update({
+	const result = yield account.update({
 		password
 	});
 
-	res.data(account);
+	res.data(result);
 	
 	next();
 };

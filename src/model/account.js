@@ -4,16 +4,11 @@ const Sequelize = require('sequelize');
 const lemonitor = require('lemonitor-service');
 
 const sequelize = lemonitor.sequelize;
-const Account = sequelize.model('account');
 
 const ufwdAccount = module.exports = sequelize.define('ufwdAccount', {
 	accountId: {
 		primaryKey: true,
 		type: Sequelize.INTEGER,
-		references: {
-			model: Account,
-			key: 'id'
-		},
 		allowNull: false
 	},
 	name: {
@@ -33,7 +28,8 @@ const ufwdAccount = module.exports = sequelize.define('ufwdAccount', {
 	},
 	phone: {
 		type: Sequelize.CHAR(20),
-		allowNull: false
+		allowNull: false,
+		unique: true
 	},
 	examine: {
 		type: Sequelize.BOOLEAN,

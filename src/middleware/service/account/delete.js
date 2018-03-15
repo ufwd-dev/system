@@ -1,25 +1,47 @@
 'use strict';
 
-const {throwError} = require('error-standardize');
-
 module.exports = function* deleteAccount(req, res, next) {
-	const Account = res.sequelize.model('account');
-	const accountId = req.params.accountId;
+	const Writer = res.sequelize.model('ufwdWriter');
+	const Advise = res.sequelize.model('ufwdAdvise');
+	const Subscribe = res.sequelize.model('ufwdSubscribe');
+	const Member = res.sequelize.model('ufwdMember');
+	const Notification = res.sequelize.model('ufwdNotification');
+	const account = res.data();
 
-	const account = yield Account.findOne({
+	yield Writer.destroy({
 		where: {
-			id: accountId
+			accountId: account.id
 		}
 	});
-	
-	if (!account) {
-		throwError('Account not exist', 404);
-	}
 
-	const newAccount = yield account.destroy();
+	yield Advise.destroy({
+		where: {
+			accountId: account.id
+		}
+	});
+
+	yield Subscribe.destroy({
+		where: {
+			accountId: account.id
+		}
+	});
+
+	yield Member.destroy({
+		where: {
+			accountId: account.id
+		}
+	});
+
+	yield Notification.destroy({
+		where: {
+			recevier: account.id
+		}
+	});
+
+	const result = yield account.destroy();
 
 	res.data({
-		destroyAccount: newAccount
+		destroyAccount: result
 	});
 
 	next();

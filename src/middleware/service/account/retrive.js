@@ -7,17 +7,17 @@ module.exports = function* getAccount(req, res, next) {
 	const Account = res.sequelize.model('account');
 	const accountId = req.params.accountId;
 
-	const account = yield UfwdAccount.findOne({
+	const account = yield Account.findOne({
 		include: [{
-			model: Account,
+			model: UfwdAccount,
 			where: {
-				id: accountId
+				accountId
 			}
 		}],
 	});
 
 	if (!account) {
-		throwError('Account is not exist', 404);
+		throwError('Account is not existed.', 404);
 	}
 
 	res.data(account);

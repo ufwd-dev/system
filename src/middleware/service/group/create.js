@@ -13,7 +13,7 @@ module.exports = function* createGroup(req, res, next) {
 	});
 
 	if (group) {
-		throwError('this group is existed.', 403);
+		throwError('This group is existed.', 403);
 	}
 
 	const newGroup = yield Group.create({

@@ -13,80 +13,68 @@ const {Group, Member} = require('./group');
 const Writer = require('./writer');
 
 UfwdAccount.belongsTo(Account, {
-	foreignKey: 'accountId'
+	foreignKey: 'accountId',
 });
 Account.hasOne(UfwdAccount, {
-	foreignKey: 'accountId'
+	foreignKey: 'accountId',
 });
 
 Administrator.belongsTo(UfwdAccount, {
-	foreignKey: 'accountId'
+	foreignKey: 'accountId',
 });
 UfwdAccount.hasOne(Administrator, {
-	foreignKey: 'accountId'
-});
-Administrator.belongsTo(Account, {
-	foreignKey: 'accountId'
-});
-Account.hasOne(Administrator, {
-	foreignKey: 'accountId'
+	foreignKey: 'accountId',
 });
 
 Writer.belongsTo(UfwdAccount, {
-	foreignKey: 'accountId'
+	foreignKey: 'accountId',
 });
 Writer.belongsTo(Channel, {
-	foreignKey: 'channelId'
+	foreignKey: 'channelId',
 });
 UfwdAccount.hasMany(Writer, {
-	foreignKey: 'accountId'
+	foreignKey: 'accountId',
 });
 Channel.hasMany(Writer, {
-	foreignKey: 'channelId'
-});
-Writer.belongsTo(Account, {
-	foreignKey: 'accountId'
-});
-Account.hasOne(Writer, {
-	foreignKey: 'accountId'
+	foreignKey: 'channelId',
 });
 
 Subscribe.belongsTo(UfwdAccount, {
-	foreignKey: 'accountId'
+	foreignKey: 'accountId',
 });
 Subscribe.belongsTo(Channel, {
-	foreignKey: 'channelId'
+	foreignKey: 'channelId',
 });
 UfwdAccount.hasMany(Subscribe, {
-	foreignKey: 'accountId'
+	foreignKey: 'accountId',
 });
 Channel.hasMany(Subscribe, {
-	foreignKey: 'channelId'
+	foreignKey: 'channelId',
 });
 
 Advise.belongsTo(UfwdAccount, {
-	foreignKey: 'accountId'
+	foreignKey: 'accountId',
 });
 UfwdAccount.hasMany(Advise, {
-	foreignKey: 'accountId'
+	foreignKey: 'accountId',
 });
 
 Notification.belongsTo(UfwdAccount, {
-	foreignKey: 'recevier'
+	foreignKey: 'recevier',
 });
 UfwdAccount.hasMany(Notification, {
-	foreignKey: 'recevier'
+	foreignKey: 'recevier',
 });
 
 Member.belongsTo(UfwdAccount, {
-	foreignKey: 'accountId'
+	foreignKey: 'accountId',
 });
 Member.belongsTo(Group, {
-	foreignKey: 'groupId'
+	foreignKey: 'groupId',
 });
 UfwdAccount.hasMany(Member, {
-	foreignKey: 'accountId'
+	foreignKey: 'accountId',
 });
 Group.hasMany(Member, {
-	foreignKey: 'groupId'
+	foreignKey: 'groupId',
 });

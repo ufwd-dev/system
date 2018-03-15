@@ -13,7 +13,7 @@ module.exports = function* updateGroup(req, res, next) {
 	});
 
 	if (oldGroup) {
-		throwError('the group is existed', 403);
+		throwError('The group is existed.', 403);
 	}
 
 	const newGroup = yield group.update(req.body);

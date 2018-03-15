@@ -9,7 +9,7 @@ module.exports = function* getWriterList(req, res, next) {
 		where: req.query
 	});
 
-	if (!writerList) {
+	if (!writerList.length) {
 		throwError('the writer is not exist', 403);
 	}
 

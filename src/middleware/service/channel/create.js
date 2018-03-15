@@ -13,7 +13,7 @@ module.exports = function* createChannel(req, res, next) {
 	});
 
 	if (channel) {
-		throwError('the name is existed', 403);
+		throwError('The name is existed', 403);
 	}
 
 	const newChannel = yield Channel.create({

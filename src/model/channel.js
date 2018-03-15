@@ -21,18 +21,10 @@ const Channel = sequelize.define('ufwdChannel', {
 const Subscribe = sequelize.define('ufwdSubscribe', {
 	accountId: {
 		type: Sequelize.INTEGER,
-		references: {
-			model: ufwdAccount,
-			key: 'accountId'
-		},
 		allowNull: false
 	},
 	channelId: {
 		type: Sequelize.INTEGER,
-		references: {
-			model: Channel,
-			key: 'id'  
-		},
 		allowNull: false
 	}
 });

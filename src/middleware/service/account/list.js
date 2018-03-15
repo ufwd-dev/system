@@ -1,23 +1,36 @@
 'use strict';
 
+const {throwError} = require('error-standardize');
+const Sequelize = require('sequelize');
+
 module.exports = function* getAccountList(req, res, next) {
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
 	const Account = res.sequelize.model('account');
+	const {name, examine, username, phone, sex} = req.query;
 	const query = {
 		include: [{
-			model: Account
-		}]
+			model: Account,
+			where: {}
+		}],
+		where: {}
 	};
-	
-	if (req.query.examine) {
-		const examine = req.query.examine === 'true' ? true : false;
 
-		Object.assign(query, {
-			where: { examine }
-		});
-	}
+	name ? query.include[0].where.name = {[Sequelize.Op.like]: `%${name}%`} : undefined;
+	
+	examine ? (query.where.examine = examine === 'true' ? true : false) : undefined;
+
+	username ? query.where.name = { [Sequelize.Op.like]: `%${username}%`} : undefined;
+
+	phone ? query.where.phone = { [Sequelize.Op.like]: `%${phone}%`} : undefined;
+
+	sex ? (query.where.sex = sex === 'female' ? 0 : 1) : undefined;
 
 	const accountList = yield UfwdAccount.findAll(query);
+
+	if (accountList.length === 0) {
+		throwError('The account is not exist.', 404);
+	}
+
 	res.data(accountList);
 
 	next();

@@ -1,17 +1,16 @@
 'use strict';
 
-module.exports = function* getAdministratorList(req, res, next) {
-	const Account = res.sequelize.model('account');
-	const UfwdAdministrator = res.sequelize.model('ufwdAdministrator');
-	const UfwdAccount = res.sequelize.model('ufwdAccount');
+const {throwError} = require('error-standardize');
 
-	const administratorList = yield UfwdAdministrator.findAll({
-		include: [{
-			model: UfwdAccount
-		},{
-			model: Account
-		}]
-	});
+module.exports = function* getAdministratorList(req, res, next) {
+	const UfwdAdministrator = res.sequelize.model('ufwdAdministrator');
+
+	const administratorList = yield UfwdAdministrator.findAll();
+
+	if (administratorList.length === 0) {
+		throwError('The administrator is not exist.', 404);
+	}
+
 	res.data(administratorList);
 
 	next();

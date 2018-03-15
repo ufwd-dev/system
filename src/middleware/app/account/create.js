@@ -18,7 +18,15 @@ module.exports = function* createAccount(req, res, next) {
 	const newAccount = yield Account.create({
 		name, password
 	});
-    
+	
+	const ufwdAccount = yield UfwdAccount.findOne({
+		where: { phone: ufwd.phone }
+	});
+
+	if (ufwdAccount) {
+		throwError('The phone is existed. Try other phone.', 403);
+	}
+
 	const newUfwdAccount = yield UfwdAccount.create(Object.assign({
 		accountId: newAccount.id
 	}, ufwd));

@@ -13,7 +13,7 @@ module.exports = function* deleteMemberAccount(req, res, next) {
 	});
 	
 	if (!member) {
-		throwError('member is not exist', 404);
+		throwError('Member is not exist', 404);
 	}
 
 	const result = member.detroy();

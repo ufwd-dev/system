@@ -14,7 +14,7 @@ module.exports = function* createNotification(req, res, next) {
 	});
 
 	if (!ufwdAccount) {
-		throwError('the account is not exist.', 403);
+		throwError('The account is not exist.', 403);
 	}
 	
 	const notification = yield Notification.findOrCreate({

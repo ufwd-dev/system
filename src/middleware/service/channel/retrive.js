@@ -13,7 +13,7 @@ module.exports = function* getChannel(req, res, next) {
 	});
 
 	if (!channel) {
-		throwError('this channel is not exist.', 404);
+		throwError('This channel is not exist.', 404);
 	}
 
 	res.data(channel);

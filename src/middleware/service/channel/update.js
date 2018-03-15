@@ -14,11 +14,11 @@ module.exports = function* updateChannel(req, res, next) {
 	const channel = res.data();
 
 	if (!channel) {
-		throwError('channel is not existed', 404);
+		throwError('Channel is not existed', 404);
 	}
 
 	if (oldChannel) {
-		throwError('this name is existed', 403);
+		throwError('This name is existed', 403);
 	}
 
 	const newChannel = yield channel.update(req.body);

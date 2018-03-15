@@ -4,7 +4,14 @@
 
     method                      url                                           describe                      attribute(req)
      get                api/ufwd/service/account                        获取所有注册的账户信息                 query:{
-                                                                                                                 examine:true或false(boolean)
+                                                                                                                 name: string（账户名）
+                                                                                                                 ufwd: {
+                                                                                                                     
+                                                                                                                     name: string（账户名）
+                                                                                                                     examine:true或false(boolean)
+                                                                                                                     phone:true或false(boolean)
+
+                                                                                                                 }
                                                                                                              }
      get                api/ufwd/service/account/:aid                   获取某一指定的账户信息                 params:{
                                                                                                                  aid:用户名(string)
