@@ -14,7 +14,10 @@ module.exports = function* createAdministrator(req, res, next) {
 			where: {
 				name: accountId
 			}
-		}]
+		}],
+		where: {
+			examine: true
+		}
 	});
 
 	if (!ufwdAccount) {

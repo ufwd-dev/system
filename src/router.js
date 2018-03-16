@@ -9,6 +9,7 @@ const {
 } = require('express-handler-loader')('all');
 
 const {
+	isAdminiSignedIn,
 	signIn,
 	createAccount,
 	serviceSignIn,
@@ -126,9 +127,9 @@ router.get('/api/ufwd/service/account', $testQuery({
 		},
 	},
 	additionalProperties: false
-}), isAccountSignedIn, getAccountList);
+}), isAdminiSignedIn, getAccountList);
 
-router.get('/api/ufwd/service/account/:accountId', isAccountSignedIn, getAccount);
+router.get('/api/ufwd/service/account/:accountId', isAdminiSignedIn, getAccount);
 
 router.put('/api/ufwd/service/account/:accountId', $testBody({
 	properties: {
@@ -138,9 +139,9 @@ router.put('/api/ufwd/service/account/:accountId', $testBody({
 	},
 	additionalProperties: false,
 	required: ['examine']
-}), isAccountSignedIn, updateAccount);
+}), isAdminiSignedIn, updateAccount);
 
-router.delete('/api/ufwd/service/account/:accountId', isAccountSignedIn, getAccount, deleteAccount);
+router.delete('/api/ufwd/service/account/:accountId', isAdminiSignedIn, getAccount, deleteAccount);
 
 router.patch('/api/ufwd/service/account/:accountId/password', $testBody({
 	properties: {
@@ -152,15 +153,15 @@ router.patch('/api/ufwd/service/account/:accountId/password', $testBody({
 	},
 	additionalProperties: false,
 	required: ['password']
-}), isAccountSignedIn, getAccount, updatePassword);
+}), isAdminiSignedIn, getAccount, updatePassword);
 
-router.post('/api/ufwd/service/administrator', isAccountSignedIn, createAdministrator);
+router.post('/api/ufwd/service/administrator', isAdminiSignedIn, createAdministrator);
 
-router.get('/api/ufwd/service/administrator', isAccountSignedIn, getAdministratorList);
+router.get('/api/ufwd/service/administrator', isAdminiSignedIn, getAdministratorList);
 
-router.get('/api/ufwd/service/administrator/:administratorId', isAccountSignedIn, getAdministrator);
+router.get('/api/ufwd/service/administrator/:administratorId', isAdminiSignedIn, getAdministrator);
 
-router.delete('/api/ufwd/service/administrator/:administratorId', isAccountSignedIn, getAdministrator, deleteAdministrator);
+router.delete('/api/ufwd/service/administrator/:administratorId', isAdminiSignedIn, getAdministrator, deleteAdministrator);
 
 router.post('/api/ufwd/service/channel', $testBody({
 	properties: {
@@ -183,9 +184,9 @@ router.get('/api/ufwd/service/channel', $testQuery({
 		}
 	},
 	additionalProperties: false
-}), isAccountSignedIn, getChannelList);
+}), isAdminiSignedIn, getChannelList);
 
-router.get('/api/ufwd/service/channel/:channelId', isAccountSignedIn, getChannel);
+router.get('/api/ufwd/service/channel/:channelId', isAdminiSignedIn, getChannel);
 
 router.put('/api/ufwd/service/channel/:channelId', $testBody({
 	properties: {
@@ -198,11 +199,11 @@ router.put('/api/ufwd/service/channel/:channelId', $testBody({
 		}
 	},
 	additionalProperties: false
-}), isAccountSignedIn, getChannel, updateChannel);
+}), isAdminiSignedIn, getChannel, updateChannel);
 
-router.delete('/api/ufwd/service/channel/:channelId', isAccountSignedIn, getChannel, deleteChannel);
+router.delete('/api/ufwd/service/channel/:channelId', isAdminiSignedIn, getChannel, deleteChannel);
 
-router.post('/api/ufwd/service/writer', isAccountSignedIn, createWriter);
+router.post('/api/ufwd/service/writer', isAdminiSignedIn, createWriter);
 
 router.get('/api/ufwd/service/writer', $testQuery({
 	properties: {
@@ -214,9 +215,9 @@ router.get('/api/ufwd/service/writer', $testQuery({
 		}
 	},
 	additionalProperties: false
-}), isAccountSignedIn, getWriterList);
+}), isAdminiSignedIn, getWriterList);
 
-router.get('/api/ufwd/service/writer/:writerId', isAccountSignedIn, getWriter);
+router.get('/api/ufwd/service/writer/:writerId', isAdminiSignedIn, getWriter);
 
 router.put('/api/ufwd/service/writer/:writerId', $testBody({
 	properties: {
@@ -225,9 +226,9 @@ router.put('/api/ufwd/service/writer/:writerId', $testBody({
 		}
 	},
 	additionalProperties: false
-}), isAccountSignedIn, getWriter, updateWriter);
+}), isAdminiSignedIn, getWriter, updateWriter);
 
-router.delete('/api/ufwd/service/writer/:writerId', isAccountSignedIn, getWriter, deleteWriter);
+router.delete('/api/ufwd/service/writer/:writerId', isAdminiSignedIn, getWriter, deleteWriter);
 
 router.post('/api/ufwd/service/group', $testBody({
 	properties: {
@@ -240,7 +241,7 @@ router.post('/api/ufwd/service/group', $testBody({
 	},
 	additionalProperties: false,
 	required: ['name', 'description']
-}), isAccountSignedIn, createGroup);
+}), isAdminiSignedIn, createGroup);
 
 router.get('/api/ufwd/service/group', $testQuery({
 	properties: {
@@ -249,11 +250,11 @@ router.get('/api/ufwd/service/group', $testQuery({
 		}
 	},
 	additionalProperties: false
-}), isAccountSignedIn, getGroupList);
+}), isAdminiSignedIn, getGroupList);
 
-router.get('/api/ufwd/service/group/:groupId', isAccountSignedIn, getGroup);
+router.get('/api/ufwd/service/group/:groupId', isAdminiSignedIn, getGroup);
 
-router.put('/api/ufwd/service/group/:groupId', isAccountSignedIn, $testBody({
+router.put('/api/ufwd/service/group/:groupId', $testBody({
 	properties: {
 		name: {
 			type: 'string'
@@ -263,23 +264,23 @@ router.put('/api/ufwd/service/group/:groupId', isAccountSignedIn, $testBody({
 		}
 	},
 	additionalProperties: false
-}), getGroup, updateGroup);
+}), isAdminiSignedIn, getGroup, updateGroup);
 
-router.delete('/api/ufwd/service/group/:groupId', isAccountSignedIn, getGroup, deleteGroup);
+router.delete('/api/ufwd/service/group/:groupId', isAdminiSignedIn, getGroup, deleteGroup);
 
-router.post('/api/ufwd/service/group/:groupId/account/:accountId', isAccountSignedIn, getGroup, getAccount, createMember);
+router.post('/api/ufwd/service/group/:groupId/account/:accountId', isAdminiSignedIn, getGroup, getAccount, createMember);
 
-router.get('/api/ufwd/service/account/:accountId/group', isAccountSignedIn, getAccount, getMemberGroupList);
+router.get('/api/ufwd/service/account/:accountId/group', isAdminiSignedIn, getAccount, getMemberGroupList);
 
-router.get('/api/ufwd/service/account/:accountId/group/:groupId', isAccountSignedIn, getAccount, getGroup, getMemberGroup);
+router.get('/api/ufwd/service/account/:accountId/group/:groupId', isAdminiSignedIn, getAccount, getGroup, getMemberGroup);
 
-router.delete('/api/ufwd/service/account/:accountId/group/:groupId', isAccountSignedIn, getAccount, getGroup, deleteMemberAccount);
+router.delete('/api/ufwd/service/account/:accountId/group/:groupId', isAdminiSignedIn, getAccount, getGroup, deleteMemberAccount);
 
-router.get('/api/ufwd/service/group/:groupId/account', isAccountSignedIn, getGroup, getMemberAccountList);
+router.get('/api/ufwd/service/group/:groupId/account', isAdminiSignedIn, getGroup, getMemberAccountList);
 
-router.get('/api/ufwd/service/group/:groupId/account/:accountId', isAccountSignedIn, getGroup, getAccount, getMemberAccount);
+router.get('/api/ufwd/service/group/:groupId/account/:accountId', isAdminiSignedIn, getGroup, getAccount, getMemberAccount);
 
-router.delete('/api/ufwd/service/group/:groupId/account/:accountId', isAccountSignedIn, getGroup, getAccount, deleteMemberAccount);
+router.delete('/api/ufwd/service/group/:groupId/account/:accountId', isAdminiSignedIn, getGroup, getAccount, deleteMemberAccount);
 
 router.post('/api/ufwd/service/notification', $testBody({
 	properties: {
@@ -291,7 +292,7 @@ router.post('/api/ufwd/service/notification', $testBody({
 		}
 	},
 	additionalProperties: false
-}), isAccountSignedIn, createNotification);
+}), isAdminiSignedIn, createNotification);
 
 router.get('/api/ufwd/service/notification', $testQuery({
 	properties: {
@@ -300,9 +301,9 @@ router.get('/api/ufwd/service/notification', $testQuery({
 		}
 	},
 	additionalProperties: false
-}), isAccountSignedIn, getNotificationList);
+}), isAdminiSignedIn, getNotificationList);
 
-router.get('/api/ufwd/service/notification/:notificationId', isAccountSignedIn, getNotification);
+router.get('/api/ufwd/service/notification/:notificationId', isAdminiSignedIn, getNotification);
 
 router.post('/api/ufwd/app/advise', $testBody({
 	properties: {
@@ -324,11 +325,11 @@ router.get('/api/ufwd/service/advise', $testQuery({
 		}
 	},
 	additionalProperties: false
-}), isAccountSignedIn, getAdviseList);
+}), isAdminiSignedIn, getAdviseList);
 
-router.get('/api/ufwd/service/advise/:adviseId', isAccountSignedIn, getAdvise);
+router.get('/api/ufwd/service/advise/:adviseId', isAdminiSignedIn, getAdvise);
 
-router.delete('/api/ufwd/service/advise/:adviseId', isAccountSignedIn, getAdvise, deleteAdvise);
+router.delete('/api/ufwd/service/advise/:adviseId', isAdminiSignedIn, getAdvise, deleteAdvise);
 
 router.get('/api/ufwd/app/account', isAccountSignedIn, getInformation);
 

@@ -27,7 +27,7 @@ module.exports = function* serviceSignIn(req, res, next) {
 
 	const administrator = yield Administrator.findOne({
 		where: {
-			account: account.id
+			accountId: account.id
 		}
 	});
 
@@ -36,6 +36,7 @@ module.exports = function* serviceSignIn(req, res, next) {
 	}
 
 	req.session.accountId = account.id;
+	req.session.identify = 'admini';
 
 	res.data(account);
 

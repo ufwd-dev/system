@@ -15,9 +15,6 @@ module.exports = function* createAccount(req, res, next) {
 		throwError('Account has been existed. Try other names.', 403);
 	}
 
-	const newAccount = yield Account.create({
-		name, password
-	});
 	
 	const ufwdAccount = yield UfwdAccount.findOne({
 		where: { phone: ufwd.phone }
@@ -26,6 +23,10 @@ module.exports = function* createAccount(req, res, next) {
 	if (ufwdAccount) {
 		throwError('The phone is existed. Try other phone.', 403);
 	}
+
+	const newAccount = yield Account.create({
+		name, password
+	});
 
 	const newUfwdAccount = yield UfwdAccount.create(Object.assign({
 		accountId: newAccount.id

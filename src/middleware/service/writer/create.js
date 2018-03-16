@@ -15,7 +15,10 @@ module.exports = function* createWriter(req, res, next) {
 			where: {
 				name: accountId
 			}
-		}]
+		}],
+		where: {
+			examine: true
+		}
 	});
 
 
