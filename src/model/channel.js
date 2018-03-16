@@ -16,6 +16,8 @@ const Channel = sequelize.define('ufwdChannel', {
 		type: Sequelize.TEXT,
 		allowNull: false
 	}
+}, {
+	paranoid: true
 });
 
 const Subscribe = sequelize.define('ufwdSubscribe', {
@@ -27,6 +29,8 @@ const Subscribe = sequelize.define('ufwdSubscribe', {
 		type: Sequelize.INTEGER,
 		allowNull: false
 	}
+}, {
+	paranoid: true
 });
 
 module.exports = { Channel, Subscribe };

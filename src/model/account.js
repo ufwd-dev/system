@@ -36,4 +36,6 @@ const ufwdAccount = module.exports = sequelize.define('ufwdAccount', {
 		defaultValue: false,
 		allowNull: false
 	}
+}, {
+	paranoid: true
 });

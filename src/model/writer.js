@@ -16,4 +16,6 @@ const Writer = module.exports = sequelize.define('ufwdWriter', {
 		type: Sequelize.INTEGER,
 		allowNull: false
 	}
+}, {
+	paranoid: true
 });
