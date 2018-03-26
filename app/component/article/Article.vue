@@ -6,22 +6,21 @@
 			<li class="breadcrumb-item">
 				<router-link tag="a" to="/">Home</router-link>
 			</li>
-			<li class="breadcrumb-item active">Account</li>
+			<li class="breadcrumb-item active">Article</li>
 		</ol>
 	</nav>
 
 	<div class="row">
-        <div class="col-8">
-            <div class="input-group mb-3">
-				<input type="text"
-					class="form-control">
+		<div class="col-8">
+			<div class="input-group">
+				<input type="text" class="form-control">
 				<div class="input-group-append">
 					<button class="btn btn-outline-secondary"
 						type="button"><i class="fa fa-search"></i></button>
 				</div>
-            </div>
+			</div>
 
-			<h3>All accounts</h3>
+			<h3 class="mt-4">All articles</h3>
 			<hr>
 			
 			<table class="table table-bordered">
@@ -32,17 +31,13 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr @click="getAccountById(1)">
-						<td>Admin</td>
-						<td>2018/03/23</td>
-					</tr>
 					<tr>
-						<td>Zhang San</td>
-						<td>2018/03/23</td>
+						<td>xxx</td>
+						<td>2018/03/25</td>
 					</tr>
 				</tbody>
 			</table>
-        </div>
+		</div>
 
 		<div class="col-4">
 			<div class="list-group">
@@ -61,17 +56,6 @@
 				</a>
 			</div>
 		</div>
-    </div>
+	</div>
 </div>
 </template>
-
-<script>
-export default {
-	name: 'account',
-	methods: {
-		getAccountById(id) {
-			this.$router.push(`account/${id}/info`);
-		}
-	}
-}
-</script>
