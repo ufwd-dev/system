@@ -1,0 +1,9 @@
+ufwd:
+  system: 'UFWD System'
+
+menu:
+  account: 'Account'
+  channel: 'Channel'
+  activity: 'Activity'
+  article: 'Article'
+  vote: 'Vote'

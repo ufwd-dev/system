@@ -1,25 +1,28 @@
 'use strict';
 import app from 'app';
 
+import en_US from './i18n/en_US.yaml';
+import zh_CN from './i18n/zh_CN.yaml';
+
 app.menu.addGroup('ufwd.system', [
 	{
-		label: 'Account',
+		label: 'menu.account',
 		path: '/ufwd/account'
 	},
 	{
-		label: 'Channel',
+		label: 'menu.channel',
 		path: '/ufwd/channel'
 	},
 	{
-		label: 'Activity',
+		label: 'menu.activity',
 		path: '/ufwd/activity'
 	},
 	{
-		label: 'Article',
+		label: 'menu.article',
 		path: '/ufwd/article'
 	},
 	{
-		label: 'Vote',
+		label: 'menu.vote',
 		path: '/ufwd/vote'
 	},
 ]);
@@ -38,7 +41,9 @@ import Activity from  './component/activity/Activity.vue';
 import ActivityDetail from  './component/activity/Detail.vue';
 
 import Article from  './component/article/Article.vue';
-import Vote from  './component/vote/Vote.vue';
+
+import Vote from  './component/vote/Index.vue';
+import VoteDetail from  './component/vote/Vote.vue';
 
 app.router.addRoutes([
 	{
@@ -92,6 +97,15 @@ app.router.addRoutes([
 				path: 'vote',
 				component: Vote
 			},
+			{
+				path: 'vote/:id/detail',
+				component: VoteDetail
+			},
 		]
 	}
 ]);
+
+app.i18n.mergeLocaleMessage('en', en_US);
+app.i18n.mergeLocaleMessage('zh', zh_CN);
+
+app.i18n.locale = 'en';

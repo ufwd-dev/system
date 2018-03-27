@@ -10,7 +10,7 @@
 		</ol>
 	</nav>
 
-	<div class="row">
+	<div class="row mb-3">
 		<div class="col-1">
 			<router-link tag="a"
 				to="channel/new"
@@ -30,32 +30,69 @@
 	<h3 class="mt-4">All channels</h3>
 	<hr>
 
-	<div class="row mt-4">
-		<div class="col">
-			<div class="card"
-				@click="$router.push(`account/manage/1/category`)">
-				<div class="card-body">
-					<h5 class="card-title">xx Channel</h5>
-					<p class="card-text">Writer: 2</p>
-				</div>
-			</div>
+	<div class="row">
+		<div class="col-8">
+
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Writer</th>
+						<th>Comment</th>
+						<th>Time</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>xx Channel</td>
+						<td>2</td>
+						<td>2</td>
+						<td>2018/03/12</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
-		<div class="col">
+
+		<div class="col-4">
 			<div class="card">
-				<div class="card-body">
-					<h5 class="card-title">xx Channel</h5>
-					<p class="card-text">Writer: 1</p>
+				<div class="card-header">
+					xx Channel
 				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card">
 				<div class="card-body">
-					<h5 class="card-title">xx Channel</h5>
-					<p class="card-text">Writer: 5</p>
+					<h5 class="card-title">Writer : 2</h5>
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>Name</th>
+								<th>Time</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Zhang San</td>
+								<td>2018/03/12</td>
+							</tr>
+						</tbody>
+					</table>
+					<h5 class="card-title">Comment : </h5>
+					<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 				</div>
 			</div>
 		</div>
 	</div>
+	
+	
 </div>
 </template>
+
+<script>
+export default {
+	name: 'channel',
+	data() {
+		return {
+			isAddPanelShow: false,
+			isWriterShow: false,
+		}
+	}
+}
+</script>
