@@ -1,9 +1,16 @@
 ufwd:
-  system: 'UFWD System'
-
-menu:
   account: 'Account'
   channel: 'Channel'
-  activity: 'Activity'
-  article: 'Article'
-  vote: 'Vote'
+  administrator: 'Administrator'
+  writer: 'Writer'
+  notification: 'Notification'
+  subscribe: 'Subscribe'
+  advice: 'Advice'
+  group: 'Group'
+
+account:
+  account: 'Account'
+
+channel:
+  channel: 'Channel'
+  new: 'New'
