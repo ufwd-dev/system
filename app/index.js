@@ -1,5 +1,28 @@
 'use strict';
 import app from 'app';
+import './global-component.js';
+
+import SignIn from './component/sign/SignIn.vue';
+import Signup from './component/sign/SignUp.vue';
+
+// console.log(app.store, app.router.options.routes[1]);
+
+app.router.options.routes[1] = {
+	path: '/account/signin',
+	component: SignIn,
+	meta: {
+		requireAccount: false
+	},
+};
+app.router.options.routes[2] = {
+	path: '/account/signup',
+	component: Signup,
+	meta: {
+		requireAccount: false
+	},
+};
+// console.log(app.store, app.router.options.routes[1]);
+
 import Home from 'app/component/Home.vue';
 
 import en_US from './i18n/en_US.yaml';
@@ -10,16 +33,36 @@ app.i18n.mergeLocaleMessage('zh', zh_CN);
 
 app.i18n.locale = 'en';
 
+// import axios from 'axios';
+// import accountStore from 'app/store/module/account.js';
+
+// accountStore.action.signIn = function ({ commit }, { name, password }) {
+// 	return axios.post('/api/ufwd/service/session/account', {
+// 		name, password
+// 	}).then(({data}) => {
+// 		commit('updateAccount', data.data.accountId);
+// 	});
+// };
+
 import Account from  './component/account/Account.vue';
 import Info from  './component/account/Info.vue';
-import Manage from  './component/account/Manage.vue';
-import Category from  './component/account/Category.vue';
+
+import Administrator from './component/account/Administrator.vue';
+import Writer from './component/account/Writer.vue';
 
 app.menu.addGroup('ufwd.account', [
 	{
 		label: 'account.account',
 		path: '/ufwd/account/all'
 	},
+	{
+		label: 'account.administrator',
+		path: '/ufwd/account/administrator'
+	},
+	{
+		label: 'account.writer',
+		path: '/ufwd/account/writer'
+	}
 ]);
 
 app.router.addRoutes([
@@ -40,84 +83,88 @@ app.router.addRoutes([
 				component: Info
 			},
 			{
-				path: 'manage',
-				component: Manage
+				path: 'administrator',
+				component: Administrator
 			},
 			{
-				path: 'manage/:id/category',
-				component: Category
-			},
+				path: 'writer',
+				component: Writer
+			}
 		]
 	}
 ]);
 
-import Channel from  './component/channel/Channel.vue';
-import New from  './component/channel/New.vue';
+import Channel from  './component/system/channel/Channel.vue';
+import AddChannel from  './component/system/channel/New.vue';
+import Notification from  './component/system/notification/Notification.vue';
+import AddNotification from  './component/system/notification/New.vue';
+import Advice from  './component/system/Advice.vue';
+import Group from './component/system/group/Group.vue';
+import AddGroup from './component/system/group/New.vue';
+import GroupDetail from './component/system/group/Detail.vue';
 
-app.menu.addGroup('ufwd.channel', [
+app.menu.addGroup('ufwd.system', [
 	{
-		label: 'channel.channel',
-		path: '/ufwd/channel'
+		label: 'system.channel',
+		path: '/ufwd/system/channel'
 	},
 	{
-		label: 'channel.new',
-		path: '/ufwd/channel/new'
+		label: 'system.notification',
+		path: '/ufwd/system/notification'
+	},
+	{
+		label: 'system.advice',
+		path: '/ufwd/system/advice'
+	},
+	{
+		label: 'system.group',
+		path: '/ufwd/system/group'
 	}
 ]);
 
 app.router.addRoutes([
 	{
-		path: '/ufwd/channel',
+		path: '/ufwd/system',
 		component: Home,
 		meta: {
 			requireAccount: true
 		},
 		children: [
 			{
-				path: '/',
+				path: 'channel',
 				component: Channel
 			},
 			{
-				path: 'new',
-				component: New
+				path: 'add-channel',
+				component: AddChannel
+			},
+			{
+				path: 'notification',
+				component: Notification
+			},
+			{
+				path: 'add-notification',
+				component: AddNotification
+			},
+			{
+				path: 'advice',
+				component: Advice
+			},
+			{
+				path: 'group',
+				component: Group
+			},
+			{
+				path: 'add-group',
+				component: AddGroup
+			},
+			{
+				path: 'group/:id/detail',
+				component: GroupDetail
 			}
 		]
 	}
 ]);
 
-app.menu.addGroup('ufwd.administrator', [
-	{
-		label: 'item.administrator',
-		path: '/ufwd/administrator'
-	}
-]);
-app.menu.addGroup('ufwd.writer', [
-	{
-		label: 'item.writer',
-		path: '/ufwd/writer'
-	}
-]);
-app.menu.addGroup('ufwd.notification', [
-	{
-		label: 'item.notification',
-		path: '/ufwd/notification'
-	}
-]);
-app.menu.addGroup('ufwd.subscribe', [
-	{
-		label: 'item.subscribe',
-		path: '/ufwd/subscribe'
-	}
-]);
-app.menu.addGroup('ufwd.advice', [
-	{
-		label: 'item.advice',
-		path: '/ufwd/advice'
-	}
-]);
-app.menu.addGroup('ufwd.group', [
-	{
-		label: 'item.group',
-		path: '/ufwd/group'
-	}
-]);
+import store from './store/index.js';
+app.store = store;

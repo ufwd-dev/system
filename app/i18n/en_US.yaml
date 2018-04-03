@@ -1,16 +1,14 @@
 ufwd:
   account: 'Account'
-  channel: 'Channel'
-  administrator: 'Administrator'
-  writer: 'Writer'
-  notification: 'Notification'
-  subscribe: 'Subscribe'
-  advice: 'Advice'
-  group: 'Group'
+  system: 'System'
 
 account:
   account: 'Account'
+  administrator: 'Administrator'
+  writer: 'Writer'
 
-channel:
+system:
   channel: 'Channel'
-  new: 'New'
+  notification: 'Notification'
+  advice: 'Advice'
+  group: 'Group'

@@ -109,7 +109,7 @@ the api of system
 }
 ```
 
-## GET /api/ufwd/service/group&name=string
+## GET /api/ufwd/service/group?name=string
 获取所有的类的信息     
 
 ## GET /api/ufwd/service/group/:gid 
@@ -169,7 +169,7 @@ the api of system
 }
 ```
 
-## GET /api/ufwd/service/notification&recevier=int
+## GET /api/ufwd/service/notification?recevier=int
 获取所有的通知     
 
 ## GET /api/ufwd/service/notification/:nid
@@ -189,7 +189,7 @@ the api of system
 
 # app
 
-## POST /api/ufwd/app/sessiom/account
+## POST /api/ufwd/app/session/account
 登陆     
 ```
 {

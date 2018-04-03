@@ -21,34 +21,42 @@
 				</div>
             </div>
 
-			<h3>All accounts</h3>
+			<h3>All accounts
+				<button
+					class="btn btn-warning float-right"
+					@click="getUnauditedAccount()">Unaudited</button>
+			</h3>
 			<hr>
-			
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Time</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr @click="getAccountById(1)">
-						<td>Admin</td>
-						<td>2018/03/23</td>
-					</tr>
-					<tr>
-						<td>Zhang San</td>
-						<td>2018/03/23</td>
-					</tr>
-				</tbody>
-			</table>
+
+			<data-tables
+				:data="accountList"
+				:search-def="searchDef"
+				:pagination-def="paginationDef">
+				<el-table-column
+					v-for="(column, index) in accountColumns"
+					:key="index"
+					:label="column.label"
+					:prop="column.field"
+					sortable="custom">
+				</el-table-column>
+				<el-table-column label="Action" width="80">
+					<template slot-scope="scope">
+						<el-button type="text"
+							@click="getAccountById(scope.row.accountId)">Edit</el-button>
+					</template>
+				</el-table-column>
+			</data-tables>
+
+			<button @click="signOut()">sign out</button>
+
         </div>
+
 
 		<div class="col-4">
 			<div class="list-group">
-				<div class="list-group-item disabled">Category
+				<div class="list-group-item disabled">Group
 					<router-link tag="a"
-						to="/ufwd/account/manage"
+						to="/ufwd/system/group"
 						class="float-right">Manage</router-link>
 				</div>
 				<a href="#"
@@ -66,12 +74,69 @@
 </template>
 
 <script>
+import axios from 'axios';
+import dateFormat from 'dateformat';
+
+const ACCOUNT_URL = '/api/ufwd/service/account';
+
 export default {
 	name: 'account',
 	methods: {
 		getAccountById(id) {
 			this.$router.push(`account/${id}/info`);
+		},
+		getAccount(url) {
+			return axios.get(url).then(res => {
+			let accountData = res.data.data;
+
+			accountData.forEach(user => {
+				user.sex = user.sex === 1 ? 'Male' : 'Female';
+				user.examine = user.examine ? 'true' : 'false';
+				user.created_at = dateFormat(user.created_at, 'yyyy/mm/dd HH:MM');
+			});
+			
+			this.accountList = accountData;
+		})
+		},
+		getUnauditedAccount() {
+			this.getAccount(`${ACCOUNT_URL}?examine=false`);
+		},
+		signOut() {
+			return axios.delete('/api/account/session');
 		}
+	},
+	data() {
+		return {
+			accountList: [],
+			accountColumns: [
+				{
+					label: 'Username',
+					field: 'account.name'
+				},
+				{
+					label: 'Sex',
+					field: 'sex'
+				},
+				{
+					label: 'Examine status',
+					field: 'examine'
+				},
+				{
+					label: 'Created time',
+					field: 'created_at'
+				},
+			],
+			searchDef: {
+				show: false
+			},
+			paginationDef: {
+				pageSize: 10,
+				pageSizes: [5, 10, 20],
+			}
+		}
+	},
+	mounted() {
+		this.getAccount(ACCOUNT_URL);
 	}
 }
 </script>
