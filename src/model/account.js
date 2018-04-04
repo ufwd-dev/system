@@ -28,8 +28,7 @@ const ufwdAccount = module.exports = sequelize.define('ufwdAccount', {
 	},
 	phone: {
 		type: Sequelize.CHAR(20),
-		allowNull: false,
-		unique: true
+		allowNull: false
 	},
 	examine: {
 		type: Sequelize.BOOLEAN,

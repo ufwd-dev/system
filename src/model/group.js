@@ -10,7 +10,6 @@ const Group = sequelize.define('ufwdGroup', {
 	name: {
 		type: Sequelize.STRING,
 		allowNull: false,
-		unique: true
 	},
 	description: {
 		type: Sequelize.TEXT,

@@ -319,13 +319,17 @@ router.delete('/api/ufwd/service/group/:groupId/account/:accountId', isAdminiSig
 
 router.post('/api/ufwd/service/notification', $testBody({
 	properties: {
-		recevier: {
-			type: 'number'
+		recevierList: {
+			type: 'array',
+			items: {
+				type: 'number'
+			}
 		},
 		content: {
 			type: 'string'
 		}
 	},
+	recevierList: ['recevierList', 'content'],
 	additionalProperties: false
 }), isAdminiSignedIn, createNotification);
 

@@ -16,7 +16,7 @@ module.exports = function* deleteMemberAccount(req, res, next) {
 		throwError('Member is not exist', 404);
 	}
 
-	const result = member.detroy();
+	const result = yield member.destroy();
 
 	res.data(result);
 

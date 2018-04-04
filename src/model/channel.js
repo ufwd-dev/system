@@ -9,8 +9,7 @@ const ufwdAccount = sequelize.model('ufwdAccount');
 const Channel = sequelize.define('ufwdChannel', {
 	name: {
 		type: Sequelize.STRING,
-		allowNull: false,
-		unique: true
+		allowNull: false
 	},
 	description: {
 		type: Sequelize.TEXT,
