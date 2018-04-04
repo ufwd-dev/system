@@ -243,10 +243,10 @@ router.post('/api/ufwd/service/writer', $testBody({
 router.get('/api/ufwd/service/writer', $testQuery({
 	properties: {
 		accountId: {
-			type: 'number'
+			type: 'string'
 		},
 		channelId: {
-			type: 'number'
+			type: 'string'
 		}
 	},
 	additionalProperties: false
@@ -326,10 +326,11 @@ router.post('/api/ufwd/service/notification', $testBody({
 			}
 		},
 		content: {
-			type: 'string'
+			type: 'string',
+			minLength: 1
 		}
 	},
-	recevierList: ['recevierList', 'content'],
+	required: ['recevierList', 'content'],
 	additionalProperties: false
 }), isAdminiSignedIn, createNotification);
 
@@ -360,7 +361,7 @@ router.get('/api/ufwd/app/advise/:adviseId', isAccountSignedIn, getOwnAdvise);
 router.get('/api/ufwd/service/advise', $testQuery({
 	properties: {
 		accountId: {
-			type: 'number'
+			type: 'string'
 		}
 	},
 	additionalProperties: false

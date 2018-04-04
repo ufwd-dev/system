@@ -8,6 +8,10 @@ module.exports = function* createNotification(req, res, next) {
 	const { recevierList, content} = req.body;
 	const notificationList =[];
 
+	if (recevierList.length === 0) {
+		throwError('RecevierList should not be null.', 400);
+	}
+
 	for (let i = 0; i < recevierList.length; i++) {
 
 		const ufwdAccount = yield UfwdAccount.findOne({
