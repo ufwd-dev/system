@@ -7,13 +7,13 @@ module.exports = function* createWriter(req, res, next) {
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
 	const UfwdWriter = res.sequelize.model('ufwdWriter');
 	const Channel = res.sequelize.model('ufwdChannel');
-	const { accountId, channelId } = req.body;
+	const { accountName, channelName } = req.body;
 
 	const ufwdAccount = yield UfwdAccount.findOne({
 		include: [{
 			model: Account,
 			where: {
-				name: accountId
+				name: accountName
 			}
 		}],
 		where: {
@@ -24,7 +24,7 @@ module.exports = function* createWriter(req, res, next) {
 
 	const channel = yield Channel.findOne({
 		where: {
-			name: channelId
+			name: channelName
 		}
 	});
 

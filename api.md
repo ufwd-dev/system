@@ -3,7 +3,7 @@ the api of system
 
 # service
 
-## GET /api/ufwd/service/account?name=string&ufwd={name:string,examine:boolean,phone:string}
+## GET /api/ufwd/service/account?name=string&username=string&examine=boolean&phone=string
 获取所有注册的账户信息           
 
 ## GET /api/ufwd/service/account/:aid  

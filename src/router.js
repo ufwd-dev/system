@@ -102,9 +102,25 @@ router.post('/api/ufwd/app/account', $testBody({
 	required: ['name', 'password', 'ufwd']
 }), isAccountUnsignedIn, createAccount);
 
-router.post('/api/ufwd/service/account/session', isAccountUnsignedIn, serviceSignIn);
+router.post('/api/ufwd/service/account/session', $testBody({
+	properties: {
+		name: {
+			type: 'string',
+			minLength: 4,
+			maxLength: 128
+		},
+		password: {
+			type: 'string',
+			minLength: 6,
+			maxLength: 32
+		}
+	},
+	additionalProperties: false,
+	required: ['name', 'password']
+}), isAccountUnsignedIn, serviceSignIn);
 
-router.delete('/api/ufwd/service/account/session', signOut);
+router.delete('/api/ufwd/service/signout/account/session', isAdminiSignedIn, signOut);
+//与'/api/ufwd/service/account/:accountId'接口发生冲突，会被重复访问，如何解决？
 
 router.get('/api/ufwd/service/account', $testQuery({
 	properties: {
@@ -155,7 +171,15 @@ router.patch('/api/ufwd/service/account/:accountId/password', $testBody({
 	required: ['password']
 }), isAdminiSignedIn, getAccount, updatePassword);
 
-router.post('/api/ufwd/service/administrator', isAdminiSignedIn, createAdministrator);
+router.post('/api/ufwd/service/administrator', $testBody({
+	properties: {
+		account: {
+			type: 'string'
+		}
+	},
+	additionalProperties: false,
+	required: ['account']
+}), isAdminiSignedIn, createAdministrator);
 
 router.get('/api/ufwd/service/administrator', isAdminiSignedIn, getAdministratorList);
 
@@ -175,7 +199,7 @@ router.post('/api/ufwd/service/channel', $testBody({
 	},
 	additionalProperties: false,
 	required: ['name', 'description']
-}), isAccountSignedIn, createChannel);
+}), isAdminiSignedIn, createChannel);
 
 router.get('/api/ufwd/service/channel', $testQuery({
 	properties: {
@@ -203,15 +227,26 @@ router.put('/api/ufwd/service/channel/:channelId', $testBody({
 
 router.delete('/api/ufwd/service/channel/:channelId', isAdminiSignedIn, getChannel, deleteChannel);
 
-router.post('/api/ufwd/service/writer', isAdminiSignedIn, createWriter);
+router.post('/api/ufwd/service/writer', $testBody({
+	properties: {
+		accountName: {
+			type: 'string'
+		},
+		channelName: {
+			type: 'string'
+		}
+	},
+	additionalProperties: false,
+	required: ['accountId', 'channelId']
+}), isAdminiSignedIn, createWriter);
 
 router.get('/api/ufwd/service/writer', $testQuery({
 	properties: {
 		accountId: {
-			type: 'string'
+			type: 'number'
 		},
 		channelId: {
-			type: 'string'
+			type: 'number'
 		}
 	},
 	additionalProperties: false
@@ -321,7 +356,7 @@ router.get('/api/ufwd/app/advise/:adviseId', isAccountSignedIn, getOwnAdvise);
 router.get('/api/ufwd/service/advise', $testQuery({
 	properties: {
 		accountId: {
-			type: 'string'
+			type: 'number'
 		}
 	},
 	additionalProperties: false
