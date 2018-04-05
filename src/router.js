@@ -102,25 +102,13 @@ router.post('/api/ufwd/app/account', $testBody({
 	required: ['name', 'password', 'ufwd']
 }), isAccountUnsignedIn, createAccount);
 
-router.post('/api/ufwd/service/account/session', $testBody({
-	properties: {
-		name: {
-			type: 'string',
-			minLength: 4,
-			maxLength: 128
-		},
-		password: {
-			type: 'string',
-			minLength: 6,
-			maxLength: 32
-		}
-	},
-	additionalProperties: false,
-	required: ['name', 'password']
-}), isAccountUnsignedIn, serviceSignIn);
+router.post('/api/account/session', serviceSignIn);
 
-router.delete('/api/ufwd/service/signout/account/session', isAdminiSignedIn, signOut);
-//与'/api/ufwd/service/account/:accountId'接口发生冲突，会被重复访问，如何解决？
+router.delete('/api/account/session', function (req, res, next) {
+	delete req.session.admin;
+
+	next();
+});
 
 router.get('/api/ufwd/service/account', $testQuery({
 	properties: {
@@ -452,6 +440,7 @@ router.post('/api/ufwd/app/account/session', $testBody({
 }), isAccountUnsignedIn, signIn);
 
 router.delete('/api/ufwd/app/account/session', isAccountSignedIn, signOut);
+
 
 
 
