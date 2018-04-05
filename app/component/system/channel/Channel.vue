@@ -121,7 +121,6 @@ export default {
 	methods: {
 		getChannelInfo(id) {
 			this.channelList.forEach(channel => {
-				
 				if (channel.id === id) {
 					this.channelInfo = {
 						name: channel.name,

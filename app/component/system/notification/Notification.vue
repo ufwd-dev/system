@@ -34,11 +34,11 @@
 		:data="notificationList"
 		:search-def="searchDef"
 		:pagination-def="paginationDef">
-		<el-table-column type="expand">
+		<!-- <el-table-column type="expand">
 			<template slot-scope="props">
 				<p>{{props.row.name}}</p>
 			</template>
-		</el-table-column>
+		</el-table-column> -->
 		<el-table-column
 			v-for="(column, index) in notificationColumns"
 			:key="index"
@@ -46,12 +46,6 @@
 			:prop="column.field"
 			sortable="custom">
 		</el-table-column>
-		<!-- <el-table-column label="Action" width="80">
-			<template slot-scope="scope">
-				<el-button type="text"
-					@click="getNotificationById(scope.row.id)">Edit</el-button>
-			</template>
-		</el-table-column> -->
 	</data-tables>
 </div>
 </template>
@@ -61,11 +55,6 @@ import axios from 'axios';
 
 export default {
 	name: 'notification',
-	methods: {
-		// getNotificationById(id) {
-		// 	this.$router.push(`group/${id}/detail`);
-		// }
-	},
 	data() {
 		return {
 			notificationList: [],

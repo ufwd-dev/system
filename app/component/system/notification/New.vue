@@ -24,7 +24,7 @@
 					<input type="text"
 						id="notification-recevier"
 						class="form-control"
-						v-model="notificationRecevier">
+						v-model="notificationRecevierList">
 				</div>
 				<div class="form-group">
 					<label for="notification-content">Description</label>
@@ -72,7 +72,7 @@ export default {
 	name: 'add-notification',
 	data() {
 		return {
-			notificationRecevier: [],
+			notificationRecevierList: [],
 			notificationContent: '',
 			accountList: [],
 			accountColumns: [
@@ -94,17 +94,17 @@ export default {
 	methods: {
 		handleSelection(val) {
 			this.multipleMember = val;
-			this.notificationRecevier = [];
+			this.notificationRecevierList = [];
 
 			this.multipleMember.forEach(account => {
-				this.notificationRecevier.push(account.accountId);
+				this.notificationRecevierList.push(account.accountId);
 			});
 
 			console.log(this.multipleMember)
 		},
 		createNotification() {
 			return axios.post('/api/ufwd/service/notification', {
-				recevier: this.notificationRecevier,
+				recevierList: this.notificationRecevierList,
 				content: this.notificationContent
 			}).then(() => {
 				this.$router.go(-1);
