@@ -11,6 +11,7 @@ const {
 const {
 	isAdminiSignedIn,
 	signIn,
+	serviceSignout,
 	createAccount,
 	serviceSignIn,
 	getAccountList,
@@ -103,6 +104,8 @@ router.post('/api/ufwd/app/account', $testBody({
 }), isAccountUnsignedIn, createAccount);
 
 router.post('/api/account/session', serviceSignIn);
+
+router.delete('/api/account/session', serviceSignout);
 
 router.delete('/api/account/session', function (req, res, next) {
 	delete req.session.admin;
