@@ -32,6 +32,10 @@ module.exports = function* createAccount(req, res, next) {
 		accountId: newAccount.id
 	}, ufwd));
 
+	Account.profile.create({
+		accountId: newAccount.id
+	});
+
 	res.data({
 		account: newAccount, 
 		ufwdAccount:newUfwdAccount
