@@ -20,7 +20,7 @@
 			],			
 			"env": {
 				"NODE_ENV": "development",
-				"DEBUG": ""
+				"DEBUG": "lemonitor:db"
 			},
 			"cwd": "${workspaceFolder}",
 			"outputCapture": "std"

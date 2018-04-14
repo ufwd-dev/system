@@ -24,6 +24,11 @@ const ufwdAccount = module.exports = sequelize.define('ufwdAccount', {
 				this.setDataValue('sex', 1);
 			} 
 		},
+		get() {
+			const sex = this.getDataValue('sex');
+
+			return sex === 0 ? 'female' : 'male';
+		},
 		defaultValue: 0
 	},
 	phone: {

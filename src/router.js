@@ -5,14 +5,15 @@ const {
 	isAccountUnsignedIn,
 	signOut,
 	$testBody,
-	$testQuery
+	$testQuery,
+	createAccount,
 } = require('express-handler-loader')('all');
 
 const {
 	isAdminiSignedIn,
 	signIn,
 	serviceSignout,
-	createAccount,
+	ufwdCreateAccount,
 	serviceSignIn,
 	getAccountList,
 	getAccount,
@@ -23,16 +24,6 @@ const {
 	getAdministratorList,
 	getAdministrator,
 	deleteAdministrator,
-	// createChannel,
-	// getChannelList,
-	// getChannel,
-	// updateChannel,
-	// deleteChannel,
-	// createWriter,
-	// getWriterList,
-	// getWriter,
-	// updateWriter,
-	// deleteWriter,
 	createGroup,
 	getGroupList,
 	getGroup,
@@ -56,10 +47,6 @@ const {
 	getInformation,
 	updateInformation,
 	updateOwnPassword,
-	// createOwnSubscribe,
-	// getOwnSubscribeList,
-	// getOwnSubscribe,
-	// deleteOwnSubscribe,
 	getOwnNotification,
 	getOwnNotificationList,
 	deleteOwnNotification,
@@ -101,7 +88,7 @@ router.post('/api/ufwd/app/account', $testBody({
 	},
 	additionalProperties: false,
 	required: ['name', 'password', 'ufwd']
-}), isAccountUnsignedIn, createAccount);
+}), isAccountUnsignedIn, createAccount, ufwdCreateAccount);
 
 router.post('/api/account/session', serviceSignIn);
 
@@ -177,84 +164,6 @@ router.get('/api/ufwd/service/administrator', isAdminiSignedIn, getAdministrator
 router.get('/api/ufwd/service/administrator/:administratorId', isAdminiSignedIn, getAdministrator);
 
 router.delete('/api/ufwd/service/administrator/:administratorId', isAdminiSignedIn, getAdministrator, deleteAdministrator);
-
-// router.post('/api/ufwd/service/channel', $testBody({
-// 	properties: {
-// 		name: {
-// 			type: 'string',
-// 			minLength: 4
-// 		},
-// 		description: {
-// 			type: 'string'
-// 		}
-// 	},
-// 	additionalProperties: false,
-// 	required: ['name', 'description']
-// }), isAdminiSignedIn, createChannel);
-
-// router.get('/api/ufwd/service/channel', $testQuery({
-// 	properties: {
-// 		name: {
-// 			type: 'string'
-// 		}
-// 	},
-// 	additionalProperties: false
-// }), isAdminiSignedIn, getChannelList);
-
-// router.get('/api/ufwd/service/channel/:channelId', isAdminiSignedIn, getChannel);
-
-// router.put('/api/ufwd/service/channel/:channelId', $testBody({
-// 	properties: {
-// 		name: {
-// 			type: 'string',
-// 			minLength: 4
-// 		},
-// 		description: {
-// 			type: 'string'
-// 		}
-// 	},
-// 	additionalProperties: false
-// }), isAdminiSignedIn, getChannel, updateChannel);
-
-// router.delete('/api/ufwd/service/channel/:channelId', isAdminiSignedIn, getChannel, deleteChannel);
-
-// router.post('/api/ufwd/service/writer', $testBody({
-// 	properties: {
-// 		accountName: {
-// 			type: 'string'
-// 		},
-// 		channelName: {
-// 			type: 'string'
-// 		}
-// 	},
-// 	additionalProperties: false,
-// 	required: ['accountId', 'channelId']
-// }), isAdminiSignedIn, createWriter);
-
-// router.get('/api/ufwd/service/writer', $testQuery({
-// 	properties: {
-// 		accountId: {
-// 			type: 'string'
-// 		},
-// 		channelId: {
-// 			type: 'string'
-// 		}
-// 	},
-// 	additionalProperties: false
-// }), isAdminiSignedIn, getWriterList);
-
-// router.get('/api/ufwd/service/writer/:writerId', isAdminiSignedIn, getWriter);
-
-// router.put('/api/ufwd/service/writer/:writerId', $testBody({
-// 	properties: {
-// 		name: {
-// 			type: 'string'
-// 		}
-// 	},
-// 	additionalProperties: false
-// }), isAdminiSignedIn, getWriter, updateWriter);
-
-// router.delete('/api/ufwd/service/writer/:writerId', isAdminiSignedIn, getWriter, deleteWriter);
 
 router.post('/api/ufwd/service/group', $testBody({
 	properties: {
@@ -402,14 +311,6 @@ router.patch('/api/ufwd/app/account/password', $testBody({
 	additionalProperties: false,
 	required: ['password']
 }), isAccountSignedIn, updateOwnPassword);
-
-// router.post('/api/ufwd/app/channel/:channelId', isAccountSignedIn, createOwnSubscribe);
-
-// router.get('/api/ufwd/app/channel', isAccountSignedIn, getOwnSubscribeList);
-
-// router.get('/api/ufwd/app/channel/:channelId', isAccountSignedIn, getOwnSubscribe);
-
-// router.delete('/api/ufwd/app/channel/:channelId', isAccountSignedIn, getOwnSubscribe, deleteOwnSubscribe);
 
 router.get('/api/ufwd/app/notification', isAccountSignedIn, getOwnNotificationList);
 

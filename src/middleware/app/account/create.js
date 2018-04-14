@@ -2,19 +2,11 @@
 
 const {throwError} = require('error-standardize');
 
-module.exports = function* createAccount(req, res, next) {
-	const {name, password, ufwd} = req.body;
-	const Account = res.sequelize.model('account');
+module.exports = function* ufwdCreateAccount(req, res, next) {
+	const {ufwd} = req.body;
+	const account = res.data();
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
-
-	const account = yield Account.findOne({
-		where: { name }
-	});
-
-	if (account) {
-		throwError('Account has been existed. Try other names.', 403);
-	}
-
+	const _ = require('lodash');
 	
 	const ufwdAccount = yield UfwdAccount.findOne({
 		where: { phone: ufwd.phone }
@@ -24,21 +16,18 @@ module.exports = function* createAccount(req, res, next) {
 		throwError('The phone is existed. Try other phone.', 403);
 	}
 
-	const newAccount = yield Account.create({
-		name, password
-	});
-
 	const newUfwdAccount = yield UfwdAccount.create(Object.assign({
-		accountId: newAccount.id
+		accountId: account.id
 	}, ufwd));
 
-	Account.profile.create({
-		accountId: newAccount.id
-	});
+	const mixAccount = _.pick(newUfwdAccount, [
+		'name', 'sex', 'phone'
+	]);
+
+	mixAccount.username = account.name;
 
 	res.data({
-		account: newAccount, 
-		ufwdAccount:newUfwdAccount
+		account: mixAccount 
 	});
 
 	next();
