@@ -23,16 +23,16 @@ const {
 	getAdministratorList,
 	getAdministrator,
 	deleteAdministrator,
-	createChannel,
-	getChannelList,
-	getChannel,
-	updateChannel,
-	deleteChannel,
-	createWriter,
-	getWriterList,
-	getWriter,
-	updateWriter,
-	deleteWriter,
+	// createChannel,
+	// getChannelList,
+	// getChannel,
+	// updateChannel,
+	// deleteChannel,
+	// createWriter,
+	// getWriterList,
+	// getWriter,
+	// updateWriter,
+	// deleteWriter,
 	createGroup,
 	getGroupList,
 	getGroup,
@@ -56,10 +56,10 @@ const {
 	getInformation,
 	updateInformation,
 	updateOwnPassword,
-	createOwnSubscribe,
-	getOwnSubscribeList,
-	getOwnSubscribe,
-	deleteOwnSubscribe,
+	// createOwnSubscribe,
+	// getOwnSubscribeList,
+	// getOwnSubscribe,
+	// deleteOwnSubscribe,
 	getOwnNotification,
 	getOwnNotificationList,
 	deleteOwnNotification,
@@ -178,83 +178,83 @@ router.get('/api/ufwd/service/administrator/:administratorId', isAdminiSignedIn,
 
 router.delete('/api/ufwd/service/administrator/:administratorId', isAdminiSignedIn, getAdministrator, deleteAdministrator);
 
-router.post('/api/ufwd/service/channel', $testBody({
-	properties: {
-		name: {
-			type: 'string',
-			minLength: 4
-		},
-		description: {
-			type: 'string'
-		}
-	},
-	additionalProperties: false,
-	required: ['name', 'description']
-}), isAdminiSignedIn, createChannel);
+// router.post('/api/ufwd/service/channel', $testBody({
+// 	properties: {
+// 		name: {
+// 			type: 'string',
+// 			minLength: 4
+// 		},
+// 		description: {
+// 			type: 'string'
+// 		}
+// 	},
+// 	additionalProperties: false,
+// 	required: ['name', 'description']
+// }), isAdminiSignedIn, createChannel);
 
-router.get('/api/ufwd/service/channel', $testQuery({
-	properties: {
-		name: {
-			type: 'string'
-		}
-	},
-	additionalProperties: false
-}), isAdminiSignedIn, getChannelList);
+// router.get('/api/ufwd/service/channel', $testQuery({
+// 	properties: {
+// 		name: {
+// 			type: 'string'
+// 		}
+// 	},
+// 	additionalProperties: false
+// }), isAdminiSignedIn, getChannelList);
 
-router.get('/api/ufwd/service/channel/:channelId', isAdminiSignedIn, getChannel);
+// router.get('/api/ufwd/service/channel/:channelId', isAdminiSignedIn, getChannel);
 
-router.put('/api/ufwd/service/channel/:channelId', $testBody({
-	properties: {
-		name: {
-			type: 'string',
-			minLength: 4
-		},
-		description: {
-			type: 'string'
-		}
-	},
-	additionalProperties: false
-}), isAdminiSignedIn, getChannel, updateChannel);
+// router.put('/api/ufwd/service/channel/:channelId', $testBody({
+// 	properties: {
+// 		name: {
+// 			type: 'string',
+// 			minLength: 4
+// 		},
+// 		description: {
+// 			type: 'string'
+// 		}
+// 	},
+// 	additionalProperties: false
+// }), isAdminiSignedIn, getChannel, updateChannel);
 
-router.delete('/api/ufwd/service/channel/:channelId', isAdminiSignedIn, getChannel, deleteChannel);
+// router.delete('/api/ufwd/service/channel/:channelId', isAdminiSignedIn, getChannel, deleteChannel);
 
-router.post('/api/ufwd/service/writer', $testBody({
-	properties: {
-		accountName: {
-			type: 'string'
-		},
-		channelName: {
-			type: 'string'
-		}
-	},
-	additionalProperties: false,
-	required: ['accountId', 'channelId']
-}), isAdminiSignedIn, createWriter);
+// router.post('/api/ufwd/service/writer', $testBody({
+// 	properties: {
+// 		accountName: {
+// 			type: 'string'
+// 		},
+// 		channelName: {
+// 			type: 'string'
+// 		}
+// 	},
+// 	additionalProperties: false,
+// 	required: ['accountId', 'channelId']
+// }), isAdminiSignedIn, createWriter);
 
-router.get('/api/ufwd/service/writer', $testQuery({
-	properties: {
-		accountId: {
-			type: 'string'
-		},
-		channelId: {
-			type: 'string'
-		}
-	},
-	additionalProperties: false
-}), isAdminiSignedIn, getWriterList);
+// router.get('/api/ufwd/service/writer', $testQuery({
+// 	properties: {
+// 		accountId: {
+// 			type: 'string'
+// 		},
+// 		channelId: {
+// 			type: 'string'
+// 		}
+// 	},
+// 	additionalProperties: false
+// }), isAdminiSignedIn, getWriterList);
 
-router.get('/api/ufwd/service/writer/:writerId', isAdminiSignedIn, getWriter);
+// router.get('/api/ufwd/service/writer/:writerId', isAdminiSignedIn, getWriter);
 
-router.put('/api/ufwd/service/writer/:writerId', $testBody({
-	properties: {
-		name: {
-			type: 'string'
-		}
-	},
-	additionalProperties: false
-}), isAdminiSignedIn, getWriter, updateWriter);
+// router.put('/api/ufwd/service/writer/:writerId', $testBody({
+// 	properties: {
+// 		name: {
+// 			type: 'string'
+// 		}
+// 	},
+// 	additionalProperties: false
+// }), isAdminiSignedIn, getWriter, updateWriter);
 
-router.delete('/api/ufwd/service/writer/:writerId', isAdminiSignedIn, getWriter, deleteWriter);
+// router.delete('/api/ufwd/service/writer/:writerId', isAdminiSignedIn, getWriter, deleteWriter);
 
 router.post('/api/ufwd/service/group', $testBody({
 	properties: {
@@ -403,13 +403,13 @@ router.patch('/api/ufwd/app/account/password', $testBody({
 	required: ['password']
 }), isAccountSignedIn, updateOwnPassword);
 
-router.post('/api/ufwd/app/channel/:channelId', isAccountSignedIn, createOwnSubscribe);
+// router.post('/api/ufwd/app/channel/:channelId', isAccountSignedIn, createOwnSubscribe);
 
-router.get('/api/ufwd/app/channel', isAccountSignedIn, getOwnSubscribeList);
+// router.get('/api/ufwd/app/channel', isAccountSignedIn, getOwnSubscribeList);
 
-router.get('/api/ufwd/app/channel/:channelId', isAccountSignedIn, getOwnSubscribe);
+// router.get('/api/ufwd/app/channel/:channelId', isAccountSignedIn, getOwnSubscribe);
 
-router.delete('/api/ufwd/app/channel/:channelId', isAccountSignedIn, getOwnSubscribe, deleteOwnSubscribe);
+// router.delete('/api/ufwd/app/channel/:channelId', isAccountSignedIn, getOwnSubscribe, deleteOwnSubscribe);
 
 router.get('/api/ufwd/app/notification', isAccountSignedIn, getOwnNotificationList);
 
