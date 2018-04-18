@@ -20,15 +20,13 @@ module.exports = function* ufwdCreateAccount(req, res, next) {
 		accountId: account.id
 	}, ufwd));
 
-	const mixAccount = _.pick(newUfwdAccount, [
+	const mixedAccount = _.pick(newUfwdAccount, [
 		'name', 'sex', 'phone'
 	]);
 
-	mixAccount.username = account.name;
+	account.ufwd = mixedAccount;
 
-	res.data({
-		account: mixAccount 
-	});
+	res.data(account);
 
 	next();
 };
