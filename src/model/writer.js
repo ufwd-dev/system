@@ -4,8 +4,6 @@ const Sequelize = require('sequelize');
 const lemonitor = require('lemonitor-service');
 
 const sequelize = lemonitor.sequelize;
-const ufwdAccount = sequelize.model('ufwdAccount');
-const Channel = sequelize.model('ufwdChannel');
 
 const Writer = module.exports = sequelize.define('ufwdWriter', {
 	accountId: {
@@ -15,6 +13,10 @@ const Writer = module.exports = sequelize.define('ufwdWriter', {
 	channelId: {
 		type: Sequelize.INTEGER,
 		allowNull: false
+	},
+	token: {
+		type: Sequelize.UUID,
+		defaultValue: Sequelize.UUIDV4
 	}
 }, {
 	paranoid: true
