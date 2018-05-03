@@ -2,12 +2,17 @@
 
 const {throwError} = require('error-standardize');
 
-module.exports = function* ufwdCreateAccount(req, res, next) {
+module.exports = function* ufwdUpdateAccount(req, res, next) {
 	const {ufwd} = req.body;
-	const account = res.data();
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
-	const _ = require('lodash');
-	
+	const account = res.data();
+
+	const ufwdAccount = yield UfwdAccount.findOne({
+		where: {
+			accountId: account.id
+		}
+	});
+
 	const accountOne = yield UfwdAccount.findOne({
 		where: { phone: ufwd.phone }
 	});
@@ -16,25 +21,17 @@ module.exports = function* ufwdCreateAccount(req, res, next) {
 		where: { identification: ufwd.identification }
 	});
 
-	if (accountOne) {
+	if (accountOne && ufwdAccount.phone !== ufwd.phone) {
 		throwError('The phone is existed. Try other phone.', 403);
 	}
 
-	if (accountTwo) {
+	if (accountTwo && ufwdAccount.identification !== ufwd.identification) {
 		throwError('The id number is existed. Try other id number.', 403);
 	}
 
-	const newUfwdAccount = yield UfwdAccount.create(Object.assign({
-		accountId: account.id
-	}, ufwd));
+	const newUfwdAccount = yield ufwdAccount.update(ufwd);
 
-	const mixedAccount = _.pick(newUfwdAccount, [
-		'name', 'sex', 'phone', 'identification'
-	]);
-
-	account.ufwd = mixedAccount;
-
-	res.data(account);
+	res.data(newUfwdAccount);
 
 	next();
 };

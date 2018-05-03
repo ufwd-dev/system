@@ -2,7 +2,7 @@
 
 const {throwError} = require('error-standardize');
 
-module.exports = function* updateAccount(req, res, next) {
+module.exports = function* updateAccountExamine(req, res, next) {
 	const examine = req.body.examine;
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
 	const accountId = req.params.accountId;

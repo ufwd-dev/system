@@ -6,29 +6,31 @@ const { createHash } = require('crypto');
 module.exports = function* signIn(req, res, next) {
 	const Account = res.sequelize.model('account');
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
-	const { name, password, phone} = req.body;
-	const query = {
-		where: {},
-		include: [{
-			model: UfwdAccount,
-			where: {
-				examine: true
-			}
-		}]
-	};
+	const { name, password } = req.body;
 
-	if (!name && !phone) {
-		throwError('You need input name or phone.', 403);
-	}
+	const accountOne = yield Account.findOne({
+		where: {
+			name
+		}
+	});
 
-	name ? (query.where.name = name) : undefined;
-	phone ? (query.include[0].where.phone = phone) : undefined;
+	const accountTwo = yield UfwdAccount.findOne({
+		where: {
+			phone: name
+		}
+	});
 
-	const account = yield Account.findOne(query);
+	const accountThree = yield UfwdAccount.findOne({
+		where: {
+			identification: name
+		}
+	});
 
-	if (!account) {
+	if (!accountOne && !accountTwo && !accountThree) {
 		throwError('Account is NOT existed.', 404);
 	}
+
+	const account = accountOne ? accountOne : (accountTwo ? accountTwo : accountThree);
 
 	const sha256 = createHash('sha256');
 	sha256.update(`${account.salt}:${password}`);

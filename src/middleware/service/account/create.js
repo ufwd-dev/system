@@ -2,7 +2,7 @@
 
 const {throwError} = require('error-standardize');
 
-module.exports = function* ufwdCreateAccount(req, res, next) {
+module.exports = function* ufwdServiceCreateAccount(req, res, next) {
 	const {ufwd} = req.body;
 	const account = res.data();
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
@@ -25,7 +25,8 @@ module.exports = function* ufwdCreateAccount(req, res, next) {
 	}
 
 	const newUfwdAccount = yield UfwdAccount.create(Object.assign({
-		accountId: account.id
+		accountId: account.id,
+		examine: true
 	}, ufwd));
 
 	const mixedAccount = _.pick(newUfwdAccount, [

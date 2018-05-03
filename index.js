@@ -15,5 +15,5 @@ appendEntry('bundle', path.resolve(__dirname, './app'));
 const service = require('lemonitor-service');
 
 service.extend((app) => {
-	app.use(router);
+	app.use('/api', router);
 });

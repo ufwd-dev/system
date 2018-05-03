@@ -8,12 +8,10 @@ const sequelize = lemonitor.sequelize;
 const ufwdAccount = module.exports = sequelize.define('ufwdAccount', {
 	accountId: {
 		primaryKey: true,
-		type: Sequelize.INTEGER,
-		allowNull: false
+		type: Sequelize.INTEGER
 	},
 	name: {
-		type: Sequelize.CHAR(8),
-		allowNull: false
+		type: Sequelize.CHAR(8)
 	},
 	sex: {
 		type: Sequelize.TINYINT,
@@ -32,8 +30,10 @@ const ufwdAccount = module.exports = sequelize.define('ufwdAccount', {
 		defaultValue: 0
 	},
 	phone: {
-		type: Sequelize.CHAR(20),
-		allowNull: false
+		type: Sequelize.CHAR(20)
+	},
+	identification: {
+		type: Sequelize.CHAR(30)
 	},
 	examine: {
 		type: Sequelize.BOOLEAN,
