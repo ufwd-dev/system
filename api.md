@@ -3,17 +3,46 @@ the api of system
 
 # service
 
-## GET /api/ufwd/service/account?name=string&username=string&examine=boolean&phone=string
+## POST /api/ufwd/service/account
+创建用户（不需要审核）
+```
+{
+    name: string,
+    password: string,
+    ufwd: {
+        name: string,
+        sex: string,
+        phone: string,
+        identification: string
+    }
+}
+```
+
+## GET /api/ufwd/service/account?name=string&username=string&examine=boolean&phone=string&identification=string
 获取所有注册的账户信息           
 
 ## GET /api/ufwd/service/account/:aid  
 获取某一指定的账户信息     
 
-## PUT /api/ufwd/service/account/:aid
+## PUT /api/ufwd/service/account/:aid/examine
 修改指定账户审核状态           
 ```
 {
     examine:true(boolean)
+}
+```
+
+## PUT /api/ufwd/service/account/:aid
+修改指定账户信息          
+```
+{
+    name: string,
+    ufwd: {
+        name: string,
+        sex: string,
+        phone: string,
+        identification: string
+    }
 }
 ```
 
@@ -45,60 +74,6 @@ the api of system
 
 ## DELETE /api/ufwd/service/administrator/:admini
 删除某个管理员     
-
-## POST /api/ufwd/service/writer
-创建一个作家     
-```
-{
-    account:用户name(string) 
-    channel:频道name(string)
-} 
-```
-
-## GET /api/ufwd/service/writer?accountId=int&channelId=int
-获取所有的作家的信息     
-
-## GET /api/ufwd/service/writer/:wid 
-获取某个作家的信息     
-
-## PUT /api/ufwd/service/writer/:wid 
-修改某个作家的信息     
-```
-{
-    channelId:频道id(int),
-    accountId:用户id(int) 
-}
-```
-
-## DELETE /api/ufwd/service/writer/:wid 
-删除某个作家     
-
-## POST /api/ufwd/service/channel
-创建一个频道     
-```
-{
-    name:频道名(string),
-    description:频道描述(string)
-}
-```
-
-## GET /api/ufwd/service/channel&name=string
-获取所有的频道的信息     
-
-## GET /api/ufwd/service/channel/:cid 
-获取某个频道的信息     
-
-## PUT /api/ufwd/service/channel/:cid 
-修改某个频道的信息     
-```
-{
-    name:频道名称(string)
-    description:频道描述(string)
-}
-```
-
-## DELETE /api/ufwd/service/channel/:cid
-删除某个频道     
 
 ## POST /api/ufwd/service/group
 创建一个类     
@@ -175,7 +150,7 @@ the api of system
 ## GET /api/ufwd/service/notification/:nid
 获取某条通知的详细信息     
 
-## POST /api/ufwd/service/session/account
+## POST /api/session/account
 登陆     
 ```
 {
@@ -184,7 +159,7 @@ the api of system
 }
 ```
 
-## DELETE /api/ufwd/service/session/account
+## DELETE /api/session/account
 注销     
 
 # app
@@ -210,7 +185,8 @@ the api of system
     ufwd:{
         name:姓名(string),
         sex:性别("male"||"female")(string),
-        phone:电话号码(string)
+        phone:电话号码(string),
+         identification: string
     }
 }
 ```
@@ -218,7 +194,7 @@ the api of system
 ## GET /api/ufwd/app/account
 获得个人相关的账户信息     
 
-## PUT /api/ufwd/app/account
+## PUT /api/ufwd/app/account/:accountId
 修改个人信息     
 ```
 {
@@ -226,7 +202,8 @@ the api of system
     ufwd:{
         name:新姓名(string),
         sex:性别("male"||"female")(string),
-        phone:新电话号码(string)
+        phone:新电话号码(string),
+        identification: string
     }
 }
 ```
@@ -238,23 +215,6 @@ the api of system
     password:新密码(string)
 }
 ```
-
-## POST /api/ufwd/app/channel/:cid
-用户关注某个频道     
-```
-{
-    cid:频道的id(int)
-}
-```
-
-## GET /api/ufwd/app/channel
-获得用户关注的所有频道的信息     
-
-## GET /api/ufwd/app/channel/:cid
-获得用户关注的某个频道的信息     
-
-## DELETE /api/ufwd/app/channel/:cid
-用户取消对某个频道的关注     
 
 ## POST /api/ufwd/app/advise
 用户提交投诉     

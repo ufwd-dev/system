@@ -7,6 +7,7 @@ module.exports = function* signIn(req, res, next) {
 	const Account = res.sequelize.model('account');
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
 	const { name, password } = req.body;
+	let accountId;
 
 	const accountOne = yield Account.findOne({
 		where: {
@@ -30,7 +31,23 @@ module.exports = function* signIn(req, res, next) {
 		throwError('Account is NOT existed.', 404);
 	}
 
-	const account = accountOne ? accountOne : (accountTwo ? accountTwo : accountThree);
+	if (accountOne) {
+		accountId = accountOne.id;
+	}
+
+	if (accountTwo) {
+		accountId = accountTwo.accountId;
+	}
+
+	if (accountThree) {
+		accountId = accountThree.accountId;
+	}
+
+	const account = yield Account.findOne({
+		where: {
+			id: accountId
+		}
+	});
 
 	const sha256 = createHash('sha256');
 	sha256.update(`${account.salt}:${password}`);

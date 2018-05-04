@@ -4,8 +4,7 @@ const {
 	isAccountSignedIn,
 	isAccountUnsignedIn,
 	signOut,
-	$testBody,
-	createAccount
+	$testBody
 } = require('express-handler-loader')('all');
 
 const {
@@ -61,7 +60,7 @@ router.post('/account', $testBody({
 	},
 	additionalProperties: false,
 	required: ['name', 'password', 'ufwd']
-}), isAccountUnsignedIn, createAccount, ufwdCreateAccount);
+}), isAccountUnsignedIn, ufwdCreateAccount);
 
 router.post('/account/session', $testBody({
 	properties: {
@@ -115,6 +114,9 @@ router.put('/account', $testBody({
 				phone: {
 					type: 'string',
 					pattern: '(^1[3|4|5|8][0-9]{5,9}$)'
+				},
+				identification: {
+					type: 'string'
 				}
 			},
 		}

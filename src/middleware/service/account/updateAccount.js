@@ -3,35 +3,74 @@
 const {throwError} = require('error-standardize');
 
 module.exports = function* ufwdUpdateAccount(req, res, next) {
-	const {ufwd} = req.body;
+	const Account = res.sequelize.model('account');
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
-	const account = res.data();
+	const { accountId } = req.params;
+	const { name, ufwd } = req.body;
+	const result = {};
 
-	const ufwdAccount = yield UfwdAccount.findOne({
+	const account = yield Account.findOne({
 		where: {
-			accountId: account.id
+			id: accountId
 		}
 	});
 
-	const accountOne = yield UfwdAccount.findOne({
-		where: { phone: ufwd.phone }
+	const ufwdAccount = yield UfwdAccount.findOne({
+		where: {
+			accountId
+		}
 	});
 
-	const accountTwo = yield UfwdAccount.findOne({
-		where: { identification: ufwd.identification }
+	const nameSameAccount = yield Account.findOne({
+		where: { name }
 	});
 
-	if (accountOne && ufwdAccount.phone !== ufwd.phone) {
-		throwError('The phone is existed. Try other phone.', 403);
+	if (!account) {
+		throwError('The account is not existed.', 403);
 	}
 
-	if (accountTwo && ufwdAccount.identification !== ufwd.identification) {
-		throwError('The id number is existed. Try other id number.', 403);
+	if (nameSameAccount && nameSameAccount.id !== account.id) {
+		throwError('The name has been existed. Try others please.', 403);
+	}
+	
+	yield account.update({ name });
+
+	result.username = name;
+
+	if (ufwd) {
+
+		const searchOne = yield UfwdAccount.findOne({
+			where: {
+				phone: ufwd.phone
+			} 
+		});
+
+		if (!ufwdAccount) {
+			throwError('The account is not existed.', 403);
+		}
+
+		if (searchOne && ufwdAccount.phone !== ufwd.phone) {
+			throwError('The phone is existed. Try other phone.', 403);
+		}
+
+		const searchTwo = yield UfwdAccount.findOne({
+			where: {
+				identification: ufwd.identification
+			} 
+		});
+
+		if (searchTwo && ufwdAccount.identification !== ufwd.identification) {
+			throwError('The id number is existed. Try other id number.', 403);
+		}
+
+		yield ufwdAccount.update(
+			ufwd
+		);
+
+		result.ufwd = ufwd;
 	}
 
-	const newUfwdAccount = yield ufwdAccount.update(ufwd);
-
-	res.data(newUfwdAccount);
+	res.data(result);
 
 	next();
 };

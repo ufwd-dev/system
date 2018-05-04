@@ -4,7 +4,7 @@ const {throwError} = require('error-standardize');
 
 module.exports = function* createAdministrator(req, res, next) {
 	const UfwdAdministrator = res.sequelize.model('ufwdAdministrator');
-	const account = req.body.account;
+	const accountId = req.body.accountId;
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
 	const Account = res.sequelize.model('account');
 
@@ -12,7 +12,7 @@ module.exports = function* createAdministrator(req, res, next) {
 		include: [{
 			model: Account,
 			where: {
-				name: account
+				id: accountId
 			}
 		}],
 		where: {

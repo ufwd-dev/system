@@ -2,9 +2,7 @@
 
 const {
 	$testBody,
-	$testQuery,
-	createAccount,
-	updateAccount
+	$testQuery
 } = require('express-handler-loader')('all');
 
 const {
@@ -70,12 +68,13 @@ router.post('/account', $testBody({
 					type: 'string'
 				}
 			},
+			additionalProperties: false,
 			required: ['name', 'sex', 'phone', 'identification']
 		}
 	},
 	additionalProperties: false,
 	required: ['name', 'password', 'ufwd']
-}), createAccount, ufwdServiceCreateAccount);
+}), ufwdServiceCreateAccount);
 
 router.get('/account', $testQuery({
 	properties: {
@@ -105,15 +104,15 @@ router.get('/account', $testQuery({
 
 router.get('/account/:accountId', getAccount);
 
-// router.put('/account/:accountId', $testBody({
-// 	properties: {
-// 		examine: {
-// 			type: 'boolean'
-// 		}
-// 	},
-// 	additionalProperties: false,
-// 	required: ['examine']
-// }), updateAccount);
+router.put('/account/:accountId/examine', $testBody({
+	properties: {
+		examine: {
+			type: 'boolean'
+		}
+	},
+	additionalProperties: false,
+	required: ['examine']
+}), updateAccountExamine);
 
 router.put('/account/:accountId', $testBody({
 	properties: {
@@ -143,7 +142,7 @@ router.put('/account/:accountId', $testBody({
 		}
 	},
 	additionalProperties: false
-}), updateAccount, ufwdUpdateAccount);
+}), ufwdUpdateAccount);
 
 router.delete('/account/:accountId', getAccount, deleteAccount);
 
@@ -157,12 +156,12 @@ router.patch('/account/:accountId/password', $testBody({
 	},
 	additionalProperties: false,
 	required: ['password']
-}), getAccount, updatePassword);
+}), updatePassword);
 
 router.post('/administrator', $testBody({
 	properties: {
-		account: {
-			type: 'string'
+		accountId: {
+			type: 'number'
 		}
 	},
 	additionalProperties: false,

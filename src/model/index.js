@@ -8,9 +8,7 @@ const UfwdAccount = require('./account');
 const Administrator = require('./administrator');
 const Notification = require('./notification');
 const Advise = require('./advise');
-const {Channel, Subscribe} = require('./channel');
 const {Group, Member} = require('./group');
-const Writer = require('./writer');
 
 UfwdAccount.belongsTo(Account, {
 	foreignKey: 'accountId',
@@ -24,32 +22,6 @@ Administrator.belongsTo(UfwdAccount, {
 });
 UfwdAccount.hasOne(Administrator, {
 	foreignKey: 'accountId',
-});
-
-Writer.belongsTo(UfwdAccount, {
-	foreignKey: 'accountId',
-});
-Writer.belongsTo(Channel, {
-	foreignKey: 'channelId',
-});
-UfwdAccount.hasMany(Writer, {
-	foreignKey: 'accountId',
-});
-Channel.hasMany(Writer, {
-	foreignKey: 'channelId',
-});
-
-Subscribe.belongsTo(UfwdAccount, {
-	foreignKey: 'accountId',
-});
-Subscribe.belongsTo(Channel, {
-	foreignKey: 'channelId',
-});
-UfwdAccount.hasMany(Subscribe, {
-	foreignKey: 'accountId',
-});
-Channel.hasMany(Subscribe, {
-	foreignKey: 'channelId',
 });
 
 Advise.belongsTo(UfwdAccount, {

@@ -8,7 +8,8 @@ const sequelize = lemonitor.sequelize;
 const ufwdAccount = module.exports = sequelize.define('ufwdAccount', {
 	accountId: {
 		primaryKey: true,
-		type: Sequelize.INTEGER
+		type: Sequelize.INTEGER,
+		allowNull: false
 	},
 	name: {
 		type: Sequelize.CHAR(8)
