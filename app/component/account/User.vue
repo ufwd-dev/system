@@ -25,7 +25,8 @@
 			:label="column.label"
 			:prop="column.prop"
 			:sortable="column.sortable"
-			:width="column.width">
+			:width="column.width"
+			:min-width="column.minWidth">
 		</el-table-column>
 		<el-table-column
 			label="Examine status"
@@ -43,22 +44,6 @@
 					close-transion>{{scope.row.examine}}</el-tag>
 			</template>
 		</el-table-column>
-		<!-- <el-table-column
-			label="Administrator"
-			prop="admin"
-			width="140"
-			align="center"
-			:filters="[
-				{text: 'True', value: 'True'},
-				{text: 'False', value: 'False'}]"
-			:filter-method="adminFilterTag"
-			filter-placement="bottom-end">
-			<template slot-scope="scope">
-				<el-tag 
-					:type="scope.row.admin === 'True' ? 'success' : 'danger'"
-					close-transion>{{scope.row.admin}}</el-tag>
-			</template>
-		</el-table-column> -->
 		<el-table-column
 			label="Action"
 			width="80"
@@ -69,8 +54,6 @@
 			</template>
 		</el-table-column>
 	</data-tables>
-
-			
 
 </div>
 </template>
@@ -86,7 +69,7 @@ export default {
 	props: ['name'],
 	methods: {
 		getAccountById(id) {
-			this.$router.push(`user/${id}/info`);
+			this.$router.push(`user-list/${id}/info`);
 		},
 		getAccount() {
 			return axios.get(ACCOUNT_URL).then(res => {
@@ -124,15 +107,9 @@ export default {
 				this.accountList = accountData;
 			})
 		},
-		getUnauditedAccount() {
-			this.getAccount(`${ACCOUNT_URL}?examine=false`);
-		},
 		examineFilterTag(value, row) {
 			return row.examine === value;
 		},
-		adminFilterTag(value, row) {
-			return row.admin === value;
-		}
 	},
 	data() {
 		return {
@@ -140,30 +117,40 @@ export default {
 			accountColumns: [
 				{
 					label: 'Username',
-					prop: 'name'
+					prop: 'name',
+					minWidth: '150'
 				},
 				{
 					label: 'Name',
-					prop: 'ufwd_name'
+					prop: 'ufwd_name',
+					width: '120'
 				},
 				{
 					label: 'Phone',
-					prop: 'ufwd_phone'
+					prop: 'ufwd_phone',
+					width: '160'
 				},
 				{
 					label: 'Identification',
-					prop: 'ufwd_identification'
+					prop: 'ufwd_identification',
+					width: '180'
 				},
 				{
 					label: 'Created time',
-					prop: 'created_at'
+					prop: 'created_at',
+					width: '160',
+					sortable: 'custom'
 				},
 				{
-					label: 'Administrator',
-					prop: 'admin'
+					label: 'Admin',
+					prop: 'admin',
+					width: '120'
 				}
 			],
 			searchDef: {
+				colProps: {
+					span: 8
+				},
 				props: ['name', 'ufwd_name', 'ufwd_phone', 'ufwd_identification']
 			},
 			paginationDef: {

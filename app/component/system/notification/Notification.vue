@@ -10,7 +10,7 @@
 		</ol>
 	</nav>
 
-	<div class="row">
+	<!-- <div class="row">
 		<div class="col-1">
 			<router-link tag="a"
 				to="add-notification"
@@ -25,26 +25,25 @@
 				</div>
 			</div>
 		</div>
-	</div>
+	</div> -->
 
-	<h3 class="mt-4">All notifications</h3>
+	<h3>All notifications</h3>
 	<hr>
 
 	<data-tables
 		:data="notificationList"
 		:search-def="searchDef"
-		:pagination-def="paginationDef">
-		<!-- <el-table-column type="expand">
-			<template slot-scope="props">
-				<p>{{props.row.name}}</p>
-			</template>
-		</el-table-column> -->
+		:pagination-def="paginationDef"
+		:actions-def="actionDef">
 		<el-table-column
 			v-for="(column, index) in notificationColumns"
 			:key="index"
+			align="center"
 			:label="column.label"
-			:prop="column.field"
-			sortable="custom">
+			:prop="column.prop"
+			:sortable="column.sortable"
+			:width="column.width"
+			:min-width="column.minWidth">
 		</el-table-column>
 	</data-tables>
 </div>
@@ -61,24 +60,48 @@ export default {
 			notificationColumns: [
 				{
 					label: 'Recevier',
-					field: 'recevier'
+					prop: 'recevier',
+					width: '180'
 				},
 				{
 					label: 'Content',
-					field: 'content'
+					prop: 'content',
+					minWidth: '200'
 				},
 				{
 					label: 'Created time',
-					field: 'created_at'
+					prop: 'created_at',
+					width: '180',
+					sortable: 'custom'
 				}
 			],
 			searchDef: {
-				show: false
+				colProps: {
+					span: 8
+				},
+				inputProps: {
+					placeholder: 'content'
+				},
+				props: ['content']
 			},
 			paginationDef: {
 				pageSize: 10,
 				pageSizes: [5, 10, 20],
 			},
+			actionDef: {
+				colProps: {
+					span: 3
+				},
+				def: [
+					{
+						name: 'New',
+						type: 'primary',
+						handler: () => {
+							this.$router.push('add-notification');
+						}
+					}
+				]
+			}
 		}
 	},
 	mounted() {

@@ -17,17 +17,15 @@
 		:data="adviceList"
 		:search-def="searchDef"
 		:pagination-def="paginationDef">
-		<!-- <el-table-column type="expand">
-			<template slot-scope="props">
-				<p>{{props.row.name}}</p>
-			</template>
-		</el-table-column> -->
 		<el-table-column
 			v-for="(column, index) in adviceColumns"
 			:key="index"
+			align="center"
 			:label="column.label"
-			:prop="column.field"
-			sortable="custom">
+			:prop="column.prop"
+			:sortable="column.sortable"
+			:width="column.width"
+			:min-width="column.minWidth">
 		</el-table-column>
 	</data-tables>
 </div>
@@ -44,19 +42,29 @@ export default {
 			adviceColumns: [
 				{
 					label: 'Account',
-					field: 'accountId'
+					field: 'accountId',
+					width: '150'
 				},
 				{
 					label: 'Content',
-					field: 'content'
+					field: 'content',
+					minWidth: '200'
 				},
 				{
 					label: 'Created time',
-					field: 'created_at'
+					field: 'created_at',
+					width: '200',
+					sortable: 'custom'
 				}
 			],
 			searchDef: {
-				// show: false
+				colProps: {
+					span: 8
+				},
+				inputProps: {
+					placeholder: 'content'
+				},
+				props: ['content']
 			},
 			paginationDef: {
 				pageSize: 10,

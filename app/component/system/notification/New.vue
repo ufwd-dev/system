@@ -9,7 +9,7 @@
 			<li class="breadcrumb-item">
 				<router-link tag="a" to="/ufwd/system/notification">Notification</router-link>
 			</li>
-			<li class="breadcrumb-item active">New notification</li>
+			<li class="breadcrumb-item active">Add notification</li>
 		</ol>
 	</nav>
 
@@ -18,46 +18,43 @@
 
 	<div class="row">
 		<div class="col-6">
-			<form>
-				<div class="form-group">
-					<label for="notification-recevier">Recevier</label>
-					<input type="text"
-						id="notification-recevier"
-						class="form-control"
-						v-model="notificationRecevierList">
-				</div>
-				<div class="form-group">
-					<label for="notification-content">Description</label>
-					<textarea type="text"
-						id="notification-content"
-						class="form-control"
-						v-model="notificationContent"></textarea>
-				</div>
-
-				<button class="btn btn-primary"
-					type="button"
-					@click="createNotification()">Create</button>
-			</form>
+			<el-form :model="notifyForm">
+				<el-form-item label="Recevier">
+					<el-input v-model="notifyForm.recevierPool"></el-input>
+				</el-form-item>
+				<el-form-item label="Content">
+					<el-input
+						type="textarea"
+						rows="3"
+						v-model="notifyForm.content"></el-input>
+				</el-form-item>
+				<el-form-item>
+					<el-button type="primary"
+						@click="createNotify()">Create</el-button>
+				</el-form-item>
+			</el-form>
 		</div>
 
 		<div class="col-6">
-			<label class="mb-0">Account list</label>
 			<data-tables
-				ref="multipleTable"
+				ref="accountList"
 				@selection-change="handleSelection"
 				:data="accountList"
 				:search-def="searchDef"
 				:pagination-def="paginationDef">
 				<el-table-column
 					type="selection"
-					width="55">
+					width="55"
+					align="center">
 				</el-table-column>
 				<el-table-column
-					v-for="(column, index) in accountColumns"
+					v-for="(column, index) in accountColumn"
 					:key="index"
+					align="center"
+					:min-width="column.minWidth"
+					:width="column.width"
 					:label="column.label"
-					:prop="column.field"
-					sortable="custom">
+					:prop="column.prop">
 				</el-table-column>
 			</data-tables>
 		</div>
@@ -72,51 +69,84 @@ export default {
 	name: 'add-notification',
 	data() {
 		return {
-			notificationRecevierList: [],
-			notificationContent: '',
+			notifyForm: {
+				recevierPool: [],
+				content: ''
+			},
 			accountList: [],
-			accountColumns: [
+			accountColumn: [
 				{
 					label: 'Username',
-					field: 'account.name'
+					prop: 'ufwdAccount.name',
+					width: '150'
 				},
+				{
+					label: 'Group',
+					prop: 'groupList',
+					minWidth: '180'
+				}
 			],
 			searchDef: {
-				show: false
+				props: ['group'],
+				inputProps: {
+					placeholder: 'group'
+				},
+				colProps: {
+					span: 16
+				}
 			},
 			paginationDef: {
 				pageSize: 10,
 				pageSizes: [5, 10, 20],
 			},
-			multipleMember: []
+			multipleUser: []
 		}
 	},
 	methods: {
 		handleSelection(val) {
-			this.multipleMember = val;
-			this.notificationRecevierList = [];
+			this.multipleUser = val;
+			this.notifyForm.recevierPool = [];
 
-			this.multipleMember.forEach(account => {
-				this.notificationRecevierList.push(account.accountId);
+			this.multipleUser.forEach(account => {
+				this.notifyForm.recevierPool.push(account.ufwdAccount.name);
 			});
-
-			console.log(this.multipleMember)
 		},
-		createNotification() {
-			return axios.post('/api/ufwd/service/notification', {
-				recevierList: this.notificationRecevierList,
-				content: this.notificationContent
-			}).then(() => {
-				this.$router.go(-1);
-			});
+		createNotify() {
+			return axios.post('/api/ufwd/service/notification', this.notifyForm)
+				.then(() => {
+					this.$notify({
+						title: 'Success',
+						message: 'Create successful!',
+						type: 'success'
+					})
+				})
+				.catch(err => {
+					this.$notify.error({
+						title: 'Fail',
+						message: 'Fail to create notification.'
+					})
+				});
 
+		},
+		getUserList() {
+			return axios.get(`/api/ufwd/service/account`)
+				.then(res => {
+					this.accountList = res.data.data;
+
+					// this.accountList.forEach(account => {
+					// 	console.log(account.accountId)
+					// 	axios.get(`/api/ufwd/service/account/${account.accountId}/group`)
+					// 		.then(res => {
+					// 			account.groupPool = res.data.data;
+					// 		});
+					// });
+
+					console.log(this.accountList);
+				})
 		}
 	},
 	mounted() {
-		return axios.get(`/api/ufwd/service/account`)
-			.then(res => {
-				this.accountList = res.data.data;
-			})
+		this.getUserList();
 	}
 }
 </script>

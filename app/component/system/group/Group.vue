@@ -35,7 +35,8 @@
 					:label="column.label"
 					:prop="column.prop"
 					:sortable="column.sortable"
-					:width="column.width">
+					:width="column.width"
+					:min-width="column.minWidth">
 				</el-table-column>
 				<el-table-column label="Action" width="140" align="center">
 					<template slot-scope="scope">
@@ -89,16 +90,18 @@ export default {
 				{
 					label: 'Name',
 					prop: 'name',
-					width: '240'
+					width: '180'
 				},
 				{
 					label: 'Description',
-					prop: 'description'
+					prop: 'description',
+					minWidth: '200'
 				},
 				{
 					label: 'Created time',
 					prop: 'created_at',
-					width: '180'
+					width: '180',
+					sortable: 'custom'
 				}
 			],
 			searchDef: {
@@ -154,17 +157,16 @@ export default {
 			this.multipleGroup = val;
 		},
 		createGroup() {
-			return axios.post('/api/ufwd/service/group', {
-				name: this.groupForm.name,
-				description: this.groupForm.description
-			}).then(() => {
-				this.getGroupList();
-			}).catch(error => {
-				this.$notify.error({
-					title: 'Error',
-					message: 'Fail to create group.'
+			return axios.post('/api/ufwd/service/group', this.groupForm)
+				.then(() => {
+					this.getGroupList();
 				})
-			});
+				.catch(error => {
+					this.$notify.error({
+						title: 'Error',
+						message: 'Fail to create group.'
+					})
+				});
 
 		},
 		getGroupList() {

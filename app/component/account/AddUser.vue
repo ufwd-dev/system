@@ -35,7 +35,8 @@
 		</el-form-item>
 		<el-form-item
 			label="Sex"
-			prop="sex">
+			prop="sex"
+			required>
 			<el-radio-group v-model="userForm.ufwd.sex">
 				<el-radio label="male" class="mb-0"></el-radio>
 				<el-radio label="female" class="mb-0"></el-radio>
@@ -50,6 +51,9 @@
 			label="Phone"
 			prop="phone">
 			<el-input v-model="userForm.ufwd.phone"></el-input>
+		</el-form-item>
+		<el-form-item label="Administrator">
+			<el-switch v-model="admin"></el-switch>
 		</el-form-item>
 		<el-form-item>
 			<el-button
@@ -126,7 +130,8 @@ export default {
 						trigger: 'blur'
 					}
 				]
-			}
+			},
+			admin: false
 		}
 	},
 	methods: {

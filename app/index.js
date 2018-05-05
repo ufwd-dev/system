@@ -19,7 +19,7 @@ import AddUser from './component/account/AddUser.vue';
 app.menu.addGroup('ufwd.account', [
 	{
 		label: 'account.user',
-		path: '/ufwd/account/user'
+		path: '/ufwd/account/user-list'
 	},
 	{
 		label: 'account.create',
@@ -36,11 +36,11 @@ app.router.addRoutes([
 		},
 		children: [
 			{
-				path: 'user',
+				path: 'user-list',
 				component: User
 			},
 			{
-				path: 'user/:id/info',
+				path: 'user-list/:id/info',
 				component: Info
 			},
 			{
