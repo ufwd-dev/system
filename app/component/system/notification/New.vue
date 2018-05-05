@@ -4,25 +4,25 @@
 	<nav>
 		<ol class="breadcrumb mb-4">
 			<li class="breadcrumb-item">
-				<router-link tag="a" to="/">Home</router-link>
+				<router-link tag="a" to="/">{{$t('home')}}</router-link>
 			</li>
 			<li class="breadcrumb-item">
-				<router-link tag="a" to="/ufwd/system/notification">Notification</router-link>
+				<router-link tag="a" to="/ufwd/system/notification">{{$t('system.notification')}}</router-link>
 			</li>
-			<li class="breadcrumb-item active">Add notification</li>
+			<li class="breadcrumb-item active">{{$t('notification.addNotification')}}</li>
 		</ol>
 	</nav>
 
-	<h3>New notification</h3>
+	<h3>{{$t('notification.addNotification')}}</h3>
 	<hr>
 
 	<div class="row">
 		<div class="col-6">
 			<el-form :model="notifyForm">
-				<el-form-item label="Recevier">
+				<el-form-item :label="$t('notification.recevier')">
 					<el-input v-model="notifyForm.recevierPool"></el-input>
 				</el-form-item>
-				<el-form-item label="Content">
+				<el-form-item :label="$t('notification.content')">
 					<el-input
 						type="textarea"
 						rows="3"
@@ -30,7 +30,7 @@
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary"
-						@click="createNotify()">Create</el-button>
+						@click="createNotify()">{{$t('notification.create')}}</el-button>
 				</el-form-item>
 			</el-form>
 		</div>
@@ -76,12 +76,12 @@ export default {
 			accountList: [],
 			accountColumn: [
 				{
-					label: 'Username',
+					label: this.$t('user.name'),
 					prop: 'ufwdAccount.name',
 					width: '150'
 				},
 				{
-					label: 'Group',
+					label: this.$t('user.group'),
 					prop: 'groupList',
 					minWidth: '180'
 				}
@@ -89,7 +89,7 @@ export default {
 			searchDef: {
 				props: ['group'],
 				inputProps: {
-					placeholder: 'group'
+					placeholder: this.$t('user.group')
 				},
 				colProps: {
 					span: 16

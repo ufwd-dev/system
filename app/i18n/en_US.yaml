@@ -1,3 +1,5 @@
+home: 'Home'
+
 ufwd:
   account: 'Account'
   system: 'System'
@@ -10,3 +12,61 @@ system:
   notification: 'Notification'
   advice: 'Advice'
   group: 'Group'
+
+user:
+  users: 'All users'
+  username: 'Username'
+  password: 'Password'
+  name: 'Name'
+  sex: 'Sex'
+  phone: 'Phone'
+  identification: 'Identification'
+  group: 'Group'
+  createAt: 'Created time'
+  admin: 'Admin'
+  examine: 'Examine'
+  action: 'Action'
+  edit: 'Edit'
+  true: 'True'
+  false: 'False'
+  adopt: 'Adopt'
+  fail: 'Fail'
+  male: 'Male'
+  female: 'Female'
+  administrator: 'Administrator'
+  addUser: 'Add user'
+  info: 'Account info'
+  create: 'Create'
+  update: 'Update'
+  delete: 'Delete'
+  modifyPassword: 'Modify password'
+
+group:
+  groups: 'All group'
+  name: 'Name'
+  description: 'Description'
+  createAt: 'Created time'
+  action: 'Action'
+  edit: 'Edit'
+  create: 'Create'
+  delete: 'Delete'
+  update: 'Update'
+  addGroup: 'Add group'
+  modify: 'Modify group'
+  rule: 
+    message: 'Please input activity group name.'
+
+advice:
+  advice: 'All advice'
+  account: 'Account ID'
+  content: 'Content'
+  createAt: 'Created time'
+
+notification:
+  notification: 'All notifications'
+  recevier: 'Recevier'
+  content: 'Content'
+  createAt: 'Created time'
+  new: 'New'
+  create: 'Create'
+  addNotification: 'Add notification'

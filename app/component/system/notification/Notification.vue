@@ -4,30 +4,13 @@
 	<nav>
 		<ol class="breadcrumb mb-4">
 			<li class="breadcrumb-item">
-				<router-link tag="a" to="/">Home</router-link>
+				<router-link tag="a" to="/">{{$t('home')}}</router-link>
 			</li>
-			<li class="breadcrumb-item active">Notification</li>
+			<li class="breadcrumb-item active">{{$t('system.notification')}}</li>
 		</ol>
 	</nav>
 
-	<!-- <div class="row">
-		<div class="col-1">
-			<router-link tag="a"
-				to="add-notification"
-				class="btn btn-primary">+ New</router-link>
-		</div>
-		<div class="col-7">
-			<div class="input-group">
-				<input type="text" class="form-control">
-				<div class="input-group-append">
-					<button class="btn btn-outline-secondary"
-						type="button"><i class="fa fa-search"></i></button>
-				</div>
-			</div>
-		</div>
-	</div> -->
-
-	<h3>All notifications</h3>
+	<h3>{{$t('notification.notification')}}</h3>
 	<hr>
 
 	<data-tables
@@ -59,17 +42,17 @@ export default {
 			notificationList: [],
 			notificationColumns: [
 				{
-					label: 'Recevier',
+					label: this.$t('notification.recevier'),
 					prop: 'recevier',
 					width: '180'
 				},
 				{
-					label: 'Content',
+					label: this.$t('notification.content'),
 					prop: 'content',
 					minWidth: '200'
 				},
 				{
-					label: 'Created time',
+					label: this.$t('notification.createAt'),
 					prop: 'created_at',
 					width: '180',
 					sortable: 'custom'
@@ -80,7 +63,7 @@ export default {
 					span: 8
 				},
 				inputProps: {
-					placeholder: 'content'
+					placeholder: this.$t('notification.content')
 				},
 				props: ['content']
 			},
@@ -94,7 +77,7 @@ export default {
 				},
 				def: [
 					{
-						name: 'New',
+						name: this.$t('notification.new'),
 						type: 'primary',
 						handler: () => {
 							this.$router.push('add-notification');

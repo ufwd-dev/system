@@ -4,13 +4,13 @@
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">
 				<router-link tag="a"
-					to="/">Home</router-link>
+					to="/">{{$t('home')}}</router-link>
 			</li>
-			<li class="breadcrumb-item active">Add User</li>
+			<li class="breadcrumb-item active">{{$t('user.addUser')}}</li>
 		</ol>
 	</nav>
 
-	<h3>Add user</h3>
+	<h3>{{$t('user.addUser')}}</h3>
 	<hr>
 
 	<el-form :model="userForm"
@@ -19,47 +19,47 @@
 		label-width="100px"
 		label-position="left">
 		<el-form-item
-			label="Username"
+			:label="$t('user.username')"
 			prop="username">
 			<el-input v-model="userForm.name"></el-input>
 		</el-form-item>
 		<el-form-item
-			label="Password"
+			:label="$t('user.password')"
 			prop="password">
 			<el-input v-model="userForm.password"></el-input>
 		</el-form-item>
 		<el-form-item
-			label="Name"
+			:label="$t('user.name')"
 			prop="name">
 			<el-input v-model="userForm.ufwd.name"></el-input>
 		</el-form-item>
 		<el-form-item
-			label="Sex"
+			:label="$t('user.sex')"
 			prop="sex"
 			required>
 			<el-radio-group v-model="userForm.ufwd.sex">
-				<el-radio label="male" class="mb-0"></el-radio>
-				<el-radio label="female" class="mb-0"></el-radio>
+				<el-radio label="male" class="mb-0">{{$t('user.male')}}</el-radio>
+				<el-radio label="female" class="mb-0">{{$t('user.female')}}</el-radio>
 			</el-radio-group>
 		</el-form-item>
 		<el-form-item
-			label="Identification"
+			:label="$t('user.identification')"
 			prop="identification">
 			<el-input v-model="userForm.ufwd.identification"></el-input>
 		</el-form-item>
 		<el-form-item
-			label="Phone"
+			:label="$t('user.phone')"
 			prop="phone">
 			<el-input v-model="userForm.ufwd.phone"></el-input>
 		</el-form-item>
-		<el-form-item label="Administrator">
+		<el-form-item :label="$t('user.administrator')">
 			<el-switch v-model="admin"></el-switch>
 		</el-form-item>
 		<el-form-item>
 			<el-button
 				type="primary"
 				native.type="submit"
-				@click="createUser()">Create</el-button>
+				@click="createUser()">{{$t('user.create')}}</el-button>
 		</el-form-item>
 	</el-form>
 </div>

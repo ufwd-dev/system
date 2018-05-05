@@ -5,13 +5,13 @@
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">
 				<router-link tag="a"
-					to="/">Home</router-link>
+					to="/">{{$t('home')}}</router-link>
 			</li>
-			<li class="breadcrumb-item active">Group</li>
+			<li class="breadcrumb-item active">{{$t('system.group')}}</li>
 		</ol>
 	</nav>
 
-	<h3>All groups</h3>
+	<h3>{{$t('group.groups')}}</h3>
 	<hr>
 
 	<div class="row">
@@ -38,10 +38,10 @@
 					:width="column.width"
 					:min-width="column.minWidth">
 				</el-table-column>
-				<el-table-column label="Action" width="140" align="center">
+				<el-table-column :label="$t('group.action')" width="140" align="center">
 					<template slot-scope="scope">
 						<el-button type="text"
-							@click="getGroupById(scope.row.id)">Edit</el-button>
+							@click="getGroupById(scope.row.id)">{{$t('group.edit')}}</el-button>
 					</template>
 				</el-table-column>
 			</data-tables>
@@ -51,14 +51,14 @@
 		<div class="col-sm-3">
 			<el-card class="box-card" shadow="never">
 				<div slot="header">
-					<span>New group</span>
+					<span>{{$t('group.addGroup')}}</span>
 				</div>
 				<el-form :model="groupForm" :rules="groupRule">
-					<el-form-item label="Name" prop="name">
+					<el-form-item :label="$t('group.name')" prop="name">
 						<el-input
 							v-model="groupForm.name"></el-input>
 					</el-form-item>
-					<el-form-item label="Destription">
+					<el-form-item :label="$t('group.description')">
 						<el-input
 							type="textarea"
 							rows="3"
@@ -66,7 +66,7 @@
 					</el-form-item>
 					<el-form-item>
 						<el-button type="primary"
-							@click="createGroup()">Create</el-button>
+							@click="createGroup()">{{$t('group.create')}}</el-button>
 					</el-form-item>
 				</el-form>
 
@@ -88,17 +88,17 @@ export default {
 			groupList: [],
 			groupColumns: [
 				{
-					label: 'Name',
+					label: this.$t('group.name'),
 					prop: 'name',
 					width: '180'
 				},
 				{
-					label: 'Description',
+					label: this.$t('group.description'),
 					prop: 'description',
 					minWidth: '200'
 				},
 				{
-					label: 'Created time',
+					label: this.$t('group.createAt'),
 					prop: 'created_at',
 					width: '180',
 					sortable: 'custom'
@@ -114,7 +114,7 @@ export default {
 			actionDef: {
 				def: [
 					{
-						name: 'Delete',
+						name: this.$t('group.delete'),
 						type: 'danger',
 						handler: () => {
 							this.multipleGroup.forEach(row => {
@@ -143,7 +143,7 @@ export default {
 					{
 						required: true,
 						trigger: 'blur',
-						message: 'Please input group name'
+						message: this.$t('group.rule.message')
 					}
 				]
 			}

@@ -4,13 +4,13 @@
 	<nav>
 		<ol class="breadcrumb mb-4">
 			<li class="breadcrumb-item">
-				<router-link tag="a" to="/">Home</router-link>
+				<router-link tag="a" to="/">{{$t('home')}}</router-link>
 			</li>
-			<li class="breadcrumb-item active">Advice</li>
+			<li class="breadcrumb-item active">{{$t('system.advice')}}</li>
 		</ol>
 	</nav>
 
-	<h3>All advices</h3>
+	<h3>{{$t('advice.advice')}}</h3>
 	<hr>
 
 	<data-tables
@@ -41,18 +41,18 @@ export default {
 			adviceList: [],
 			adviceColumns: [
 				{
-					label: 'Account',
-					field: 'accountId',
+					label: this.$t('advice.account'),
+					prop: 'accountId',
 					width: '150'
 				},
 				{
-					label: 'Content',
-					field: 'content',
+					label: this.$t('advice.content'),
+					prop: 'content',
 					minWidth: '200'
 				},
 				{
-					label: 'Created time',
-					field: 'created_at',
+					label: this.$t('advice.createAt'),
+					prop: 'created_at',
 					width: '200',
 					sortable: 'custom'
 				}
@@ -62,7 +62,7 @@ export default {
 					span: 8
 				},
 				inputProps: {
-					placeholder: 'content'
+					placeholder: this.$t('advice.content')
 				},
 				props: ['content']
 			},

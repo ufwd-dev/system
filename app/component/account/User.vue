@@ -4,13 +4,13 @@
 	<nav>
 		<ol class="breadcrumb mb-4">
 			<li class="breadcrumb-item">
-				<router-link tag="a" to="/">Home</router-link>
+				<router-link tag="a" to="/">{{$t('home')}}</router-link>
 			</li>
-			<li class="breadcrumb-item active">Account</li>
+			<li class="breadcrumb-item active">{{$t('ufwd.account')}}</li>
 		</ol>
 	</nav>
 
-	<h3>All Users</h3>
+	<h3>{{$t('user.users')}}</h3>
 	<hr>
 
 	<data-tables
@@ -29,28 +29,28 @@
 			:min-width="column.minWidth">
 		</el-table-column>
 		<el-table-column
-			label="Examine status"
+			:label="$t('user.examine')"
 			prop="status"
 			width="140"
 			align="center"
 			:filters="[
-				{text: 'Adopt', value: 'Adopt'},
-				{text: 'Fail', value: 'Fail'}]"
+				{text: $t('user.adopt'), value: $t('user.adopt')},
+				{text: $t('user.fail'), value: $t('user.fail')}]"
 			:filter-method="examineFilterTag"
 			filter-placement="bottom-end">
 			<template slot-scope="scope">
 				<el-tag
-					:type="scope.row.examine === 'Adopt' ? 'success' : 'danger'"
+					:type="scope.row.examine === $t('user.adopt') ? 'success' : 'danger'"
 					close-transion>{{scope.row.examine}}</el-tag>
 			</template>
 		</el-table-column>
 		<el-table-column
-			label="Action"
+			:label="$t('user.action')"
 			width="80"
 			align="center">
 			<template slot-scope="scope">
 				<el-button type="text"
-					@click="getAccountById(scope.row.ufwdAccount.accountId)">Edit</el-button>
+					@click="getAccountById(scope.row.ufwdAccount.accountId)">{{$t('user.edit')}}</el-button>
 			</template>
 		</el-table-column>
 	</data-tables>
@@ -85,11 +85,11 @@ export default {
 						};
 					}
 
-					user.admin = 'False';
+					user.admin = this.$t('user.false');
 					user.ufwd_name = user.ufwdAccount.name;
 					user.ufwd_phone = user.ufwdAccount.phone;
 					user.ufwd_identification = user.ufwdAccount.identification;
-					user.examine = user.ufwdAccount.examine ? 'Adopt' : 'Fail';
+					user.examine = user.ufwdAccount.examine ? this.$t('user.adopt') : this.$t('user.fail');
 					user.created_at = dateFormat(user.created_at, 'yyyy/mm/dd HH:MM');
 
 					axios.get('/api/ufwd/service/administrator')
@@ -98,7 +98,7 @@ export default {
 
 							administratorList.forEach(admin => {
 								if (admin.accountId === user.id) {
-									user.admin = 'True';
+									user.admin = this.$t('user.true');
 								}
 							});
 						});
@@ -116,33 +116,33 @@ export default {
 			accountList: [],
 			accountColumns: [
 				{
-					label: 'Username',
+					label: this.$t('user.username'),
 					prop: 'name',
 					minWidth: '150'
 				},
 				{
-					label: 'Name',
+					label: this.$t('user.name'),
 					prop: 'ufwd_name',
 					width: '120'
 				},
 				{
-					label: 'Phone',
+					label: this.$t('user.phone'),
 					prop: 'ufwd_phone',
 					width: '160'
 				},
 				{
-					label: 'Identification',
+					label: this.$t('user.identification'),
 					prop: 'ufwd_identification',
 					width: '180'
 				},
 				{
-					label: 'Created time',
+					label: this.$t('user.createAt'),
 					prop: 'created_at',
 					width: '160',
 					sortable: 'custom'
 				},
 				{
-					label: 'Admin',
+					label: this.$t('user.admin'),
 					prop: 'admin',
 					width: '120'
 				}
@@ -163,8 +163,8 @@ export default {
 				},
 				def: [
 					{
-						'code': 'True',
-						'name': 'adminstrator'
+						'code': this.$t('user.true'),
+						'name': this.$t('user.administrator')
 					}
 				],
 				filterFunction(el, filter) {

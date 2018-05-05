@@ -10,7 +10,7 @@ import zh_CN from './i18n/zh_CN.yaml';
 app.i18n.mergeLocaleMessage('en', en_US);
 app.i18n.mergeLocaleMessage('zh', zh_CN);
 
-app.i18n.locale = 'en';
+app.i18n.locale = 'zh';
 
 import User from  './component/account/User.vue';
 import Info from  './component/account/Info.vue';

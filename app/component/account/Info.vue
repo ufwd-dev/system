@@ -5,60 +5,60 @@
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item">
 				<router-link tag="a"
-					to="/">Home</router-link>
+					to="/">{{$t('home')}}</router-link>
 			</li>
 			<li class="breadcrumb-item">
 				<router-link tag="a"
-					to="/ufwd/account/user-list">Account</router-link>
+					to="/ufwd/account/user-list">{{$t('ufwd.account')}}</router-link>
 			</li>
-			<li class="breadcrumb-item active">Username: {{account.name}}</li>
+			<li class="breadcrumb-item active">{{$t('user.username')}}: {{account.name}}</li>
 		</ol>
 	</nav>
 
-	<h3>Modify Password</h3>
+	<h3>{{$t('user.modifyPassword')}}</h3>
 	<hr>
 
 	<el-input v-model="account.password"
 		class="input-with-select mb-3">
 		<el-button slot="append"
-			@click="updatePassword()">Update</el-button>
+			@click="updatePassword()">{{$t('user.update')}}</el-button>
 	</el-input>
 	
-	<h3>Account info</h3>
+	<h3>{{$t('user.info')}}</h3>
 	<hr>
 
 	<el-form
 		:model="account"
 		label-width="100px"
 		label-position="left">
-		<el-form-item label="Created time">
+		<el-form-item :label="$t('user.createAt')">
 			<el-input v-model="ufwdAccount.created_at" disabled></el-input>
 		</el-form-item>
 
-		<el-form-item label="Username">
+		<el-form-item :label="$t('user.username')">
 			<el-input v-model="account.name"></el-input>
 		</el-form-item>
 		
-		<el-form-item label="Name">
+		<el-form-item :label="$t('user.name')">
 			<el-input v-model="ufwdAccount.name"></el-input>
 		</el-form-item>
 
-		<el-form-item label="Sex">
+		<el-form-item :label="$t('user.sex')">
 			<el-radio-group v-model="ufwdAccount.sex">
-				<el-radio label="male" class="mb-0"></el-radio>
-				<el-radio label="female" class="mb-0"></el-radio>
+				<el-radio label="male" class="mb-0">{{$t('user.male')}}</el-radio>
+				<el-radio label="female" class="mb-0">{{$t('user.female')}}</el-radio>
 			</el-radio-group>
 		</el-form-item>
 
-		<el-form-item label="Phone">
+		<el-form-item :label="$t('user.phone')">
 			<el-input v-model="ufwdAccount.phone"></el-input>
 		</el-form-item>
 
-		<el-form-item label="Identification">
+		<el-form-item :label="$t('user.identification')">
 			<el-input v-model="ufwdAccount.identification"></el-input>
 		</el-form-item>
 
-		<el-form-item label="Group">
+		<el-form-item :label="$t('user.group')">
 			<el-checkbox-group v-model="list"
 				@change="testCheckbox()">
 				<el-checkbox
@@ -69,16 +69,16 @@
 			</el-checkbox-group>
 		</el-form-item>
 
-		<el-form-item label="Examine">
+		<el-form-item :label="$t('user.examine')">
 			<el-switch v-model="ufwdAccount.examine"
 				@change="examineUser()"></el-switch>
 		</el-form-item>
 
 		<el-form-item>
 			<el-button type="primary"
-				@click="updateUser()">Update</el-button>
+				@click="updateUser()">{{$t('user.update')}}</el-button>
 			<el-button type="danger"
-				@click="deleteUser()">Delete</el-button>
+				@click="deleteUser()">{{$t('user.delete')}}</el-button>
 		</el-form-item>
 	</el-form>
 </div>

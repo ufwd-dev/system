@@ -4,26 +4,26 @@
 	<nav>
 		<ol class="breadcrumb mb-4">
 			<li class="breadcrumb-item">
-				<router-link tag="a" to="/">Home</router-link>
+				<router-link tag="a" to="/">{{$t('home')}}</router-link>
 			</li>
 			<li class="breadcrumb-item">
-				<router-link tag="a" to="/ufwd/system/group">Group</router-link>
+				<router-link tag="a" to="/ufwd/system/group">{{$t('system.group')}}</router-link>
 			</li>
 			<li class="breadcrumb-item active">{{group.name}}</li>
 		</ol>
 	</nav>
 
-	<h3>Modify group</h3>
+	<h3>{{$t('group.modify')}}</h3>
 	<hr>
 
 	<div class="row">
 		<div class="col-sm-6">
 			<el-form :model="group">
-				<el-form-item label="Name">
+				<el-form-item :label="$t('group.name')">
 					<el-input v-model="group.name"></el-input>
 				</el-form-item>
 
-				<el-form-item label="description">
+				<el-form-item :label="$t('group.description')">
 					<el-input
 						type="textarea"
 						rows="3"
@@ -32,7 +32,7 @@
 
 				<el-form-item>
 					<el-button type="primary"
-						@click="fixGroup()">Update</el-button>
+						@click="fixGroup()">{{$t('group.update')}}</el-button>
 				</el-form-item>
 			</el-form>
 
