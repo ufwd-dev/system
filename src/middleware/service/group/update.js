@@ -12,7 +12,7 @@ module.exports = function* updateGroup(req, res, next) {
 		}
 	});
 
-	if (oldGroup) {
+	if (oldGroup && oldGroup.id !== group.id) {
 		throwError('The group is existed.', 403);
 	}
 
