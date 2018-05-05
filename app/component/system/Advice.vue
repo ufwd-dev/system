@@ -10,19 +10,7 @@
 		</ol>
 	</nav>
 
-	<div class="row">
-		<div class="col-8">
-			<div class="input-group">
-				<input type="text" class="form-control">
-				<div class="input-group-append">
-					<button class="btn btn-outline-secondary"
-						type="button"><i class="fa fa-search"></i></button>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<h3 class="mt-4">All advices</h3>
+	<h3>All advices</h3>
 	<hr>
 
 	<data-tables
@@ -68,7 +56,7 @@ export default {
 				}
 			],
 			searchDef: {
-				show: false
+				// show: false
 			},
 			paginationDef: {
 				pageSize: 10,

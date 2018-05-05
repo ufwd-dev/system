@@ -3,12 +3,10 @@ ufwd:
   system: 'System'
 
 account:
-  account: 'Account'
-  administrator: 'Administrator'
-  writer: 'Writer'
+  user: 'User list'
+  create: 'User creation'
 
 system:
-  channel: 'Channel'
   notification: 'Notification'
   advice: 'Advice'
   group: 'Group'

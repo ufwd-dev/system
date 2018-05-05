@@ -69,7 +69,7 @@
 					<input type="text"
 						id="account-name"
 						class="form-control"
-						:value="account.ufwdAccount.name">
+						:value="ufwdAccount.name">
 				</div>
 			</div>
 			<div class="form-group row">
@@ -79,7 +79,7 @@
 					<input type="text"
 						id="account-sex"
 						class="form-control"
-						:value="account.ufwdAccount.sex|sex">
+						:value="ufwdAccount.sex|sex">
 				</div>
 			</div>
 			<div class="form-group row">
@@ -89,7 +89,7 @@
 					<input type="text"
 						id="account-phone"
 						class="form-control"
-						:value="account.ufwdAccount.phone">
+						:value="ufwdAccount.phone">
 				</div>
 			</div>
 
@@ -114,7 +114,7 @@
 							type="text"
 							id="account-examine"
 							class="form-control"
-							:value="account.ufwdAccount.examine">
+							:value="ufwdAccount.examine">
 						<div class="input-group-append">
 							<button class="btn btn-success"
 								type="button"
@@ -153,14 +153,20 @@ export default {
 	},
 	data() {
 		return {
-			account: {}
+			account: {},
+			ufwdAccount: {}
 		}
 	},
 	methods: {
 		getAccountInfo() {
 			return axios.get(`${ACCOUNT_URL}/${this.accountId}`)
 				.then(res => {
+					if (!res.data.data.ufwdAccount) {
+						this.ufwdAccount = {}
+					}
+
 					this.account = res.data.data;
+					this.ufwdAccount = res.data.data.ufwdAccount;
 				})
 		},
 		examineAccount() {
