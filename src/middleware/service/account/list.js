@@ -9,25 +9,25 @@ module.exports = function* getAccountList(req, res, next) {
 	const {name, examine, username, phone, sex, identification} = req.query;
 	const query = {
 		include: [{
-			model: Account,
+			model: UfwdAccount,
 			where: {}
 		}],
 		where: {}
 	};
 
-	name ? query.include[0].where.name = {[Sequelize.Op.like]: `%${name}%`} : undefined;
+	name ? query.where.name = {[Sequelize.Op.like]: `%${name}%`} : undefined;
 	
-	examine ? (query.where.examine = examine === 'true' ? true : false) : undefined;
+	examine ? (query.include[0].where.examine = examine === 'true' ? true : false) : undefined;
 
-	username ? query.where.name = { [Sequelize.Op.like]: `%${username}%`} : undefined;
+	username ? query.include[0].where.name = { [Sequelize.Op.like]: `%${username}%`} : undefined;
 
-	phone ? query.where.phone = { [Sequelize.Op.like]: `%${phone}%`} : undefined;
+	phone ? query.include[0].where.phone = { [Sequelize.Op.like]: `%${phone}%`} : undefined;
 
-	identification ? query.where.identification = { [Sequelize.Op.like]: `%${identification}%`} : undefined;
+	identification ? query.include[0].where.identification = { [Sequelize.Op.like]: `%${identification}%`} : undefined;
 
-	sex ? (query.where.sex = sex === 'female' ? 0 : 1) : undefined;
+	sex ? (query.where.include[0].sex = sex === 'female' ? 0 : 1) : undefined;
 
-	const accountList = yield UfwdAccount.findAll(query);
+	const accountList = yield Account.findAll(query);
 
 	if (accountList.length === 0) {
 		throwError('The account is not exist.', 404);

@@ -4,7 +4,8 @@ const {
 	isAccountSignedIn,
 	isAccountUnsignedIn,
 	signOut,
-	$testBody
+	$testBody,
+	createAccount
 } = require('express-handler-loader')('all');
 
 const {
@@ -55,12 +56,12 @@ router.post('/account', $testBody({
 					type: 'string'
 				}
 			},
-			required: ['name', 'sex', 'phone']
+			required: ['name', 'sex', 'phone', 'identification']
 		}
 	},
 	additionalProperties: false,
 	required: ['name', 'password', 'ufwd']
-}), isAccountUnsignedIn, ufwdCreateAccount);
+}), isAccountUnsignedIn, createAccount, ufwdCreateAccount);
 
 router.post('/account/session', $testBody({
 	properties: {

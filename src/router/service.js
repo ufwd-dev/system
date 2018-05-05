@@ -2,7 +2,8 @@
 
 const {
 	$testBody,
-	$testQuery
+	$testQuery,
+	createAccount
 } = require('express-handler-loader')('all');
 
 const {
@@ -74,7 +75,7 @@ router.post('/account', $testBody({
 	},
 	additionalProperties: false,
 	required: ['name', 'password', 'ufwd']
-}), ufwdServiceCreateAccount);
+}), createAccount, ufwdServiceCreateAccount);
 
 router.get('/account', $testQuery({
 	properties: {

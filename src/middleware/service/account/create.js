@@ -3,14 +3,10 @@
 const {throwError} = require('error-standardize');
 
 module.exports = function* ufwdServiceCreateAccount(req, res, next) {
-	const {name, password, ufwd} = req.body;
+	const {ufwd} = req.body;
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
 	const _ = require('lodash');
-	const Account = res.sequelize.model('account');
-	
-	const account = yield Account.findOne({
-		where: { name }
-	});
+	const account = res.data();
 
 	const accountOne = yield UfwdAccount.findOne({
 		where: { phone: ufwd.phone }
@@ -20,10 +16,6 @@ module.exports = function* ufwdServiceCreateAccount(req, res, next) {
 		where: { identification: ufwd.identification }
 	});
 
-	if (account) {
-		throwError('Account has been existed. Try other names.', 403);
-	}
-
 	if (accountOne) {
 		throwError('The phone is existed. Try other phone.', 403);
 	}
@@ -32,12 +24,8 @@ module.exports = function* ufwdServiceCreateAccount(req, res, next) {
 		throwError('The id number is existed. Try other id number.', 403);
 	}
 
-	const newAccount = yield Account.create({
-		name, password
-	});
-
 	const newUfwdAccount = yield UfwdAccount.create(Object.assign({
-		accountId: newAccount.id,
+		accountId: account.id,
 		examine: true
 	}, ufwd));
 
@@ -45,7 +33,7 @@ module.exports = function* ufwdServiceCreateAccount(req, res, next) {
 		'name', 'sex', 'phone', 'identification'
 	]);
 
-	mixedAccount.username = newAccount.name;
+	mixedAccount.username = account.name;
 
 	res.data(mixedAccount);
 

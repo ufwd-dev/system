@@ -8,17 +8,22 @@ module.exports = function* getAccount(req, res, next) {
 	const accountId = req.params.accountId;
 
 	const account = yield Account.findOne({
-		include: [{
-			model: UfwdAccount,
-			where: {
-				accountId
-			}
-		}],
+		where: {
+			id: accountId
+		}
 	});
 
 	if (!account) {
 		throwError('Account is not existed.', 404);
 	}
+
+	const ufwdAccount = yield UfwdAccount.findOne({
+		where: {
+			accountId
+		}
+	});
+
+	account.ufwd = ufwdAccount;
 
 	res.data(account);
 

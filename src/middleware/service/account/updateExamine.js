@@ -14,7 +14,7 @@ module.exports = function* updateAccountExamine(req, res, next) {
 	});
 	
 	if (!ufwdAccount) {
-		throwError('The account is not exist.', 404);
+		throwError('The detail of this account is not exist.', 404);
 	}
 
 	const newUfwdAccount = yield ufwdAccount.update({examine});

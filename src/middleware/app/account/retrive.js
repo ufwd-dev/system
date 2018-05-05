@@ -8,11 +8,16 @@ module.exports = function* getInformation(req, res, next) {
 	const account = yield Account.findOne({
 		where: {
 			id: accountId
-		},
-		include: [{
-			model: UfwdAccount
-		}]
+		}
 	});
+
+	const ufwdAccount = yield UfwdAccount.findOne({
+		where: {
+			accountId
+		}
+	});
+
+	account.ufwd = ufwdAccount;
 
 	res.data(account);
 
