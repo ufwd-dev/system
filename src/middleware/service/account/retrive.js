@@ -6,6 +6,7 @@ module.exports = function* getAccount(req, res, next) {
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
 	const Account = res.sequelize.model('account');
 	const accountId = req.params.accountId;
+	const _ = require('lodash');
 
 	const account = yield Account.findOne({
 		where: {
@@ -23,9 +24,13 @@ module.exports = function* getAccount(req, res, next) {
 		}
 	});
 
-	account.ufwd = ufwdAccount;
+	const mixAccount = _.pick(account, [
+		'id', 'name', 'password', 'create_at'
+	]);
 
-	res.data(account);
+	mixAccount.ufwdAccount = ufwdAccount;
+
+	res.data(mixAccount);
 
 	next();
 };

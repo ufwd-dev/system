@@ -10,12 +10,14 @@ module.exports = function* getAccountList(req, res, next) {
 	const query = {
 		include: [{
 			model: UfwdAccount,
-			where: {}
-		}],
-		where: {}
+		}]
 	};
 
-	name ? query.where.name = {[Sequelize.Op.like]: `%${name}%`} : undefined;
+	name ? (query.where = {}, query.where.name = {[Sequelize.Op.like]: `%${name}%`}) : undefined;
+
+	if (examine || username || phone || sex || identification) {
+		query.include[0].where = {};
+	}
 	
 	examine ? (query.include[0].where.examine = examine === 'true' ? true : false) : undefined;
 

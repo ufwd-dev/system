@@ -17,9 +17,13 @@ module.exports = function* getInformation(req, res, next) {
 		}
 	});
 
-	account.ufwd = ufwdAccount;
+	const mixAccount = _.pick(account, [
+		'id', 'name', 'password', 'create_at'
+	]);
 
-	res.data(account);
+	mixAccount.ufwdAccount = ufwdAccount;
+
+	res.data(mixAccount);
 
 	next();
 };
