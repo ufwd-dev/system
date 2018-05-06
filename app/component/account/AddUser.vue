@@ -174,13 +174,6 @@ export default {
 						trigger: 'blur'
 					}
 				],
-				party: [
-					{
-						required: true,
-						message: '请选择党派',
-						trigger: 'blur' 
-					}
-				],
 				street: [
 					{
 						required: true,
@@ -227,7 +220,7 @@ export default {
 						
 						this.$notify.error({
 							title: '错误',
-							message: '用户创建成功，但您可以继续完善信息。'
+							message: '用户创建失败或者创建过程中断。'
 						});
 					});
 				} else {

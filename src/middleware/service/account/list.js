@@ -8,6 +8,9 @@ module.exports = function* getAccountList(req, res, next) {
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
 	const UfwdAdministrator = res.sequelize.model('ufwdAdministrator');
 	const Account = res.sequelize.model('account');
+	const Street = res.sequelize.model('ufwdStreet');
+	const Party = res.sequelize.model('ufwdParty');
+	
 	const {name, examine, username, phone, sex, identification} = req.query;
 	const query = {
 		include: [{
@@ -35,20 +38,23 @@ module.exports = function* getAccountList(req, res, next) {
 
 	const administratorList = yield UfwdAdministrator.findAll();
 
+	const partyList = yield Party.findAll();
+
+	const streetList = yield Street.findAll();
+
 	const mixedAccountList = [];
 
 	accountList.forEach(account => {
-
 		const mixAccount = _.pick(account.ufwdAccount, [
 			'name', 'sex', 'examine',
 			'phone', 'identification',
 			'party', 'street'
 		]);
 
+		mixAccount.admin = false;
+
 		mixAccount.id = account.id;
 		mixAccount.username = account.name;
-
-		mixAccount.admin = false;
 
 		administratorList.forEach(administrator => {
 			if (account.id === administrator.accountId) {
@@ -56,9 +62,24 @@ module.exports = function* getAccountList(req, res, next) {
 			}
 		});
 
+		if (account.ufwdAccount) {
+	
+			partyList.forEach(party => {
+				if (account.ufwdAccount.party === party.id) {
+					mixAccount.party = party.name;
+				}
+			});
+	
+			streetList.forEach(street => {
+				if (account.ufwdAccount.street === street.id) {
+					mixAccount.street = street.name;
+				}
+			});
+		}
+		
 		mixedAccountList.push(mixAccount);
+		
 	});
-
 
 	res.data(mixedAccountList);
 

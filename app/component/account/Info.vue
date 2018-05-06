@@ -32,83 +32,77 @@
 		label-width="100px"
 		label-position="left">
 		<el-form-item :label="$t('user.createAt')">
-			<el-input v-model="ufwdAccount.created_at" disabled></el-input>
+			<el-input v-model="account.created_at" disabled></el-input>
 		</el-form-item>
 
 		<el-form-item :label="$t('user.username')">
-			<el-input v-model="account.name"></el-input>
+			<el-input v-model="account.username"></el-input>
 		</el-form-item>
 		
 		<el-form-item :label="$t('user.name')">
-			<el-input v-model="ufwdAccount.name"></el-input>
+			<el-input v-model="account.name"></el-input>
 		</el-form-item>
 
 		<el-form-item :label="$t('user.sex')">
-			<el-radio-group v-model="ufwdAccount.sex">
+			<el-radio-group v-model="account.sex">
 				<el-radio label="male" class="mb-0">{{$t('user.male')}}</el-radio>
 				<el-radio label="female" class="mb-0">{{$t('user.female')}}</el-radio>
 			</el-radio-group>
 		</el-form-item>
 
 		<el-form-item :label="$t('user.phone')">
-			<el-input v-model="ufwdAccount.phone"></el-input>
+			<el-input v-model="account.phone"></el-input>
 		</el-form-item>
 
 		<el-form-item :label="$t('user.identification')">
-			<el-input v-model="ufwdAccount.identification"></el-input>
+			<el-input v-model="account.identification"></el-input>
 		</el-form-item>
 
-		<!-- <el-form-item :label="$t('user.group')">
-			<el-checkbox-group v-model="ufwdAccount.groupPool">
-				<el-checkbox
-					v-for="(group, index) in groupList"
-					:key="index"
-					:label="group.id"
-					>{{group.name}}</el-checkbox>
-			</el-checkbox-group>
-		</el-form-item> -->
-
-			<el-select v-model="ufwdAccount.groupPool"
+		<el-form-item :label="$t('user.group')">
+			<el-select v-model="groupList"
 				multiple
 				:placeholder="$t('user.placeholder.group')">
 				<el-option
-					v-for="group in groupList"
-					:key="group.id"
+					v-for="(group, index) in groupList"
+					:key="index"
 					:label="group.name"
 					:value="group.id">
 				</el-option>
 			</el-select>
-		<el-form-item :label="$t('user.group')">
 		</el-form-item>
 
 		<el-form-item :label="$t('user.examine')">
-			<el-switch v-model="ufwdAccount.examine"></el-switch>
+			<el-switch v-model="account.examine"></el-switch>
 		</el-form-item>
 
 		<el-form-item :label="$t('user.administrator')">
-			<el-switch v-model="admin"></el-switch>
+			<el-switch v-model="account.admin"></el-switch>
 		</el-form-item>
 
 		<el-form-item :label="$t('user.party')">
-			<el-select v-model="ufwdAccount.party"
+			<el-select v-model="account.party"
 				:placeholder="$t('user.placeholder.party')">
+				<el-option
+					label="暂无"
+					:value="value">
+				</el-option>
 				<el-option
 					v-for="(party, index) in partyPool"
 					:key="index"
-					:label="party.label"
-					:value="party.value">
+					:label="party.name"
+					:value="party.id">
 				</el-option>
 			</el-select>
 		</el-form-item>
 
 		<el-form-item :label="$t('user.street')">
-			<el-select v-model="ufwdAccount.street"
+			<el-select v-model="account.street"
 				:placeholder="$t('user.placeholder.street')">
 				<el-option
 					v-for="(street, index) in streetPool"
 					:key="index"
-					:label="street.label"
-					:value="street.value">
+					:label="street.name"
+					:value="street.id">
 				</el-option>
 			</el-select>
 		</el-form-item>
@@ -143,50 +137,26 @@ export default {
 	data() {
 		return {
 			account: {},
-			ufwdAccount: {
-				created_at: '',
-				name: '',
-				sex: '',
-				phone: '',
-				identification: '',
-				groupPool: [],
-				party: '',
-				street: ''
-			},
+			value: null,
+			partyPool: [],
+			streetPool: [],
 			groupList: [],
 			list: [],
-			admin: false
 		}
 	},
 	methods: {
 		getUserInfo() {
 			return axios.get(`${ACCOUNT_URL}/${this.accountId}`)
 				.then(res => {
-					if (!res.data.data.ufwdAccount) {
-						this.ufwdAccount = {};
-					}
-
 					this.account = res.data.data;
 					this.account.password = '';
 
-					let ufwdAccountData = res.data.data.ufwdAccount;
-
-					Object.keys(ufwdAccountData).forEach(key => {
-						let createdTime = ufwdAccountData['created_at'];
+					Object.keys(this.account).forEach(() => {
+						let createdTime = this.account['created_at'];
 
 						createdTime = dateFormat(createdTime, 'yyyy/mm/dd HH:MM');
-						ufwdAccountData['created_at'] = createdTime;
+						this.account['created_at'] = createdTime;
 					});
-
-					this.ufwdAccount = ufwdAccountData;
-				})
-				.then(res => {
-					this.createAdmin(res.data.data.id);
-
-					return res.data.data.id;
-				})
-				.then(accountId => {
-					this.divideIntoGroup(this.ufwdAccount.groupPool, accountId);
 				});
 		},
 		getGroupList() {
@@ -195,10 +165,26 @@ export default {
 					this.groupList = res.data.data;
 				});
 		},
+		getPartyList() {
+			return axios.get('/api/ufwd/service/party').then(res => {
+				this.partyPool = res.data.data;
+			})
+		},
+		getStreetList() {
+			return axios.get('/api/ufwd/service/street').then(res => {
+				this.streetPool = res.data.data;
+			})
+		},
 		updateUser() {
 			return axios.put(`${ACCOUNT_URL}/${this.accountId}`, {
 				name: this.account.name,
-				ufwd: this.ufwdAccount
+				ufwd: {
+					name: this.account.name,
+					phone: this.account.phone,
+					identification: this.account.identification,
+					party: this.account.party,
+					street: this.account.street
+				}
 			}).then(() => {
 				this.$notify({
 					title: '成功',
@@ -224,7 +210,15 @@ export default {
 				});
 		},
 		updatePassword() {
-			this.updateUser();
+			return axios.patch(`${ACCOUNT_URL}/${this.accountId}/password`, {
+				password: this.account.password
+			}).then(() => {
+				this.$notify({
+					title: '成功',
+					message: '用户信息修改成功！',
+					type: 'success'
+				});
+			});
 		},
 		createAdmin(id) {
 			if (this.admin) {
@@ -237,6 +231,12 @@ export default {
 						});
 					});
 			}
+		},
+		getAdmin(id) {
+			return axios.get(`/api/ufwd/service/administrator/${id}`)
+				.then(() => {
+					this.admin = true;
+				});
 		},
 		divideIntoGroup(groupPool, id) {
 			if (groupPool.length === 0) {
@@ -261,6 +261,8 @@ export default {
 	mounted() {
 		this.getUserInfo();
 		this.getGroupList();
+		this.getPartyList();
+		this.getStreetList();
 	}
 }
 </script>

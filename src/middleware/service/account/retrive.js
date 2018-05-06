@@ -31,8 +31,8 @@ module.exports = function* getAccount(req, res, next) {
 		}
 	});
 
-	const mixAccount = _.pick(account, [
-		'id', 'name', 'password', 'create_at'
+	const mixAccount = _.pick(ufwdAccount, [
+		'name', 'phone', 'identification', 'party', 'street', 'examine'
 	]);
 
 	if (administrator) {
@@ -41,7 +41,9 @@ module.exports = function* getAccount(req, res, next) {
 		mixAccount.admin = false;
 	}
 	
-	mixAccount.ufwdAccount = ufwdAccount;
+	mixAccount.username = account.name;
+	mixAccount.id = account.id;
+	mixAccount.create_at = account['create_at'];
 
 	res.data(mixAccount);
 
