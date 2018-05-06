@@ -45,7 +45,8 @@ module.exports = function* getAccountList(req, res, next) {
 
 		const mixAccount = _.pick(account.ufwdAccount, [
 			'name', 'sex', 'examine',
-			'phone', 'identification'
+			'phone', 'identification',
+			'party', 'street'
 		]);
 
 		mixAccount.id = account.id;
