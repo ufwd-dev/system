@@ -13,24 +13,41 @@ the api of system
         name: string,
         sex: string,
         phone: string,
-        identification: string
+        identification: string,
+        party: number,
+        street: number
     }
 }
 ```
+## POST /api/ufwd/service/party
+```
+{
+    name: string
+}
+```
+获取所有党派
+
+## POST /api/ufwd/service/street
+```
+{
+    name: string
+}
+```
+获取所有街道
+
+## GET /api/ufwd/service/party
+
+获取所有党派
+
+## GET /api/ufwd/service/street
+
+获取所有街道
 
 ## GET /api/ufwd/service/account?name=string&username=string&examine=boolean&phone=string&identification=string
 获取所有注册的账户信息           
 
 ## GET /api/ufwd/service/account/:aid  
 获取某一指定的账户信息     
-
-## PUT /api/ufwd/service/account/:aid/examine
-修改指定账户审核状态           
-```
-{
-    examine:true(boolean)
-}
-```
 
 ## PUT /api/ufwd/service/account/:aid
 修改指定账户信息          
@@ -41,7 +58,10 @@ the api of system
         name: string,
         sex: string,
         phone: string,
-        identification: string
+        identification: string,
+        examine: boolean,
+        party: number,
+        street: number
     }
 }
 ```
@@ -186,7 +206,9 @@ the api of system
         name:姓名(string),
         sex:性别("male"||"female")(string),
         phone:电话号码(string),
-         identification: string
+        identification: string,
+        party: number,
+        street: number
     }
 }
 ```
@@ -203,7 +225,9 @@ the api of system
         name:新姓名(string),
         sex:性别("male"||"female")(string),
         phone:新电话号码(string),
-        identification: string
+        identification: string,
+        party: number,
+        street: number
     }
 }
 ```

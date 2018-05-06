@@ -71,7 +71,8 @@ router.post('/account', $testBody({
 					pattern: '(^1[3|4|5|8][0-9]{5,9}$)'
 				},
 				identification: {
-					type: 'string'
+					type: 'string',
+					pattern: '(^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$|^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9]|X)$)'
 				},
 				party: {
 					type:  ['number', 'null']
@@ -104,7 +105,8 @@ router.get('/account', $testQuery({
 			type: 'string'
 		},
 		identification: {
-			type: 'string'
+			type: 'string',
+			pattern: '(^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$|^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9]|X)$)'
 		},
 		sex: {
 			type: 'string',
@@ -144,7 +146,8 @@ router.put('/account/:accountId', $testBody({
 					pattern: '(^1[3|4|5|8][0-9]{5,9}$)'
 				},
 				identification: {
-					type: 'string'
+					type: 'string',
+					pattern: '(^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$|^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9]|X)$)'
 				},
 				examine: {
 					type: 'boolean'
@@ -302,7 +305,7 @@ router.post('/street', $testBody({
 		}
 	},
 	additionalProperties: false,
-	required: ['accountId']
+	required: ['name']
 }), createStreet);
 
 router.get('/street', getStreetList);
