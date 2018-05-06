@@ -166,7 +166,7 @@ router.post('/administrator', $testBody({
 		}
 	},
 	additionalProperties: false,
-	required: ['account']
+	required: ['accountId']
 }), createAdministrator);
 
 router.get('/administrator', getAdministratorList);
