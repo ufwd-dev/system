@@ -50,7 +50,7 @@
 			align="center">
 			<template slot-scope="scope">
 				<el-button type="text"
-					@click="getAccountById(scope.row.ufwdAccount.accountId)">{{$t('user.edit')}}</el-button>
+					@click="getAccountById(scope.row.id)">{{$t('user.edit')}}</el-button>
 			</template>
 		</el-table-column>
 	</data-tables>
@@ -77,31 +77,10 @@ export default {
 				let accountData = res.data.data;
 				
 				accountData.forEach(user => {
-					if (!user.ufwdAccount) {
-						user.ufwdAccount = {
-							name: '-',
-							phone: '-',
-							identification: '-'
-						};
-					}
 
-					user.admin = this.$t('user.false');
-					user.ufwd_name = user.ufwdAccount.name;
-					user.ufwd_phone = user.ufwdAccount.phone;
-					user.ufwd_identification = user.ufwdAccount.identification;
-					user.examine = user.ufwdAccount.examine ? this.$t('user.adopt') : this.$t('user.fail');
+					user.admin = user.admin ? this.$t('user.true') : this.$t('user.false');
+					user.examine = user.examine ? this.$t('user.adopt') : this.$t('user.fail');
 					user.created_at = dateFormat(user.created_at, 'yyyy/mm/dd HH:MM');
-
-					axios.get('/api/ufwd/service/administrator')
-						.then(res => {
-							const administratorList = res.data.data;
-
-							administratorList.forEach(admin => {
-								if (admin.accountId === user.id) {
-									user.admin = this.$t('user.true');
-								}
-							});
-						});
 				});
 				
 				this.accountList = accountData;
@@ -117,22 +96,22 @@ export default {
 			accountColumns: [
 				{
 					label: this.$t('user.username'),
-					prop: 'name',
+					prop: 'username',
 					minWidth: '150'
 				},
 				{
 					label: this.$t('user.name'),
-					prop: 'ufwd_name',
+					prop: 'name',
 					width: '120'
 				},
 				{
 					label: this.$t('user.phone'),
-					prop: 'ufwd_phone',
+					prop: 'phone',
 					width: '160'
 				},
 				{
 					label: this.$t('user.identification'),
-					prop: 'ufwd_identification',
+					prop: 'identification',
 					width: '180'
 				},
 				{
@@ -151,7 +130,7 @@ export default {
 				colProps: {
 					span: 8
 				},
-				props: ['name', 'ufwd_name', 'ufwd_phone', 'ufwd_identification']
+				props: ['username', 'name', 'phone', 'identification']
 			},
 			paginationDef: {
 				pageSize: 10,

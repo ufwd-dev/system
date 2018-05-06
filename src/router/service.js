@@ -105,16 +105,6 @@ router.get('/account', $testQuery({
 
 router.get('/account/:accountId', getAccount);
 
-router.put('/account/:accountId/examine', $testBody({
-	properties: {
-		examine: {
-			type: 'boolean'
-		}
-	},
-	additionalProperties: false,
-	required: ['examine']
-}), updateAccountExamine);
-
 router.put('/account/:accountId', $testBody({
 	properties: {
 		name: {
@@ -138,6 +128,9 @@ router.put('/account/:accountId', $testBody({
 				},
 				identification: {
 					type: 'string'
+				},
+				examine: {
+					type: 'boolean'
 				}
 			}
 		}

@@ -70,8 +70,7 @@
 		</el-form-item>
 
 		<el-form-item :label="$t('user.examine')">
-			<el-switch v-model="ufwdAccount.examine"
-				@change="examineUser()"></el-switch>
+			<el-switch v-model="ufwdAccount.examine"></el-switch>
 		</el-form-item>
 
 		<el-form-item>
@@ -101,7 +100,6 @@ export default {
 		return {
 			account: {},
 			ufwdAccount: {
-				groupList: []
 			},
 			groupList: [],
 			list: []
@@ -136,15 +134,9 @@ export default {
 					this.groupList = res.data.data;
 				})
 		},
-		examineUser() {
-			return axios.put(`${ACCOUNT_URL}/${this.accountId}`, {
-				examine: this.ufwdAccount.examine
-			});
-		},
 		updateUser() {
 			return axios.put(`${ACCOUNT_URL}/${this.accountId}`, {
 				name: this.account.name,
-				password: this.account.password,
 				ufwd: this.ufwdAccount
 			}).then(() => {
 				this.$notify({
