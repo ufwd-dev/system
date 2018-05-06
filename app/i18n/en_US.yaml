@@ -7,11 +7,11 @@ ufwd:
 account:
   user: 'User list'
   create: 'User creation'
+  group: 'Group'
 
 system:
   notification: 'Notification'
   advice: 'Advice'
-  group: 'Group'
 
 user:
   users: 'All users'
@@ -34,12 +34,17 @@ user:
   male: 'Male'
   female: 'Female'
   administrator: 'Administrator'
+  party: 'Party'
+  street: 'Street'
   addUser: 'Add user'
   info: 'Account info'
   create: 'Create'
   update: 'Update'
   delete: 'Delete'
   modifyPassword: 'Modify password'
+  placeholder:
+    party: 'Please choose a party.'
+    street: 'Please choose a street.'
 
 group:
   groups: 'All group'

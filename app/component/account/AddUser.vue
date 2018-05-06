@@ -23,16 +23,19 @@
 			prop="username">
 			<el-input v-model="userForm.username"></el-input>
 		</el-form-item>
+
 		<el-form-item
 			:label="$t('user.password')"
 			prop="password">
 			<el-input v-model="userForm.password"></el-input>
 		</el-form-item>
+
 		<el-form-item
 			:label="$t('user.name')"
 			prop="name">
 			<el-input v-model="userForm.name"></el-input>
 		</el-form-item>
+
 		<el-form-item
 			:label="$t('user.sex')"
 			prop="sex"
@@ -42,26 +45,59 @@
 				<el-radio label="female" class="mb-0">{{$t('user.female')}}</el-radio>
 			</el-radio-group>
 		</el-form-item>
+
 		<el-form-item
 			:label="$t('user.identification')"
 			prop="identification">
 			<el-input v-model="userForm.identification"></el-input>
 		</el-form-item>
+
 		<el-form-item
 			:label="$t('user.phone')"
 			prop="phone">
 			<el-input v-model="userForm.phone"></el-input>
 		</el-form-item>
-		<el-form-item label="group" v-if="isShow">
+
+		<!-- <el-form-item :label="$t('user.group')" v-if="isShow">
 			<el-checkbox-group v-model="userForm.group">
-				<el-checkbox v-for="(group, index) in groupList" :key="index" :label="group.id" name="type">
+				<el-checkbox
+					v-for="(group, index) in groupList"
+					:key="index"
+					:label="group.id"
+					name="type">
 					{{group.name}}
 				</el-checkbox>
 			</el-checkbox-group>
-		</el-form-item>
+		</el-form-item> -->
+
 		<el-form-item :label="$t('user.administrator')">
 			<el-switch v-model="admin"></el-switch>
 		</el-form-item>
+
+		<el-form-item :label="$t('user.party')">
+			<el-select v-model="userForm.party"
+				:placeholder="$t('user.placeholder.party')">
+				<el-option
+					v-for="(party, index) in partyPool"
+					:key="index"
+					:label="party.label"
+					:value="party.value">
+				</el-option>
+			</el-select>
+		</el-form-item>
+
+		<el-form-item :label="$t('user.street')">
+			<el-select v-model="userForm.street"
+				:placeholder="$t('user.placeholder.street')">
+				<el-option
+					v-for="(street, index) in streetPool"
+					:key="index"
+					:label="street.label"
+					:value="street.value">
+				</el-option>
+			</el-select>
+		</el-form-item>
+
 		<el-form-item>
 			<el-button
 				type="primary"
@@ -74,9 +110,11 @@
 
 <script>
 import axios from 'axios';
+import mixin from './mixins';
 
 export default {
 	name: 'add-user',
+	mixins: [mixin],
 	data() {
 		return {
 			userForm: {
@@ -86,6 +124,8 @@ export default {
 				sex: '',
 				phone: '',
 				identification: '',
+				party: '',
+				street: '',
 				group: []
 			},
 			groupList: [],
@@ -139,7 +179,6 @@ export default {
 					}
 				]
 			},
-			admin: false
 		}
 	},
 	mounted() {
@@ -157,7 +196,9 @@ export default {
 							name: this.userForm.name,
 							sex: this.userForm.sex,
 							phone: this.userForm.phone,
-							identification: this.userForm.identification
+							identification: this.userForm.identification,
+							party: this.userForm.party,
+							street: this.userForm.street
 						}
 					}).then(res => {
 						this.createAdmin(res.data.data.id);

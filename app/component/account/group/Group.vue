@@ -7,7 +7,7 @@
 				<router-link tag="a"
 					to="/">{{$t('home')}}</router-link>
 			</li>
-			<li class="breadcrumb-item active">{{$t('system.group')}}</li>
+			<li class="breadcrumb-item active">{{$t('account.group')}}</li>
 		</ol>
 	</nav>
 

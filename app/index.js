@@ -15,6 +15,8 @@ app.i18n.locale = 'zh';
 import User from  './component/account/User.vue';
 import Info from  './component/account/Info.vue';
 import AddUser from './component/account/AddUser.vue';
+import Group from './component/account/group/Group.vue';
+import GroupDetail from './component/account/group/Detail.vue';
 
 app.menu.addGroup('ufwd.account', [
 	{
@@ -24,6 +26,10 @@ app.menu.addGroup('ufwd.account', [
 	{
 		label: 'account.create',
 		path: '/ufwd/account/create'
+	},
+	{
+		label: 'account.group',
+		path: '/ufwd/account/group'
 	}
 ]);
 
@@ -46,6 +52,14 @@ app.router.addRoutes([
 			{
 				path: 'create',
 				component: AddUser
+			},
+			{
+				path: 'group',
+				component: Group
+			},
+			{
+				path: 'group/:id/detail',
+				component: GroupDetail
 			}
 		]
 	}
@@ -54,8 +68,6 @@ app.router.addRoutes([
 import Notification from  './component/system/notification/Notification.vue';
 import AddNotification from  './component/system/notification/New.vue';
 import Advice from  './component/system/Advice.vue';
-import Group from './component/system/group/Group.vue';
-import GroupDetail from './component/system/group/Detail.vue';
 
 app.menu.addGroup('ufwd.system', [
 	{
@@ -66,10 +78,6 @@ app.menu.addGroup('ufwd.system', [
 		label: 'system.advice',
 		path: '/ufwd/system/advice'
 	},
-	{
-		label: 'system.group',
-		path: '/ufwd/system/group'
-	}
 ]);
 
 app.router.addRoutes([
@@ -92,14 +100,6 @@ app.router.addRoutes([
 				path: 'advice',
 				component: Advice
 			},
-			{
-				path: 'group',
-				component: Group
-			},
-			{
-				path: 'group/:id/detail',
-				component: GroupDetail
-			}
 		]
 	}
 ]);

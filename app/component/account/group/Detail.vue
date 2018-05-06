@@ -7,7 +7,7 @@
 				<router-link tag="a" to="/">{{$t('home')}}</router-link>
 			</li>
 			<li class="breadcrumb-item">
-				<router-link tag="a" to="/ufwd/system/group">{{$t('system.group')}}</router-link>
+				<router-link tag="a" to="/ufwd/account/group">{{$t('account.group')}}</router-link>
 			</li>
 			<li class="breadcrumb-item active">{{group.name}}</li>
 		</ol>
@@ -54,7 +54,8 @@ export default {
 	},
 	data() {
 		return {
-			group: {}
+			group: {},
+			accountList: []
 		}
 	},
 	methods: {
@@ -71,10 +72,21 @@ export default {
 			}).then(() => {
 				this.$router.go(-1);
 			})
-		}
+		},
+		// getUserWithGroup() {
+		// 	return axios.get(`/api/ufwd/service/group/${this.groupId}/account`)
+		// 		.then(res => {
+		// 			let accountData = res.data.data;
+
+		// 			accountData.forEach(account => {
+						
+		// 			});
+		// 		})
+		// }
 	},
 	mounted() {
 		this.getGroup();
+		// this.getUserWithGroup();
 	}
 }
 </script>

@@ -7,11 +7,11 @@ ufwd:
 account:
   user: '用户列表'
   create: '用户创建'
+  group: '分组管理'
 
 system:
   notification: '通知管理'
   advice: '建言管理'
-  group: '分组管理'
 
 user:
   users: '全部用户'
@@ -34,12 +34,18 @@ user:
   male: '男'
   female: '女'
   administrator: '管理员'
+  party: '党派'
+  street: '街道'
   addUser: '添加新用户'
   info: '用户信息'
   create: '创建'
   update: '更新'
   delete: '删除'
   modifyPassword: '修改密码'
+  placeholder:
+    party: '请选择一个党派'
+    street: '请选择一个街道'
+    group: '请选择'
 
 group:
   groups: '全部分组'
@@ -70,3 +76,6 @@ notification:
   new: '新建'
   create: '创建'
   addNotification: '添加新通知'
+
+notify:
+  error: '错误'
