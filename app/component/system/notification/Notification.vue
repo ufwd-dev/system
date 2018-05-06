@@ -4,13 +4,13 @@
 	<nav>
 		<ol class="breadcrumb mb-4">
 			<li class="breadcrumb-item">
-				<router-link tag="a" to="/">{{$t('home')}}</router-link>
+				<router-link tag="a" to="/">{{$t('ufwd.home')}}</router-link>
 			</li>
-			<li class="breadcrumb-item active">{{$t('system.notification')}}</li>
+			<li class="breadcrumb-item active">{{$t('ufwd.system.notification')}}</li>
 		</ol>
 	</nav>
 
-	<h3>{{$t('notification.notification')}}</h3>
+	<h3>{{$t('ufwd.notification.notification')}}</h3>
 	<hr>
 
 	<data-tables
@@ -42,17 +42,17 @@ export default {
 			notificationList: [],
 			notificationColumns: [
 				{
-					label: this.$t('notification.recevier'),
+					label: this.$t('ufwd.notification.recevier'),
 					prop: 'recevier',
 					width: '180'
 				},
 				{
-					label: this.$t('notification.content'),
+					label: this.$t('ufwd.notification.content'),
 					prop: 'content',
 					minWidth: '200'
 				},
 				{
-					label: this.$t('notification.createAt'),
+					label: this.$t('ufwd.notification.createAt'),
 					prop: 'created_at',
 					width: '180',
 					sortable: 'custom'
@@ -63,7 +63,7 @@ export default {
 					span: 8
 				},
 				inputProps: {
-					placeholder: this.$t('notification.content')
+					placeholder: this.$t('ufwd.notification.content')
 				},
 				props: ['content']
 			},
@@ -77,7 +77,7 @@ export default {
 				},
 				def: [
 					{
-						name: this.$t('notification.new'),
+						name: this.$t('ufwd.notification.new'),
 						type: 'primary',
 						handler: () => {
 							this.$router.push('add-notification');

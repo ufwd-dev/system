@@ -4,13 +4,13 @@
 	<nav>
 		<ol class="breadcrumb mb-4">
 			<li class="breadcrumb-item">
-				<router-link tag="a" to="/">{{$t('home')}}</router-link>
+				<router-link tag="a" to="/">{{$t('ufwd.home')}}</router-link>
 			</li>
-			<li class="breadcrumb-item active">{{$t('system.advice')}}</li>
+			<li class="breadcrumb-item active">{{$t('ufwd.system.advice')}}</li>
 		</ol>
 	</nav>
 
-	<h3>{{$t('advice.advice')}}</h3>
+	<h3>{{$t('ufwd.advice.advice')}}</h3>
 	<hr>
 
 	<data-tables
@@ -41,17 +41,17 @@ export default {
 			adviceList: [],
 			adviceColumns: [
 				{
-					label: this.$t('advice.account'),
+					label: this.$t('ufwd.advice.account'),
 					prop: 'accountId',
 					width: '150'
 				},
 				{
-					label: this.$t('advice.content'),
+					label: this.$t('ufwd.advice.content'),
 					prop: 'content',
 					minWidth: '200'
 				},
 				{
-					label: this.$t('advice.createAt'),
+					label: this.$t('ufwd.advice.createAt'),
 					prop: 'created_at',
 					width: '200',
 					sortable: 'custom'
@@ -62,7 +62,7 @@ export default {
 					span: 8
 				},
 				inputProps: {
-					placeholder: this.$t('advice.content')
+					placeholder: this.$t('ufwd.advice.content')
 				},
 				props: ['content']
 			},

@@ -4,22 +4,22 @@
 	<nav>
 		<ol class="breadcrumb mb-4">
 			<li class="breadcrumb-item">
-				<router-link tag="a" to="/">{{$t('home')}}</router-link>
+				<router-link tag="a" to="/">{{$t('ufwd.home')}}</router-link>
 			</li>
 			<li class="breadcrumb-item">
-				<router-link tag="a" to="/ufwd/system/notification">{{$t('system.notification')}}</router-link>
+				<router-link tag="a" to="/ufwd/system/notification">{{$t('ufwd.system.notification')}}</router-link>
 			</li>
-			<li class="breadcrumb-item active">{{$t('notification.addNotification')}}</li>
+			<li class="breadcrumb-item active">{{$t('ufwd.notification.addNotification')}}</li>
 		</ol>
 	</nav>
 
-	<h3>{{$t('notification.addNotification')}}</h3>
+	<h3>{{$t('ufwd.notification.addNotification')}}</h3>
 	<hr>
 
 	<div class="row">
 		<div class="col-6">
 			<el-form :model="notifyForm">
-				<el-form-item :label="$t('notification.content')">
+				<el-form-item :label="$t('ufwd.notification.content')">
 					<el-input
 						type="textarea"
 						rows="3"
@@ -27,7 +27,7 @@
 				</el-form-item>
 
 				<div class="el-form-item__content">
-					<label class="el-form-item__label">{{$t('notification.recevier')}}</label>
+					<label class="el-form-item__label">{{$t('ufwd.notification.recevier')}}</label>
 				</div>
 				<ul class="list-group el-form-item">
 					<li class="list-group-item disabled">请在右边列表中选择用户</li>
@@ -37,12 +37,21 @@
 				</ul>
 				<el-form-item>
 					<el-button type="primary"
-						@click="createNotify()">{{$t('notification.create')}}</el-button>
+						@click="createNotify()">{{$t('ufwd.notification.create')}}</el-button>
 				</el-form-item>
 			</el-form>
 		</div>
 
 		<div class="col-6">
+			<el-select v-model="group"
+				placeholder="请选择一个分组">
+				<el-option
+					v-for="group in groupPool"
+					:key="group.id"
+					:label="group.name"
+					:value="group.id">
+				</el-option>
+			</el-select>
 			<data-tables
 				ref="accountList"
 				@selection-change="handleSelection"
@@ -83,30 +92,26 @@ export default {
 			accountList: [],
 			accountColumn: [
 				{
-					label: this.$t('user.username'),
+					label: this.$t('ufwd.user.username'),
 					prop: 'username',
 					width: '150'
 				},
 				{
-					label: this.$t('user.group'),
+					label: this.$t('ufwd.user.group'),
 					prop: 'groupPool',
 					minWidth: '180'
 				}
 			],
 			searchDef: {
-				props: ['group'],
-				inputProps: {
-					placeholder: this.$t('user.group')
-				},
-				colProps: {
-					span: 16
-				}
+				show: false
 			},
 			paginationDef: {
 				pageSize: 10,
 				pageSizes: [5, 10, 20],
 			},
-			multipleUser: []
+			multipleUser: [],
+			group: '',
+			groupPool: []
 		}
 	},
 	methods: {
@@ -139,10 +144,17 @@ export default {
 				.then(res => {
 					this.accountList = res.data.data;
 				})
+		},
+		getGroupPool() {
+			return axios.get(`/api/ufwd/service/group`)
+				.then(res => {
+					this.groupPool = res.data.data;
+				})
 		}
 	},
 	mounted() {
 		this.getUserList();
+		this.getGroupPool();
 	}
 }
 </script>
