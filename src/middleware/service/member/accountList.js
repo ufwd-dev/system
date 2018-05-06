@@ -19,10 +19,6 @@ module.exports = function* getMemberAccountList(req, res, next) {
 
 	const list = [];
 
-	if (memberList.length === 0) {
-		throwError('The group have no account.', 404);
-	}
-
 	for (let i = 0; i < memberList.length; i++) {
 
 		const ufwdAccount = yield UfwdAccount.findOne({

@@ -35,10 +35,6 @@ module.exports = function* getAccountList(req, res, next) {
 
 	const administratorList = yield UfwdAdministrator.findAll();
 
-	if (accountList.length === 0) {
-		throwError('The account is not exist.', 404);
-	}
-
 	const mixedAccountList = [];
 
 	accountList.forEach(account => {

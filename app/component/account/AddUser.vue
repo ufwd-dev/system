@@ -58,18 +58,6 @@
 			<el-input v-model="userForm.phone"></el-input>
 		</el-form-item>
 
-		<!-- <el-form-item :label="$t('user.group')" v-if="isShow">
-			<el-checkbox-group v-model="userForm.groupPool">
-				<el-checkbox
-					v-for="(group, index) in groupList"
-					:key="index"
-					:label="group.id"
-					name="type">
-					{{group.name}}
-				</el-checkbox>
-			</el-checkbox-group>
-		</el-form-item> -->
-
 		<el-form-item :label="$t('user.administrator')">
 			<el-switch v-model="admin"></el-switch>
 		</el-form-item>
@@ -80,10 +68,14 @@
 			<el-select v-model="userForm.party"
 				:placeholder="$t('user.placeholder.party')">
 				<el-option
+					label="暂无"
+					:value="value">
+				</el-option>
+				<el-option
 					v-for="(party, index) in partyPool"
 					:key="index"
-					:label="party.label"
-					:value="party.value">
+					:label="party.name"
+					:value="party.id">
 				</el-option>
 			</el-select>
 		</el-form-item>
@@ -96,8 +88,8 @@
 				<el-option
 					v-for="(street, index) in streetPool"
 					:key="index"
-					:label="street.label"
-					:value="street.value">
+					:label="street.name"
+					:value="street.id">
 				</el-option>
 			</el-select>
 		</el-form-item>
@@ -114,11 +106,9 @@
 
 <script>
 import axios from 'axios';
-import mixin from './mixins';
 
 export default {
 	name: 'add-user',
-	mixins: [mixin],
 	data() {
 		return {
 			userForm: {
@@ -128,12 +118,14 @@ export default {
 				sex: '',
 				phone: '',
 				identification: '',
-				party: '',
-				street: '',
+				party: null,
+				street: null,
 				groupPool: []
 			},
-			groupList: [],
-			isShow: false,
+			value: null,
+			partyPool: [],
+			streetPool: [],
+			admin: false,
 			userRule: {
 				username: [
 					{
@@ -199,11 +191,16 @@ export default {
 			},
 		}
 	},
+	mounted() {
+		this.getPartyList();
+		this.getStreetList();
+	},
 	methods: {
 		createUser(formName) {
 			
 			this.$refs[formName].validate((valid) => {
 				if (valid) {
+
 					return axios.post(`/api/ufwd/service/account`, {
 						name: this.userForm.username,
 						password: this.userForm.password,
@@ -253,11 +250,17 @@ export default {
 						});
 					});
 			}
+		},
+		getPartyList() {
+			return axios.get('/api/ufwd/service/party').then(res => {
+				this.partyPool = res.data.data;
+			})
+		},
+		getStreetList() {
+			return axios.get('/api/ufwd/service/street').then(res => {
+				this.streetPool = res.data.data;
+			})
 		}
 	}
 }
 </script>
-
-<style>
-
-</style>

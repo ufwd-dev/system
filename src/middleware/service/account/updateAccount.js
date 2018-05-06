@@ -5,10 +5,10 @@ const {throwError} = require('error-standardize');
 module.exports = function* ufwdUpdateAccount(req, res, next) {
 	const Account = res.sequelize.model('account');
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
+	const _ = require('lodash');
 
 	const { accountId } = req.params;
 	const { name, ufwd } = req.body;
-	const result = {};
 
 	const account = yield Account.findOne({
 		where: {
@@ -35,8 +35,6 @@ module.exports = function* ufwdUpdateAccount(req, res, next) {
 	}
 	
 	yield account.update({ name });
-
-	result.username = name;
 
 	if (ufwd) {
 
@@ -78,10 +76,13 @@ module.exports = function* ufwdUpdateAccount(req, res, next) {
 		}
 
 	}
+	const mixedAccount = _.pick('ufwd', [
+		'name', 'phone', 'identification', 'party', 'street'
+	]);
 
-	result.ufwd = ufwd;
+	mixedAccount.username = name;
 
-	res.data(result);
+	res.data(mixedAccount);
 
 	next();
 };
