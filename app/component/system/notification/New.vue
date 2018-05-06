@@ -19,15 +19,22 @@
 	<div class="row">
 		<div class="col-6">
 			<el-form :model="notifyForm">
-				<el-form-item :label="$t('notification.recevier')">
-					<el-input v-model="notifyForm.recevierPool"></el-input>
-				</el-form-item>
 				<el-form-item :label="$t('notification.content')">
 					<el-input
 						type="textarea"
 						rows="3"
 						v-model="notifyForm.content"></el-input>
 				</el-form-item>
+
+				<div class="el-form-item__content">
+					<label class="el-form-item__label">{{$t('notification.recevier')}}</label>
+				</div>
+				<ul class="list-group el-form-item">
+					<li class="list-group-item disabled">请在右边列表中选择用户</li>
+					<li class="list-group-item"
+						v-for="(user, index) in notifyForm.recevierPool"
+						:key="index">{{user}}</li>
+				</ul>
 				<el-form-item>
 					<el-button type="primary"
 						@click="createNotify()">{{$t('notification.create')}}</el-button>
@@ -76,13 +83,13 @@ export default {
 			accountList: [],
 			accountColumn: [
 				{
-					label: this.$t('user.name'),
-					prop: 'ufwdAccount.name',
+					label: this.$t('user.username'),
+					prop: 'username',
 					width: '150'
 				},
 				{
 					label: this.$t('user.group'),
-					prop: 'groupList',
+					prop: 'groupPool',
 					minWidth: '180'
 				}
 			],
@@ -108,40 +115,29 @@ export default {
 			this.notifyForm.recevierPool = [];
 
 			this.multipleUser.forEach(account => {
-				this.notifyForm.recevierPool.push(account.ufwdAccount.name);
+				this.notifyForm.recevierPool.push(account.username);
 			});
 		},
 		createNotify() {
 			return axios.post('/api/ufwd/service/notification', this.notifyForm)
 				.then(() => {
 					this.$notify({
-						title: 'Success',
-						message: 'Create successful!',
+						title: '成功',
+						message: '通知创建成功！',
 						type: 'success'
 					})
 				})
 				.catch(err => {
 					this.$notify.error({
-						title: 'Fail',
-						message: 'Fail to create notification.'
+						title: '失败',
+						message: '通知创建失败。'
 					})
 				});
-
 		},
 		getUserList() {
 			return axios.get(`/api/ufwd/service/account`)
 				.then(res => {
 					this.accountList = res.data.data;
-
-					// this.accountList.forEach(account => {
-					// 	console.log(account.accountId)
-					// 	axios.get(`/api/ufwd/service/account/${account.accountId}/group`)
-					// 		.then(res => {
-					// 			account.groupPool = res.data.data;
-					// 		});
-					// });
-
-					console.log(this.accountList);
 				})
 		}
 	},

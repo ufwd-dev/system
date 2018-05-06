@@ -201,8 +201,8 @@ export default {
 				ufwd: this.ufwdAccount
 			}).then(() => {
 				this.$notify({
-					title: 'Success',
-					message: 'Amend the success!',
+					title: '成功',
+					message: '用户信息修改成功！',
 					type: 'success'
 				});
 			});
@@ -211,15 +211,15 @@ export default {
 			return axios.delete(`${ACCOUNT_URL}/${this.accountId}`)
 				.then(() => {
 					this.$notify({
-						title: 'Success',
-						message: 'Remove success!',
+						title: '成功',
+						message: '用户删除成功！',
 						type: 'success'
 					});
 				})
 				.catch(error => {
 					this.$notify.error({
-						title: 'Fail',
-						message: error.message
+						title: '错误',
+						message: '用户删除失败。'
 					});
 				});
 		},
@@ -232,8 +232,8 @@ export default {
 					.then(() => {})
 					.catch(err => {
 						this.$notify.error({
-							title: 'Error',
-							message: 'This Account can not be set as administrator.'
+							title: '错误',
+							message: '不能设置该账户为管理员。'
 						});
 					});
 			}
@@ -248,8 +248,8 @@ export default {
 					.then(() => {})
 					.catch(err => {
 						this.$notify.error({
-							title: this.$t('notify.error'),
-							message: 'The grouping for account is fail.'
+							title: '错误',
+							message: '用户分组失败。'
 						});
 					});
 			}

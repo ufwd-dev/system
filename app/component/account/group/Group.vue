@@ -124,8 +124,8 @@ export default {
 									})
 									.catch(error => {
 										this.$notify.error({
-											title: 'Error',
-											message: 'Fail to delete group'
+											title: '错误',
+											message: '分组删除失败。'
 										});
 									});
 							});
@@ -142,8 +142,8 @@ export default {
 				name: [
 					{
 						required: true,
+						message: '请输入分组名称',
 						trigger: 'blur',
-						message: this.$t('group.rule.message')
 					}
 				]
 			}
@@ -163,8 +163,8 @@ export default {
 				})
 				.catch(error => {
 					this.$notify.error({
-						title: 'Error',
-						message: 'Fail to create group.'
+						title: '错误',
+						message: '分组创建失败。'
 					})
 				});
 

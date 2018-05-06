@@ -59,7 +59,7 @@
 		</el-form-item>
 
 		<!-- <el-form-item :label="$t('user.group')" v-if="isShow">
-			<el-checkbox-group v-model="userForm.group">
+			<el-checkbox-group v-model="userForm.groupPool">
 				<el-checkbox
 					v-for="(group, index) in groupList"
 					:key="index"
@@ -74,7 +74,9 @@
 			<el-switch v-model="admin"></el-switch>
 		</el-form-item>
 
-		<el-form-item :label="$t('user.party')">
+		<el-form-item
+			:label="$t('user.party')"
+			prop="party">
 			<el-select v-model="userForm.party"
 				:placeholder="$t('user.placeholder.party')">
 				<el-option
@@ -86,7 +88,9 @@
 			</el-select>
 		</el-form-item>
 
-		<el-form-item :label="$t('user.street')">
+		<el-form-item
+			:label="$t('user.street')"
+			prop="street">
 			<el-select v-model="userForm.street"
 				:placeholder="$t('user.placeholder.street')">
 				<el-option
@@ -126,7 +130,7 @@ export default {
 				identification: '',
 				party: '',
 				street: '',
-				group: []
+				groupPool: []
 			},
 			groupList: [],
 			isShow: false,
@@ -134,47 +138,61 @@ export default {
 				username: [
 					{
 						required: true,
-						message: 'Please input activity username.',
+						message: '请输入用户名',
 						trigger: 'blur'
 					},
 					{
 						min: 4,
 						max: 128,
-						message: 'Length should be 4 to 128.',
+						message: '用户名长度应在4到128位之间',
 						trigger: 'blur'
 					}
 				],
 				password: [
 					{
 						required: true,
-						message: 'Please input activity password.',
+						message: '请输入密码',
 						trigger: 'blur'
 					},
 					{
 						min: 6,
 						max: 32,
-						message: 'Length should be 6 to 32.',
+						message: '密码长度应在6到32位之间',
 						trigger: 'blur'
 					}
 				],
 				name: [
 					{
 						required: true,
-						message: 'Please input activity name.',
+						message: '请输入姓名',
 						trigger: 'blur'
 					}
 				],
 				identification: [
 					{
 						required: true,
-						message: 'Please input activity identification.',
+						message: '请输入身份证号码',
 						trigger: 'blur'
 					}
 				],
 				phone: [
 					{
 						required: true,
-						message: 'Please input activity phone.',
+						message: '请输入手机号码',
+						trigger: 'blur'
+					}
+				],
+				party: [
+					{
+						required: true,
+						message: '请选择党派',
+						trigger: 'blur' 
+					}
+				],
+				street: [
+					{
+						required: true,
+						message: '请选择街道',
 						trigger: 'blur'
 					}
 				]
@@ -203,22 +221,22 @@ export default {
 						this.$refs[formName].resetFields();
 
 						this.$notify({
-							title: 'Success',
-							message: 'The create of account is successful.',
+							title: '成功',
+							message: '用户创建成功！',
 							type: 'success'
 						});
 					}).catch(err => {
 						this.$refs[formName].resetFields();
 						
 						this.$notify.error({
-							title: 'Error',
-							message: 'The create of account is break off, please to update it.'
+							title: '错误',
+							message: '用户创建成功，但您可以继续完善信息。'
 						});
 					});
 				} else {
 					this.$notify.error({
-						title: 'Error',
-						message: 'Please fill the form.'
+						title: '错误',
+						message: '请把表单填写完整。'
 					});
 				}
 			});
@@ -230,8 +248,8 @@ export default {
 				}).then(() => {})
 					.catch(err => {
 						this.$notify.error({
-							title: 'Error',
-							message: 'This Account can not be set as administrator.'
+							title: '错误',
+							message: '不能设置该用户为管理员。'
 						});
 					});
 			}
