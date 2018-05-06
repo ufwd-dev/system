@@ -10,6 +10,7 @@ const {
 	ufwdServiceCreateAccount,
 	getAccountList,
 	getAccount,
+	getRealAccount,
 	ufwdUpdateAccount,
 	deleteAccount,
 	updatePassword,
@@ -39,7 +40,8 @@ const {
 	createStreet,
 	getStreetList,
 	getStreet,
-	getParty
+	getParty,
+	createMemberList
 } = require('express-handler-loader')('ufwd');
 
 const router = module.exports = require('express').Router();
@@ -164,7 +166,7 @@ router.put('/account/:accountId', $testBody({
 	additionalProperties: false
 }), getParty, getStreet, ufwdUpdateAccount);
 
-router.delete('/account/:accountId', getAccount, deleteAccount);
+router.delete('/account/:accountId', getRealAccount, deleteAccount);
 
 router.patch('/account/:accountId/password', $testBody({
 	properties: {
@@ -232,19 +234,32 @@ router.put('/group/:groupId', $testBody({
 
 router.delete('/group/:groupId', getGroup, deleteGroup);
 
-router.post('/group/:groupId/account/:accountId', getGroup, getAccount, createMember);
+router.post('/group/:groupId/account/:accountId', getGroup, getRealAccount, createMember);
 
-router.get('/account/:accountId/group', getAccount, getMemberGroupList);
+router.post('/group/account/:accountId', $testBody({
+	properties: {
+		groupPool: {
+			type: 'array',
+			items: { 
+				type: 'number'
+			}
+		}
+	},
+	additionalProperties: false,
+	required: ['groupPool']
+}), getRealAccount, createMemberList);
 
-router.get('/account/:accountId/group/:groupId', getAccount, getGroup, getMemberGroup);
+router.get('/account/:accountId/group', getRealAccount, getMemberGroupList);
 
-router.delete('/account/:accountId/group/:groupId', getAccount, getGroup, deleteMemberAccount);
+router.get('/account/:accountId/group/:groupId', getRealAccount, getGroup, getMemberGroup);
+
+router.delete('/account/:accountId/group/:groupId', getRealAccount, getGroup, deleteMemberAccount);
 
 router.get('/group/:groupId/account', getGroup, getMemberAccountList);
 
-router.get('/group/:groupId/account/:accountId', getGroup, getAccount, getMemberAccount);
+router.get('/group/:groupId/account/:accountId', getGroup, getRealAccount, getMemberAccount);
 
-router.delete('/group/:groupId/account/:accountId', getGroup, getAccount, deleteMemberAccount);
+router.delete('/group/:groupId/account/:accountId', getGroup, getRealAccount, deleteMemberAccount);
 
 router.post('/notification', $testBody({
 	properties: {

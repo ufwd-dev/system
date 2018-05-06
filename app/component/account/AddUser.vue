@@ -181,9 +181,6 @@ export default {
 			},
 		}
 	},
-	mounted() {
-		this.getGroupList();
-	},
 	methods: {
 		createUser(formName) {
 			
@@ -202,10 +199,6 @@ export default {
 						}
 					}).then(res => {
 						this.createAdmin(res.data.data.id);
-
-						return res.data.data.id
-					}).then(accountId => {
-						this.createMember(this.userForm.group, accountId)
 					}).then(() => {
 						this.$refs[formName].resetFields();
 
@@ -230,16 +223,6 @@ export default {
 				}
 			});
 		},
-		getGroupList() {
-			return axios.get(`/api/ufwd/service/group`)
-				.then(res => {
-					if (res.data.data.length > 0) {
-						this.isShow = true;
-					}
-
-					this.groupList = res.data.data;
-				});
-		},
 		createAdmin(accountId) {
 			if (this.admin) {
 				return axios.post('/api/ufwd/service/administrator', {
@@ -249,22 +232,6 @@ export default {
 						this.$notify.error({
 							title: 'Error',
 							message: 'This Account can not be set as administrator.'
-						});
-					});
-			}
-		},
-		createMember(groupList, accountId) {
-			if (groupList.length === 0) {
-				return;
-			}
-
-			for(let i = 0; i < groupList.length; i++) {
-				axios.post(`/api/ufwd/service/group/${groupList[i]}/account/${accountId}`)
-					.then(() => {})
-					.catch(err => {
-						this.$notify.error({
-							title: 'Error',
-							message: 'The grouping for account is fail.'
 						});
 					});
 			}

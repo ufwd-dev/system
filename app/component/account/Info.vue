@@ -68,7 +68,6 @@
 			</el-checkbox-group>
 		</el-form-item> -->
 
-		<el-form-item :label="$t('user.group')">
 			<el-select v-model="ufwdAccount.groupPool"
 				multiple
 				:placeholder="$t('user.placeholder.group')">
@@ -79,6 +78,7 @@
 					:value="group.id">
 				</el-option>
 			</el-select>
+		<el-form-item :label="$t('user.group')">
 		</el-form-item>
 
 		<el-form-item :label="$t('user.examine')">
@@ -155,6 +155,7 @@ export default {
 			},
 			groupList: [],
 			list: [],
+			admin: false
 		}
 	},
 	methods: {
@@ -260,11 +261,7 @@ export default {
 	mounted() {
 		this.getUserInfo();
 		this.getGroupList();
-		// return axios.get(`/api/ufwd/service/account/${this.accountId}/group`)
-		// 	.then(res => {
-		// 		console.log(res.data.data)
-		// 	})
-	},
+	}
 }
 </script>
 
