@@ -10,7 +10,6 @@ const {
 	ufwdServiceCreateAccount,
 	getAccountList,
 	getAccount,
-	updateAccountExamine,
 	ufwdUpdateAccount,
 	deleteAccount,
 	updatePassword,
@@ -35,6 +34,12 @@ const {
 	getAdviseList,
 	getAdvise,
 	deleteAdvise,
+	createParty,
+	getPartyList,
+	createStreet,
+	getStreetList,
+	getStreet,
+	getParty
 } = require('express-handler-loader')('ufwd');
 
 const router = module.exports = require('express').Router();
@@ -67,15 +72,21 @@ router.post('/account', $testBody({
 				},
 				identification: {
 					type: 'string'
+				},
+				party: {
+					type:  ['number', 'null']
+				},
+				street: {
+					type: 'number'
 				}
 			},
 			additionalProperties: false,
-			required: ['name', 'sex', 'phone', 'identification']
+			required: ['name', 'sex', 'phone', 'identification', 'party', 'street']
 		}
 	},
 	additionalProperties: false,
 	required: ['name', 'password', 'ufwd']
-}), createAccount, ufwdServiceCreateAccount);
+}), createAccount, getParty, getStreet, ufwdServiceCreateAccount);
 
 router.get('/account', $testQuery({
 	properties: {
@@ -98,6 +109,12 @@ router.get('/account', $testQuery({
 		sex: {
 			type: 'string',
 			pattern: '(^male$|^female$)'
+		},
+		party: {
+			type:  ['number', 'null']
+		},
+		street: {
+			type: 'number'
 		}
 	},
 	additionalProperties: false
@@ -131,12 +148,18 @@ router.put('/account/:accountId', $testBody({
 				},
 				examine: {
 					type: 'boolean'
+				},
+				party: {
+					type:  ['number', 'null']
+				},
+				street: {
+					type: 'number'
 				}
 			}
 		}
 	},
 	additionalProperties: false
-}), ufwdUpdateAccount);
+}), getParty, getStreet, ufwdUpdateAccount);
 
 router.delete('/account/:accountId', getAccount, deleteAccount);
 
@@ -259,3 +282,27 @@ router.get('/advise', $testQuery({
 router.get('/advise/:adviseId', getAdvise);
 
 router.delete('/advise/:adviseId', getAdvise, deleteAdvise);
+
+router.post('/party', $testBody({
+	properties: {
+		name: {
+			type: 'string'
+		}
+	},
+	additionalProperties: false,
+	required: ['name']
+}), createParty);
+
+router.get('/party', getPartyList);
+
+router.post('/street', $testBody({
+	properties: {
+		name: {
+			type: 'string'
+		}
+	},
+	additionalProperties: false,
+	required: ['accountId']
+}), createStreet);
+
+router.get('/street', getStreetList);

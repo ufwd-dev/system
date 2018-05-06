@@ -9,6 +9,8 @@ const Administrator = require('./administrator');
 const Notification = require('./notification');
 const Advise = require('./advise');
 const {Group, Member} = require('./group');
+const Party = require('./party');
+const Street = require('./street');
 
 UfwdAccount.belongsTo(Account, {
 	foreignKey: 'accountId',
@@ -22,6 +24,14 @@ Administrator.belongsTo(UfwdAccount, {
 });
 UfwdAccount.hasOne(Administrator, {
 	foreignKey: 'accountId',
+});
+
+Party.hasMany(UfwdAccount, {
+	foreignKey: 'party',
+});
+
+Street.hasMany(UfwdAccount, {
+	foreignKey: 'street',
 });
 
 Advise.belongsTo(UfwdAccount, {

@@ -9,7 +9,7 @@ const ufwdAccount = sequelize.model('ufwdAccount');
 const Group = sequelize.define('ufwdGroup', {
 	name: {
 		type: Sequelize.STRING,
-		allowNull: false,
+		allowNull: false
 	},
 	description: {
 		type: Sequelize.TEXT,

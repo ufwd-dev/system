@@ -21,7 +21,9 @@ const {
 	getOwnNotificationList,
 	deleteOwnNotification,
 	getOwnGroup,
-	getOwnGroupList
+	getOwnGroupList,
+	getParty,
+	getStreet
 } = require('express-handler-loader')('ufwd');
 
 const router = module.exports = require('express').Router();
@@ -54,6 +56,12 @@ router.post('/account', $testBody({
 				},
 				identification: {
 					type: 'string'
+				},
+				party: {
+					type:  ['number', 'null']
+				},
+				street: {
+					type: 'number'
 				}
 			},
 			required: ['name', 'sex', 'phone', 'identification']
@@ -61,7 +69,7 @@ router.post('/account', $testBody({
 	},
 	additionalProperties: false,
 	required: ['name', 'password', 'ufwd']
-}), isAccountUnsignedIn, createAccount, ufwdCreateAccount);
+}), isAccountUnsignedIn, createAccount, getParty, getStreet, ufwdCreateAccount);
 
 router.post('/account/session', $testBody({
 	properties: {
@@ -118,12 +126,18 @@ router.put('/account', $testBody({
 				},
 				identification: {
 					type: 'string'
+				},
+				party: {
+					type:  ['number', 'null']
+				},
+				street: {
+					type: 'number'
 				}
 			},
 		}
 	},
 	additionalProperties: false,
-}), isAccountSignedIn, updateInformation);
+}), isAccountSignedIn, getParty, getStreet, updateInformation);
 
 router.patch('/account/password', $testBody({
 	properties: {

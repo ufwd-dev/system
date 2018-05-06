@@ -5,6 +5,7 @@ const {throwError} = require('error-standardize');
 module.exports = function* ufwdUpdateAccount(req, res, next) {
 	const Account = res.sequelize.model('account');
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
+
 	const { accountId } = req.params;
 	const { name, ufwd } = req.body;
 	const result = {};
@@ -76,8 +77,9 @@ module.exports = function* ufwdUpdateAccount(req, res, next) {
 			);
 		}
 
-		result.ufwd = ufwd;
 	}
+
+	result.ufwd = ufwd;
 
 	res.data(result);
 

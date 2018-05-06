@@ -3,17 +3,19 @@
 const {throwError} = require('error-standardize');
 
 module.exports = function* ufwdServiceCreateAccount(req, res, next) {
-	const {ufwd} = req.body;
+	const {phone, identification} = req.body.ufwd;
+
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
+
 	const _ = require('lodash');
 	const account = res.data();
 
 	const accountOne = yield UfwdAccount.findOne({
-		where: { phone: ufwd.phone }
+		where: { phone }
 	});
 
 	const accountTwo = yield UfwdAccount.findOne({
-		where: { identification: ufwd.identification }
+		where: { identification }
 	});
 
 	if (accountOne) {
@@ -27,10 +29,10 @@ module.exports = function* ufwdServiceCreateAccount(req, res, next) {
 	const newUfwdAccount = yield UfwdAccount.create(Object.assign({
 		accountId: account.id,
 		examine: true
-	}, ufwd));
+	}, req.body.ufwd));
 
 	const mixedAccount = _.pick(newUfwdAccount, [
-		'name', 'sex', 'phone', 'identification'
+		'name', 'sex', 'phone', 'identification', 'created_at'
 	]);
 
 	mixedAccount.username = account.name;
