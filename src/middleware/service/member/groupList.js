@@ -22,15 +22,11 @@ module.exports = function* getMemberGroupList(req, res, next) {
 
 		const group = yield Group.findOne({
 			where: {
-				groupId: memberList[i].groupId
+				id: memberList[i].groupId
 			}
 		});
 	
-		const mixedAccount = _.pick(group, [
-			'id', 'name', 'description'
-		]);
-	
-		list.push(mixedAccount);
+		list.push(group.id);
 	}
 
 	res.data(list);

@@ -27,7 +27,7 @@ module.exports = function* createMemberList(req, res, next) {
 
 		const group = yield Group.findOne({
 			where: {
-				id: groupPool[0]
+				id: groupPool[i]
 			}
 		});
 
