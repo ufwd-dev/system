@@ -26,8 +26,6 @@ const Member = sequelize.define('ufwdMember', {
 	groupId: {
 		type: Sequelize.INTEGER,
 	}
-}, {
-	paranoid: true
 });
 
 module.exports = { Group, Member };

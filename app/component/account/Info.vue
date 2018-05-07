@@ -99,7 +99,7 @@
 		</el-form-item>
 
 		<el-form-item :label="$t('ufwd.user.administrator')">
-			<el-switch v-model="account.admin"></el-switch>
+			<el-switch v-model="account.admin" @change="updateAdmin(account.id)"></el-switch>
 		</el-form-item>
 
 		<el-form-item :label="$t('ufwd.user.party')">
@@ -183,6 +183,20 @@ export default {
 					});
 				});
 		},
+		updateAdmin(id) {
+            // console.log();
+                this.createAdmin(id);
+            // if (this.account.admin) {
+            // } else {
+            //  this.deleteAdmin();
+            // }
+        },
+        createAdmin(id) {
+            console.log(this.account.id);
+            return axios.post(`/api/ufwd/service/administrator`, {
+                accountId: id
+            });
+        },
 		// getGroupPool() {
 		// 	return axios.get(`/api/ufwd/service/group`)
 		// 		.then(res => {
