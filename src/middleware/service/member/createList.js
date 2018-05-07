@@ -37,7 +37,8 @@ module.exports = function* createMemberList(req, res, next) {
 
 		const member = yield Member.findOrCreate({
 			where: {
-				accountId, group
+				accountId, 
+				groupId: group.id
 			}
 		});
 
