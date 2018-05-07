@@ -10,8 +10,7 @@ module.exports = function* createMember(req, res, next) {
 
 	const ufwdAccount = yield UfwdAccount.findOne({
 		where: {
-			accountId,
-			examine: true
+			accountId
 		}
 	});
 

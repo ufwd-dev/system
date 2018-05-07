@@ -10,6 +10,12 @@ module.exports = function* signIn(req, res, next) {
 	let accountId;
 
 	const accountOne = yield Account.findOne({
+		include: [{
+			model: UfwdAccount,
+			where: {
+				examine: true
+			}
+		}],
 		where: {
 			name
 		}
@@ -17,13 +23,15 @@ module.exports = function* signIn(req, res, next) {
 
 	const accountTwo = yield UfwdAccount.findOne({
 		where: {
-			phone: name
+			phone: name,
+			examine: true
 		}
 	});
 
 	const accountThree = yield UfwdAccount.findOne({
 		where: {
-			identification: name
+			identification: name,
+			examine: true
 		}
 	});
 

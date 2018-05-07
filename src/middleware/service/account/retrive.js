@@ -32,7 +32,7 @@ module.exports = function* getAccount(req, res, next) {
 	});
 
 	const mixAccount = _.pick(ufwdAccount, [
-		'name', 'phone', 'identification', 'party', 'street', 'examine'
+		'name', 'phone', 'identification', 'party', 'street', 'examine', 'sex'
 	]);
 
 	if (administrator) {
