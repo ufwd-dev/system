@@ -65,41 +65,23 @@
 			<el-input v-model="account.phone"></el-input>
 		</el-form-item>
 
-
-		<!-- <el-form-item :label="$t('ufwd.user.group')">
-			<el-checkbox v-model="group.checked"
-				v-for="(group, index) in groupList"
-				:key="index"
-				:label="group.id"
-				>{{group.name}}</el-checkbox>
-		</el-form-item> -->
-		<!-- <div class="el-form-item">
-			<label class="el-form-item__label"
-				style="width: 100px;">{{$t('ufwd.user.group')}}</label>
-			<template class="el-form-item__content"
-				style="margin-left: 100px;">
-
-			</template>
-		</div> -->
-				<!-- <el-select v-model="ufwdAccount.groupPool"
-					multiple
-					:placeholder="$t('ufwd.user.placeholder.group')">
-					<el-option
-						v-for="group in groupList"
-						:key="group.id"
-						:label="group.name"
-						:value="group.id">
-					</el-option>
-				</el-select> -->
-		<!-- <el-form-item :label="$t('ufwd.user.group')">
+		<!-- <el-form-item label="分组">
+			<el-checkbox-group v-model="checkedGroupPool"
+				@change="checkedGroup()">
+				<el-checkbox
+					v-for="(group, index) in groupPool"
+					:key="index"
+					:label="group.id">{{group.name}}</el-checkbox>
+			</el-checkbox-group>
 		</el-form-item> -->
 
-		<el-form-item :label="$t('ufwd.user.examine')">
+		<!-- <el-form-item :label="$t('ufwd.user.examine')">
 			<el-switch v-model="account.examine"></el-switch>
-		</el-form-item>
+		</el-form-item> -->
 
 		<el-form-item :label="$t('ufwd.user.administrator')">
-			<el-switch v-model="account.admin" @change="updateAdmin(account.id)"></el-switch>
+			<el-switch v-model="account.admin"
+				@change="updateAdmin()"></el-switch>
 		</el-form-item>
 
 		<el-form-item :label="$t('ufwd.user.party')">
@@ -137,7 +119,6 @@
 		</el-form-item>
 	</el-form>
 
-	<!-- <button @click="groupTest()">group</button> -->
 </div>
 </template>
 
@@ -158,11 +139,11 @@ export default {
 		return {
 			account: {},
 			partyNull: null,
-			// admin: false,
 			partyPool: [],
 			streetPool: [],
 			// groupPool: [],
-			// list: [],
+			// accountGroupPool: [],
+			// checkedGroupPool: []
 		}
 	},
 	methods: {
@@ -183,24 +164,19 @@ export default {
 					});
 				});
 		},
-		updateAdmin(id) {
-            // console.log();
-                this.createAdmin(id);
-            // if (this.account.admin) {
-            // } else {
-            //  this.deleteAdmin();
-            // }
-        },
-        createAdmin(id) {
-            console.log(this.account.id);
-            return axios.post(`/api/ufwd/service/administrator`, {
-                accountId: id
-            });
-        },
 		// getGroupPool() {
 		// 	return axios.get(`/api/ufwd/service/group`)
 		// 		.then(res => {
-		// 			this.groupList = res.data.data;
+		// 			this.groupPool = res.data.data;
+		// 		});
+		// },
+		// getAccountGroupPool() {
+		// 	return axios.get(`/api/ufwd/service/account/${this.accountId}/group`)
+		// 		.then(res => {
+		// 			this.accountGroupPool = res.data.data;
+
+		// 			this.checkedGroupPool = this.accountGroupPool;
+
 		// 		});
 		// },
 		getPartyPool() {
@@ -227,8 +203,6 @@ export default {
 					street: this.account.street
 				}
 			}).then(() => {
-				return this.createAdmin(this.account.id);
-			}).then(() => {
 					this.$notify({
 						title: '成功',
 						message: '用户信息修改成功！',
@@ -236,6 +210,7 @@ export default {
 					});
 				})
 				.catch(err => {
+					console.log(err.message);
 					this.$notify.error({
 						title: '错误',
 						message: '用户信息修改失败。'
@@ -244,14 +219,43 @@ export default {
 					this.getUserInfo();
 				});
 		},
-		createAdmin(id) {
+		updateAdmin() {
 			if (this.account.admin) {
-				return axios.post(`/api/ufwd/service/administrator`,
-					{
-						accountId: id
-					});
+				this.createAdmin();
+			} else {
+				this.deleteAdmin();
 			}
 		},
+		createAdmin() {
+			return axios.post(`/api/ufwd/service/administrator`, {
+				accountId: this.account.id
+			});
+		},
+		deleteAdmin() {
+			return axios.delete(`/api/ufwd/service/administrator/${this.accountId}`);
+		},
+		// checkedGroup() {
+		// 	console.log(this.checkedGroupPool);
+
+		// 	this.checkedGroupPool.forEach(groupId => {
+		// 		this.accountGroupPool.forEach(id => {
+		// 			if (groupId === id) {
+		// 				console.log(groupId);
+		// 			}
+		// 		})
+		// 	})
+		// },
+		// updateAccountGroupPool() {
+			
+		// },
+		// creareAccountGroupPool() {
+		// 	return axios.post(`/api/ufwd/service/group/account/${this.accountId}`, {
+		// 		groupPool: this.accountGroupPool
+		// 	});
+		// },
+		// deleteAccountGroup(groupId) {
+		// 	return axios.delete(`/api/ufwd/service/account/${this.accountId}/group/${groupId}`);
+		// },
 		updatePassword() {
 			return axios.patch(`${ACCOUNT_URL}/${this.accountId}/password`, {
 				password: this.account.password
@@ -283,31 +287,11 @@ export default {
 				});
 		},
 		
-		
-		divideIntoGroup(groupPool, id) {
-			if (groupPool.length === 0) {
-				return false;
-			}
-
-		// 	for (let i = 0; i < groupPool.length; i++) {
-		// 		axios.post(`/api/ufwd/service/group/${groupPool[i]}/account/${id}`)
-		// 			.then(() => {})
-		// 			.catch(err => {
-		// 				this.$notify.error({
-		// 					title: '错误',
-		// 					message: '用户分组失败。'
-		// 				});
-		// 			});
-		// 	}
-		},
-		// groupTest() {
-		// 	return axios.post('/api/ufwd/service/group/1/account/1');
-		// },
-		
 	},
 	mounted() {
 		this.getUserInfo();
 		// this.getGroupPool();
+		// this.getAccountGroupPool();
 		this.getPartyPool();
 		this.getStreetPool();
 	}

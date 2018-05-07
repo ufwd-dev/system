@@ -55,6 +55,16 @@
 				<el-switch v-model="admin"></el-switch>
 			</el-form-item>
 
+			<!-- <el-form-item label="分组">
+				<el-checkbox-group v-model="checkedGroupPool"
+					@change="getCheckedGroupPool()">
+					<el-checkbox
+						v-for="(group, index) in groupPool"
+						:key="index"
+						:label="group.id">{{group.name}}</el-checkbox>
+				</el-checkbox-group>
+			</el-form-item> -->
+
 			<el-form-item
 				:label="$t('ufwd.user.party')"
 				prop="party">
@@ -107,6 +117,7 @@ export default {
 	props: ['getAccount'],
 	data() {
 		return {
+			accountId: '',
 			userForm: {
 				username: '',
 				password: '',
@@ -116,10 +127,12 @@ export default {
 				identification: '',
 				party: null,
 				street: null,
-				groupPool: []
+				// groupPool: []
 			},
 			partyNull: null,
 			admin: false,
+			// groupPool: [],
+			// checkedGroupPool: [],
 			partyPool: [],
 			streetPool: [],
 			userRule: {
@@ -181,17 +194,23 @@ export default {
 		}
 	},
 	methods: {
+		// getGroupPool() {
+		// 	return axios.get(`/api/ufwd/service/group`)
+		// 		.then(res => {
+		// 			this.groupPool = res.data.data;
+		// 		});
+		// },
 		getPartyPool() {
 			return axios.get(`/api/ufwd/service/party`)
 				.then(res => {
 					this.partyPool = res.data.data;
-				})
+				});
 		},
 		getStreetPool() {
 			return axios.get(`/api/ufwd/service/street`)
 				.then(res => {
 					this.streetPool = res.data.data;
-				})
+				});
 		},
 		createUser(formName) {
 			
@@ -210,7 +229,9 @@ export default {
 							street: this.userForm.street
 						}
 					}).then(res => {
-						return this.createAdmin(res.data.data.id);
+						this.accountId = res.data.data.id;
+					}).then(() => {
+						return this.createAdmin();
 					}).then(() => {
 						this.$refs[formName].resetFields();
 
@@ -226,7 +247,7 @@ export default {
 						
 						this.$notify.error({
 							title: '错误',
-							message: '用户创建失败或者创建过程中断。'
+							message: '用户创建失败。'
 						});
 					});
 				} else {
@@ -237,16 +258,26 @@ export default {
 				}
 			});
 		},
-		createAdmin(accountId) {
+		createAdmin() {
 			if (this.admin) {
-				return axios.post('/api/ufwd/service/administrator', {accountId})
+				return axios.post('/api/ufwd/service/administrator', {
+					accountId: this.accountId
+				});
 			}
 		},
-		
+		// getCheckedGroupPool() {
+		// 	console.log(this.checkedGroupPool);
+		// },
+		// createAccountGroupPool() {
+		// 	return axios.post(`/api/ufwd/service/group/account/${this.accountId}`, {
+		// 		groupPool: this.checkedGroupPool
+		// 	});
+		// }
 	},
 	mounted() {
 		this.getPartyPool();
 		this.getStreetPool();
+		// this.getGroupPool();
 	}
 }
 </script>

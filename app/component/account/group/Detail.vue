@@ -87,7 +87,7 @@ export default {
 				{
 					label: '姓名',
 					prop: 'name',
-					width: '180'
+					minWidth: '180'
 				},
 				{
 					label: '手机号码',
