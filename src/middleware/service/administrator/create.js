@@ -19,7 +19,7 @@ module.exports = function* createAdministrator(req, res, next) {
 
 	const admin = yield UfwdAdministrator.findOrCreate({
 		where: {
-			accountId: account.accountId
+			accountId
 		}
 	});
 
