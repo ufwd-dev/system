@@ -62,7 +62,7 @@
 					:placeholder="$t('ufwd.user.placeholder.party')">
 					<el-option
 						label="暂无"
-						:value="value">
+						:value="partyNull">
 					</el-option>
 					<el-option
 						v-for="(party, index) in partyPool"
@@ -118,10 +118,10 @@ export default {
 				street: null,
 				groupPool: []
 			},
-			value: null,
+			partyNull: null,
+			admin: false,
 			partyPool: [],
 			streetPool: [],
-			admin: false,
 			userRule: {
 				username: [
 					{
@@ -180,11 +180,19 @@ export default {
 			},
 		}
 	},
-	mounted() {
-		this.getPartyList();
-		this.getStreetList();
-	},
 	methods: {
+		getPartyPool() {
+			return axios.get(`/api/ufwd/service/party`)
+				.then(res => {
+					this.partyPool = res.data.data;
+				})
+		},
+		getStreetPool() {
+			return axios.get(`/api/ufwd/service/street`)
+				.then(res => {
+					this.streetPool = res.data.data;
+				})
+		},
 		createUser(formName) {
 			
 			this.$refs[formName].validate((valid) => {
@@ -202,7 +210,7 @@ export default {
 							street: this.userForm.street
 						}
 					}).then(res => {
-						this.createAdmin(res.data.data.id);
+						return this.createAdmin(res.data.data.id);
 					}).then(() => {
 						this.$refs[formName].resetFields();
 
@@ -231,29 +239,10 @@ export default {
 		},
 		createAdmin(accountId) {
 			if (this.admin) {
-				return axios.post('/api/ufwd/service/administrator', {
-					accountId
-				}).then(() => {})
-					.catch(err => {
-						this.$notify.error({
-							title: '错误',
-							message: '不能设置该用户为管理员。'
-						});
-					});
+				return axios.post('/api/ufwd/service/administrator', {accountId})
 			}
 		},
-		getPartyPool() {
-			return axios.get(`/api/ufwd/service/party`)
-				.then(res => {
-					this.partyPool = res.data.data;
-				})
-		},
-		getStreetPool() {
-			return axios.get(`/api/ufwd/service/street`)
-				.then(res => {
-					this.streetPool = res.data.data;
-				})
-		}
+		
 	},
 	mounted() {
 		this.getPartyPool();

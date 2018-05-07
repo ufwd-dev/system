@@ -11,7 +11,9 @@
 				<router-link tag="a"
 					to="/ufwd/account/user-list">{{$t('ufwd.menu.account')}}</router-link>
 			</li>
-			<li class="breadcrumb-item active">{{$t('ufwd.user.username')}}: {{account.name}}</li>
+			<li class="breadcrumb-item active">
+				{{$t('ufwd.user.username')}}: {{account.name}}
+			</li>
 		</ol>
 	</nav>
 
@@ -29,6 +31,7 @@
 
 	<el-form
 		:model="account"
+		ref="accountForm"
 		label-width="100px"
 		label-position="left">
 		<el-form-item :label="$t('ufwd.user.createAt')">
@@ -45,18 +48,23 @@
 
 		<el-form-item :label="$t('ufwd.user.sex')">
 			<el-radio-group v-model="account.sex">
-				<el-radio label="male" class="mb-0">{{$t('ufwd.user.male')}}</el-radio>
-				<el-radio label="female" class="mb-0">{{$t('ufwd.user.female')}}</el-radio>
+				<el-radio
+					label="male"
+					class="mb-0">{{$t('ufwd.user.male')}}</el-radio>
+				<el-radio
+					label="female"
+					class="mb-0">{{$t('ufwd.user.female')}}</el-radio>
 			</el-radio-group>
-		</el-form-item>
-
-		<el-form-item :label="$t('ufwd.user.phone')">
-			<el-input v-model="account.phone"></el-input>
 		</el-form-item>
 
 		<el-form-item :label="$t('ufwd.user.identification')">
 			<el-input v-model="account.identification"></el-input>
 		</el-form-item>
+		
+		<el-form-item :label="$t('ufwd.user.phone')">
+			<el-input v-model="account.phone"></el-input>
+		</el-form-item>
+
 
 		<!-- <el-form-item :label="$t('ufwd.user.group')">
 			<el-checkbox v-model="group.checked"
@@ -97,6 +105,9 @@
 		<el-form-item :label="$t('ufwd.user.party')">
 			<el-select v-model="account.party"
 				:placeholder="$t('ufwd.user.placeholder.party')">
+				<el-option
+					label="暂无"
+					:value="partyNull"></el-option>
 				<el-option
 					v-for="(party, index) in partyPool"
 					:key="index"
@@ -146,12 +157,12 @@ export default {
 	data() {
 		return {
 			account: {},
-			value: null,
+			partyNull: null,
+			// admin: false,
 			partyPool: [],
 			streetPool: [],
-			groupList: [],
-			list: [],
-			admin: false
+			// groupPool: [],
+			// list: [],
 		}
 	},
 	methods: {
@@ -159,22 +170,25 @@ export default {
 			return axios.get(`${ACCOUNT_URL}/${this.accountId}`)
 				.then(res => {
 					this.account = res.data.data;
-					// this.account.password = '';
 
 					Object.keys(this.account).forEach(() => {
 						let createdTime = this.account['created_at'];
 
 						createdTime = dateFormat(createdTime, 'yyyy/mm/dd HH:MM');
 						this.account['created_at'] = createdTime;
+
+						this.account['party'] = this.account['party'] === null
+							? this.partyNull = null
+							: this.account['party'];
 					});
 				});
 		},
-		getGroupPool() {
-			return axios.get(`/api/ufwd/service/group`)
-				.then(res => {
-					this.groupList = res.data.data;
-				});
-		},
+		// getGroupPool() {
+		// 	return axios.get(`/api/ufwd/service/group`)
+		// 		.then(res => {
+		// 			this.groupList = res.data.data;
+		// 		});
+		// },
 		getPartyPool() {
 			return axios.get(`/api/ufwd/service/party`)
 				.then(res => {
@@ -199,6 +213,8 @@ export default {
 					street: this.account.street
 				}
 			}).then(() => {
+				return this.createAdmin(this.account.id);
+			}).then(() => {
 					this.$notify({
 						title: '成功',
 						message: '用户信息修改成功！',
@@ -209,8 +225,18 @@ export default {
 					this.$notify.error({
 						title: '错误',
 						message: '用户信息修改失败。'
-					})
+					});
+
+					this.getUserInfo();
 				});
+		},
+		createAdmin(id) {
+			if (this.account.admin) {
+				return axios.post(`/api/ufwd/service/administrator`,
+					{
+						accountId: id
+					});
+			}
 		},
 		updatePassword() {
 			return axios.patch(`${ACCOUNT_URL}/${this.accountId}/password`, {
@@ -233,7 +259,7 @@ export default {
 					});
 				})
 				.then(() => {
-					this.$router.go(-1);
+					this.$router.push('/ufwd/account/user-list');
 				})
 				.catch(error => {
 					this.$notify.error({
@@ -243,24 +269,7 @@ export default {
 				});
 		},
 		
-		createAdmin(id) {
-			if (this.admin) {
-				return axios.post(`/api/ufwd/service/administrator`, {id})
-					.then(() => {})
-					.catch(err => {
-						this.$notify.error({
-							title: '错误',
-							message: '不能设置该账户为管理员。'
-						});
-					});
-			}
-		},
-		getAdmin(id) {
-			return axios.get(`/api/ufwd/service/administrator/${id}`)
-				.then(() => {
-					this.admin = true;
-				});
-		},
+		
 		divideIntoGroup(groupPool, id) {
 			if (groupPool.length === 0) {
 				return false;
