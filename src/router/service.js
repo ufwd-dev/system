@@ -41,7 +41,8 @@ const {
 	getStreetList,
 	getStreet,
 	getParty,
-	createMemberList
+	createMemberList,
+	isAdminiSignedIn
 } = require('express-handler-loader')('ufwd');
 
 const router = module.exports = require('express').Router();
@@ -89,7 +90,7 @@ router.post('/account', $testBody({
 	},
 	additionalProperties: false,
 	required: ['name', 'password', 'ufwd']
-}), createAccount, getParty, getStreet, ufwdServiceCreateAccount);
+}), isAdminiSignedIn, createAccount, getParty, getStreet, ufwdServiceCreateAccount);
 
 router.get('/account', $testQuery({
 	properties: {
@@ -122,9 +123,9 @@ router.get('/account', $testQuery({
 		}
 	},
 	additionalProperties: false
-}), getAccountList);
+}), isAdminiSignedIn, getAccountList);
 
-router.get('/account/:accountId', getAccount);
+router.get('/account/:accountId', isAdminiSignedIn, getAccount);
 
 router.put('/account/:accountId', $testBody({
 	properties: {
@@ -164,9 +165,9 @@ router.put('/account/:accountId', $testBody({
 		}
 	},
 	additionalProperties: false
-}), getParty, getStreet, ufwdUpdateAccount);
+}), isAdminiSignedIn, getParty, getStreet, ufwdUpdateAccount);
 
-router.delete('/account/:accountId', getRealAccount, deleteAccount);
+router.delete('/account/:accountId', isAdminiSignedIn, getRealAccount, deleteAccount);
 
 router.patch('/account/:accountId/password', $testBody({
 	properties: {
@@ -178,7 +179,7 @@ router.patch('/account/:accountId/password', $testBody({
 	},
 	additionalProperties: false,
 	required: ['password']
-}), updatePassword);
+}), isAdminiSignedIn, updatePassword);
 
 router.post('/administrator', $testBody({
 	properties: {
@@ -188,13 +189,13 @@ router.post('/administrator', $testBody({
 	},
 	additionalProperties: false,
 	required: ['accountId']
-}), createAdministrator);
+}), isAdminiSignedIn, createAdministrator);
 
-router.get('/administrator', getAdministratorList);
+router.get('/administrator', isAdminiSignedIn, getAdministratorList);
 
-router.get('/administrator/:administratorId', getAdministrator);
+router.get('/administrator/:administratorId', isAdminiSignedIn, getAdministrator);
 
-router.delete('/administrator/:administratorId', getAdministrator, deleteAdministrator);
+router.delete('/administrator/:administratorId', isAdminiSignedIn, getAdministrator, deleteAdministrator);
 
 router.post('/group', $testBody({
 	properties: {
@@ -207,7 +208,7 @@ router.post('/group', $testBody({
 	},
 	additionalProperties: false,
 	required: ['name', 'description']
-}), createGroup);
+}), isAdminiSignedIn, createGroup);
 
 router.get('/group', $testQuery({
 	properties: {
@@ -216,9 +217,9 @@ router.get('/group', $testQuery({
 		}
 	},
 	additionalProperties: false
-}), getGroupList);
+}), isAdminiSignedIn, getGroupList);
 
-router.get('/group/:groupId', getGroup);
+router.get('/group/:groupId', isAdminiSignedIn, getGroup);
 
 router.put('/group/:groupId', $testBody({
 	properties: {
@@ -230,11 +231,11 @@ router.put('/group/:groupId', $testBody({
 		}
 	},
 	additionalProperties: false
-}), getGroup, updateGroup);
+}), isAdminiSignedIn, getGroup, updateGroup);
 
-router.delete('/group/:groupId', getGroup, deleteGroup);
+router.delete('/group/:groupId', isAdminiSignedIn, getGroup, deleteGroup);
 
-router.post('/group/:groupId/account/:accountId', getGroup, getRealAccount, createMember);
+router.post('/group/:groupId/account/:accountId', isAdminiSignedIn, getGroup, getRealAccount, createMember);
 
 router.post('/group/account/:accountId', $testBody({
 	properties: {
@@ -247,19 +248,19 @@ router.post('/group/account/:accountId', $testBody({
 	},
 	additionalProperties: false,
 	required: ['groupPool']
-}), getRealAccount, createMemberList);
+}), isAdminiSignedIn, getRealAccount, createMemberList);
 
-router.get('/account/:accountId/group', getRealAccount, getMemberGroupList);
+router.get('/account/:accountId/group', isAdminiSignedIn, getRealAccount, getMemberGroupList);
 
-router.get('/account/:accountId/group/:groupId', getRealAccount, getGroup, getMemberGroup);
+router.get('/account/:accountId/group/:groupId', isAdminiSignedIn, getRealAccount, getGroup, getMemberGroup);
 
-router.delete('/account/:accountId/group/:groupId', getRealAccount, getGroup, deleteMemberAccount);
+router.delete('/account/:accountId/group/:groupId', isAdminiSignedIn, getRealAccount, getGroup, deleteMemberAccount);
 
-router.get('/group/:groupId/account', getGroup, getMemberAccountList);
+router.get('/group/:groupId/account', isAdminiSignedIn, getGroup, getMemberAccountList);
 
-router.get('/group/:groupId/account/:accountId', getGroup, getRealAccount, getMemberAccount);
+router.get('/group/:groupId/account/:accountId', isAdminiSignedIn, getGroup, getRealAccount, getMemberAccount);
 
-router.delete('/group/:groupId/account/:accountId', getGroup, getRealAccount, deleteMemberAccount);
+router.delete('/group/:groupId/account/:accountId', isAdminiSignedIn, getGroup, getRealAccount, deleteMemberAccount);
 
 router.post('/notification', $testBody({
 	properties: {
@@ -276,7 +277,7 @@ router.post('/notification', $testBody({
 	},
 	required: ['recevierList', 'content'],
 	additionalProperties: false
-}), createNotification);
+}), isAdminiSignedIn, createNotification);
 
 router.get('/notification', $testQuery({
 	properties: {
@@ -285,9 +286,9 @@ router.get('/notification', $testQuery({
 		}
 	},
 	additionalProperties: false
-}), getNotificationList);
+}), isAdminiSignedIn, getNotificationList);
 
-router.get('/notification/:notificationId', getNotification);
+router.get('/notification/:notificationId', isAdminiSignedIn, getNotification);
 router.get('/advise', $testQuery({
 	properties: {
 		accountId: {
@@ -295,11 +296,11 @@ router.get('/advise', $testQuery({
 		}
 	},
 	additionalProperties: false
-}), getAdviseList);
+}), isAdminiSignedIn, getAdviseList);
 
-router.get('/advise/:adviseId', getAdvise);
+router.get('/advise/:adviseId', isAdminiSignedIn, getAdvise);
 
-router.delete('/advise/:adviseId', getAdvise, deleteAdvise);
+router.delete('/advise/:adviseId', isAdminiSignedIn, getAdvise, deleteAdvise);
 
 router.post('/party', $testBody({
 	properties: {
@@ -309,9 +310,9 @@ router.post('/party', $testBody({
 	},
 	additionalProperties: false,
 	required: ['name']
-}), createParty);
+}), isAdminiSignedIn, createParty);
 
-router.get('/party', getPartyList);
+router.get('/party', isAdminiSignedIn, getPartyList);
 
 router.post('/street', $testBody({
 	properties: {
@@ -321,6 +322,6 @@ router.post('/street', $testBody({
 	},
 	additionalProperties: false,
 	required: ['name']
-}), createStreet);
+}), isAdminiSignedIn, createStreet);
 
-router.get('/street', getStreetList);
+router.get('/street', isAdminiSignedIn, getStreetList);

@@ -1,7 +1,6 @@
 'use strict';
 
 const {
-	isAdminiSignedIn,
 	serviceSignout,
 	serviceSignIn
 } = require('express-handler-loader')('ufwd');
@@ -12,7 +11,7 @@ const router = module.exports = require('express').Router();
 
 router.use('/ufwd/app', appRouter);
 
-router.use('/ufwd/service', isAdminiSignedIn, serviceRouter);
+router.use('/ufwd/service', serviceRouter);
 
 router.post('/account/session', serviceSignIn);
 
