@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = function* getInformation(req, res, next) {
+	const _ = require('lodash');
 	const Account = res.sequelize.model('account');
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
 	const accountId = req.session.accountId;
