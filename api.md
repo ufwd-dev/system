@@ -25,7 +25,7 @@ the api of system
     name: string
 }
 ```
-获取所有党派
+创建党派
 
 ## POST /api/ufwd/service/street
 ```
@@ -33,7 +33,7 @@ the api of system
     name: string
 }
 ```
-获取所有街道
+创建街道
 
 ## GET /api/ufwd/service/party
 

@@ -6,6 +6,21 @@
 		:pagination-def="paginationDef"
 		:checkbox-filter-def="checkboxFilterDef">
 		<el-table-column
+			:label="$t('ufwd.user.examine')"
+			prop="examine"
+			width="100"
+			align="center"
+			:filters="[
+				{text: $t('ufwd.user.adopt'), value: true},
+				{text: $t('ufwd.user.fail'), value: false}]"
+			:filter-method="examineFilterTag"
+			filter-placement="bottom-end">
+			<template slot-scope="scope">
+				<el-switch v-model="scope.row.examine"
+					@change="updateAccount(scope.row.examine, scope.row.id)"></el-switch>
+			</template>
+		</el-table-column>
+		<el-table-column
 			v-for="column in accountColumns"
 			:key="column.label"
 			align="center"
@@ -16,20 +31,22 @@
 			:min-width="column.minWidth">
 		</el-table-column>
 		<el-table-column
-			:label="$t('ufwd.user.examine')"
-			prop="status"
+			:label="$t('ufwd.user.party')"
+			prop="party"
+			width="160"
+			align="center"
+			:filters="partyPool"
+			:filter-method="partyFilterTag"
+			filter-placement="bottom-end">
+		</el-table-column>
+		<el-table-column
+			:label="$t('ufwd.user.street')"
+			prop="street"
 			width="100"
 			align="center"
-			:filters="[
-				{text: $t('ufwd.user.adopt'), value: $t('ufwd.user.adopt')},
-				{text: $t('ufwd.user.fail'), value: $t('ufwd.user.fail')}]"
-			:filter-method="examineFilterTag"
+			:filters="streetPool"
+			:filter-method="streetFilterTag"
 			filter-placement="bottom-end">
-			<template slot-scope="scope">
-				<el-tag
-					:type="scope.row.examine === $t('ufwd.user.adopt') ? 'success' : 'danger'"
-					close-transion>{{scope.row.examine}}</el-tag>
-			</template>
 		</el-table-column>
 		<el-table-column
 			:label="$t('ufwd.user.action')"
@@ -46,6 +63,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
 	name: 'user-list',
 	props: ['accountList'],
@@ -71,16 +90,6 @@ export default {
 					label: this.$t('ufwd.user.identification'),
 					prop: 'identification',
 					width: '180'
-				},
-				{
-					label: '党派',
-					prop: 'party',
-					width: '160',
-				},
-				{
-					label: '街道',
-					prop: 'street',
-					width: '100'
 				},
 				{
 					label: this.$t('ufwd.user.createAt'),
@@ -117,7 +126,12 @@ export default {
 				filterFunction(el, filter) {
 					return el['admin'] === filter.vals[0];
 				}
-			}
+			},
+			partyPool: [{
+				text: '暂无',
+				value: '暂无'
+			}],
+			streetPool: []
 		}
 	},
 	methods: {
@@ -126,7 +140,56 @@ export default {
 		},
 		examineFilterTag(value, row) {
 			return row.examine === value;
+		},
+		partyFilterTag(value, row) {
+			return row.party === value;
+		},
+		streetFilterTag(value, row) {
+			return row.street === value;
+		},
+		getPartyPool() {
+			return axios.get(`/api/ufwd/service/party`)
+				.then(res => {
+					const pool = res.data.data;
+					
+					pool.forEach(element => {
+						const party = {};
+
+						party.text = element.name;
+						party.value = element.name;
+
+						this.partyPool.push(party);
+					});
+				
+				});
+
+		},
+		getStreetPool() {
+			return axios.get(`/api/ufwd/service/street`)
+				.then(res => {
+					const pool = res.data.data;
+					
+					pool.forEach(element => {
+						const group = {};
+
+						group.text = element.name;
+						group.value = element.name;
+
+						this.streetPool.push(group);
+					});
+				});
+		},
+		updateAccount(value, accountId) {
+			return axios.put(`/api/ufwd/service/account/${accountId}`, {
+				ufwd: {
+					examine: value
+				}
+			});
 		}
+	},
+	mounted() {
+		this.getPartyPool();
+		this.getStreetPool();
 	}
 }
 </script>

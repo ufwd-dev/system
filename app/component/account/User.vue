@@ -13,9 +13,22 @@
 			</li>
 		</ol>
 	</nav>
-
+	<!-- <el-collapse v-model="activeNames">
+		<el-collapse-item name="accountList">
+			<template slot="title">
+				<h3>{{$t('ufwd.user.users')}}</h3>
+			</template>
+			<user-list :account-list="accountList"></user-list>
+		</el-collapse-item>
+		<el-collapse-item name="create">
+			<template slot="title">
+				<h3>{{$t('ufwd.user.account')}}</h3>
+			</template>
+			<add-user :get-account="getAccount"></add-user>
+		</el-collapse-item>
+	</el-collapse> -->
 	<div class="row">
-		<div class="col-sm-8">
+		<div class="col-sm-12">
 
 			<h3>{{$t('ufwd.user.users')}}</h3>
 			<hr>
@@ -23,7 +36,7 @@
 			<user-list :account-list="accountList"></user-list>
 
 		</div>
-		<div class="col-sm-4">
+		<div class="col-sm-4" style="position: absolute;top:70px;right:0;z-index:999">
 
 			<add-user :get-account="getAccount"></add-user>
 
@@ -51,6 +64,7 @@ export default {
 	data() {
 		return {
 			accountList: [],
+			activeNames: 'accountList'
 		}
 	},
 	methods: {
@@ -64,9 +78,6 @@ export default {
 					user.admin = user.admin
 						? this.$t('ufwd.user.true')
 						: this.$t('ufwd.user.false');
-					user.examine = user.examine
-						? this.$t('ufwd.user.adopt')
-						: this.$t('ufwd.user.fail');
 					user.created_at = dateFormat(
 						user.created_at,
 						'yyyy/mm/dd HH:MM'

@@ -34,7 +34,10 @@ module.exports = function* ufwdUpdateAccount(req, res, next) {
 		throwError('The name has been existed. Try others please.', 403);
 	}
 	
-	yield account.update({ name });
+	if (name) {
+
+		yield account.update({ name });
+	}
 
 	if (ufwd) {
 

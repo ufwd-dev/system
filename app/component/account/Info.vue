@@ -65,19 +65,27 @@
 			<el-input v-model="account.phone"></el-input>
 		</el-form-item>
 
-		<!-- <el-form-item label="分组">
-			<el-checkbox-group v-model="checkedGroupPool"
-				@change="checkedGroup()">
+		<el-form-item :label="$t('ufwd.user.group')">
+			<el-checkbox-group v-model="group.checkedGroupPool">
 				<el-checkbox
-					v-for="(group, index) in groupPool"
+					v-for="(group, index) in group.groupPool"
 					:key="index"
 					:label="group.id">{{group.name}}</el-checkbox>
 			</el-checkbox-group>
-		</el-form-item> -->
+		</el-form-item>
 
-		<!-- <el-form-item :label="$t('ufwd.user.examine')">
+		<el-form-item :label="$t('ufwd.user.examine')">
 			<el-switch v-model="account.examine"></el-switch>
-		</el-form-item> -->
+		</el-form-item>
+		
+		<el-form-item :label="$t('ufwd.user.identity')">
+			<el-checkbox-group v-model="identity.checkedIdentity">
+				<el-checkbox
+					v-for="(identity, index) in identity.identityPool"
+					:key="index"
+					:label="identity.id">{{identity.name}}</el-checkbox>
+			</el-checkbox-group>
+		</el-form-item>
 
 		<el-form-item :label="$t('ufwd.user.administrator')">
 			<el-switch v-model="account.admin"
@@ -141,12 +149,34 @@ export default {
 			partyNull: null,
 			partyPool: [],
 			streetPool: [],
-			// groupPool: [],
-			// accountGroupPool: [],
-			// checkedGroupPool: []
+			identity: {
+				identityPool: [],
+				checkedIdentity: [],
+				oldOwnIdentity: []
+			},
+			group: {
+				groupPool: [],
+				checkedGroupPool: [],
+				oldOwnGroup: []
+			}
 		}
 	},
 	methods: {
+		change(checked, oldOwn) {
+
+			const createList = checked.filter(element => {
+				return oldOwn.indexOf(element) === -1;
+			});
+
+			const deleteList = oldOwn.filter(element => {
+				return checked.indexOf(element) === -1;
+			});
+
+			return {
+				createList, deleteList
+			};
+			
+		},
 		getUserInfo() {
 			return axios.get(`${ACCOUNT_URL}/${this.accountId}`)
 				.then(res => {
@@ -164,21 +194,36 @@ export default {
 					});
 				});
 		},
-		// getGroupPool() {
-		// 	return axios.get(`/api/ufwd/service/group`)
-		// 		.then(res => {
-		// 			this.groupPool = res.data.data;
-		// 		});
-		// },
-		// getAccountGroupPool() {
-		// 	return axios.get(`/api/ufwd/service/account/${this.accountId}/group`)
-		// 		.then(res => {
-		// 			this.accountGroupPool = res.data.data;
+		getGroupPool() {
+			return axios.get(`/api/ufwd/service/group`)
+				.then(res => {
+					this.group.groupPool = res.data.data;
+				});
+		},
+		getAccountGroupPool() {
+			return axios.get(`/api/ufwd/service/account/${this.accountId}/group`)
+				.then(res => {
+					this.group.oldOwnGroup = res.data.data;
 
-		// 			this.checkedGroupPool = this.accountGroupPool;
+					this.group.checkedGroupPool = res.data.data;
 
-		// 		});
-		// },
+				});
+		},
+		getAccountIdentityPool() {
+			return axios.get(`/api/ufwd/service/account/${this.accountId}/identity`)
+				.then(res => {
+					this.identity.oldOwnIdentity = res.data.data;
+
+					this.identity.checkedIdentity = res.data.data;
+
+				});
+		},
+		getIdentityPool() {
+			return axios.get(`/api/ufwd/service/identity`)
+				.then(res => {
+					this.identity.identityPool = res.data.data;
+				});
+		},
 		getPartyPool() {
 			return axios.get(`/api/ufwd/service/party`)
 				.then(res => {
@@ -192,6 +237,9 @@ export default {
 				});
 		},
 		updateUser() {
+			const identity = this.change(this.identity.checkedIdentity, this.identity.oldOwnIdentity);
+			const group = this.change(this.group.checkedGroupPool, this.group.oldOwnGroup);
+
 			return axios.put(`${ACCOUNT_URL}/${this.accountId}`, {
 				name: this.account.username,
 				ufwd: {
@@ -200,7 +248,28 @@ export default {
 					phone: this.account.phone,
 					identification: this.account.identification,
 					party: this.account.party,
-					street: this.account.street
+					street: this.account.street,
+					examine: this.account.examine
+				}
+			}).then(() => {
+				if (identity.createList.length !== 0) {
+					this.createIdentity(this.account.id, identity.createList);
+				}
+			}).then(() => {
+				if (identity.deleteList.length !== 0) {
+					identity.deleteList.forEach(identity => {
+						axios.delete(`/api/ufwd/service/identity/${identity}/account/${this.accountId}`);
+					});
+				}
+			}).then(() => {
+				if (group.createList.length !== 0) {
+					this.createGroup(this.account.id, group.createList);
+				}
+			}).then(() => {
+				if (group.deleteList.length !== 0) {
+					group.deleteList.forEach(group => {
+						axios.delete(`/api/ufwd/service/group/${group}/account/${this.accountId}`);
+					});
 				}
 			}).then(() => {
 					this.$notify({
@@ -209,8 +278,8 @@ export default {
 						type: 'success'
 					});
 				})
-				.catch(err => {
-					console.log(err.message);
+				.catch((res, err) => {
+					console.log(res, err);
 					this.$notify.error({
 						title: '错误',
 						message: '用户信息修改失败。'
@@ -234,28 +303,17 @@ export default {
 		deleteAdmin() {
 			return axios.delete(`/api/ufwd/service/administrator/${this.accountId}`);
 		},
-		// checkedGroup() {
-		// 	console.log(this.checkedGroupPool);
+		createGroup(id, list) {
 
-		// 	this.checkedGroupPool.forEach(groupId => {
-		// 		this.accountGroupPool.forEach(id => {
-		// 			if (groupId === id) {
-		// 				console.log(groupId);
-		// 			}
-		// 		})
-		// 	})
-		// },
-		// updateAccountGroupPool() {
-			
-		// },
-		// creareAccountGroupPool() {
-		// 	return axios.post(`/api/ufwd/service/group/account/${this.accountId}`, {
-		// 		groupPool: this.accountGroupPool
-		// 	});
-		// },
-		// deleteAccountGroup(groupId) {
-		// 	return axios.delete(`/api/ufwd/service/account/${this.accountId}/group/${groupId}`);
-		// },
+			return axios.post(`/api/ufwd/service/group/account/${this.accountId}`, {
+				groupPool: list
+			});
+		},
+		createIdentity(id, list) {
+			return axios.post(`/api/ufwd/service/identity/account/${this.accountId}`, {
+				identityPool: list
+			});
+		},
 		updatePassword() {
 			return axios.patch(`${ACCOUNT_URL}/${this.accountId}/password`, {
 				password: this.account.password
@@ -290,8 +348,10 @@ export default {
 	},
 	mounted() {
 		this.getUserInfo();
-		// this.getGroupPool();
-		// this.getAccountGroupPool();
+		this.getGroupPool();
+		this.getIdentityPool();
+		this.getAccountGroupPool();
+		this.getAccountIdentityPool();
 		this.getPartyPool();
 		this.getStreetPool();
 	}

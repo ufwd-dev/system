@@ -10,6 +10,7 @@ const {
 	ufwdServiceCreateAccount,
 	getAccountList,
 	getAccount,
+	validateAccount,
 	getRealAccount,
 	ufwdUpdateAccount,
 	deleteAccount,
@@ -41,8 +42,14 @@ const {
 	getStreetList,
 	getStreet,
 	getParty,
+	createIdentity,
+	getIdentityList,
+	getIdentityLabelList,
 	createMemberList,
-	isAdminiSignedIn
+	isAdminiSignedIn,
+	createIdentityLabel,
+	createIdentityLabelList,
+	deleteIdentityLabel
 } = require('express-handler-loader')('ufwd');
 
 const router = module.exports = require('express').Router();
@@ -71,7 +78,7 @@ router.post('/account', $testBody({
 				},
 				phone: {
 					type: 'string',
-					pattern: '(^1[3|4|5|8][0-9]{5,9}$)'
+					pattern: '(^1[3|4|5|6|7|8|9][0-9]{9}$)'
 				},
 				identification: {
 					type: 'string',
@@ -82,10 +89,16 @@ router.post('/account', $testBody({
 				},
 				street: {
 					type: 'number'
+				},
+				unit: {
+					type: 'string'
+				},
+				job: {
+					type: 'string'
 				}
 			},
 			additionalProperties: false,
-			required: ['name', 'sex', 'phone', 'identification', 'party', 'street']
+			required: ['name', 'sex', 'phone', 'identification', 'party', 'street', 'unit', 'job']
 		}
 	},
 	additionalProperties: false,
@@ -105,7 +118,8 @@ router.get('/account', $testQuery({
 			type: 'string'
 		},
 		phone: {
-			type: 'string'
+			type: 'string',
+			pattern: '(^1[3|4|5|6|7|8|9][0-9]{9}$)'
 		},
 		identification: {
 			type: 'string',
@@ -124,6 +138,21 @@ router.get('/account', $testQuery({
 	},
 	additionalProperties: false
 }), isAdminiSignedIn, getAccountList);
+
+router.get('/validate/account', $testQuery({
+	properties: {
+		name: {
+			type: 'string'
+		},
+		phone: {
+			type: 'string'
+		},
+		identification: {
+			type: 'string'
+		},
+	},
+	additionalProperties: false
+}), isAdminiSignedIn, validateAccount);
 
 router.get('/account/:accountId', isAdminiSignedIn, getAccount);
 
@@ -262,6 +291,25 @@ router.get('/group/:groupId/account/:accountId', isAdminiSignedIn, getGroup, get
 
 router.delete('/group/:groupId/account/:accountId', isAdminiSignedIn, getGroup, getRealAccount, deleteMemberAccount);
 
+router.post('/identity/:identityId/account/:accountId', isAdminiSignedIn, createIdentityLabel);
+
+router.post('/identity/account/:accountId', $testBody({
+	properties: {
+		identityPool: {
+			type: 'array',
+			items: { 
+				type: 'number'
+			}
+		}
+	},
+	additionalProperties: false,
+	required: ['identityPool']
+}), isAdminiSignedIn, createIdentityLabelList);
+
+router.get('/account/:accountId/identity', isAdminiSignedIn, getIdentityLabelList);
+
+router.delete('/identity/:identityId/account/:accountId', isAdminiSignedIn, deleteIdentityLabel);
+
 router.post('/notification', $testBody({
 	properties: {
 		recevierList: {
@@ -325,3 +373,15 @@ router.post('/street', $testBody({
 }), isAdminiSignedIn, createStreet);
 
 router.get('/street', isAdminiSignedIn, getStreetList);
+
+router.post('/identity', $testBody({
+	properties: {
+		name: {
+			type: 'string'
+		}
+	},
+	additionalProperties: false,
+	required: ['name']
+}), isAdminiSignedIn, createIdentity);
+
+router.get('/identity', isAdminiSignedIn, getIdentityList);

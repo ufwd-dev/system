@@ -16,12 +16,16 @@ ufwd:
 
   user:
     users: '全部用户'
+    account: '创建用户'
     username: '用户名'
     password: '密码'
     name: '姓名'
     sex: '性别'
     phone: '手机号'
+    unit: '单位'
+    job: '职务'
     identification: '身份证号'
+    identity: '身份类别'
     group: '分组'
     createAt: '创建时间'
     admin: '管理员'
@@ -35,7 +39,7 @@ ufwd:
     male: '男'
     female: '女'
     administrator: '管理员'
-    party: '党派'
+    party: '政治面貌'
     street: '街道'
     addUser: '添加新用户'
     info: '用户信息'
@@ -44,7 +48,7 @@ ufwd:
     delete: '删除'
     modifyPassword: '修改密码'
     placeholder:
-      party: '请选择一个党派'
+      party: '请选择一个政治面貌'
       street: '请选择一个街道'
       group: '请选择'
 

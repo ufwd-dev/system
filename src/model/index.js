@@ -5,6 +5,7 @@ const sequelize = lemonitor.sequelize;
 
 const Account = sequelize.model('account');
 const UfwdAccount = require('./account');
+const {Identity, IdentityLabel} = require('./identity');
 const Administrator = require('./administrator');
 const Notification = require('./notification');
 const Advise = require('./advise');
@@ -59,4 +60,17 @@ UfwdAccount.hasMany(Member, {
 });
 Group.hasMany(Member, {
 	foreignKey: 'groupId',
+});
+
+IdentityLabel.belongsTo(UfwdAccount, {
+	foreignKey: 'accountId',
+});
+IdentityLabel.belongsTo(Identity, {
+	foreignKey: 'identityId',
+});
+UfwdAccount.hasMany(IdentityLabel, {
+	foreignKey: 'accountId',
+});
+Identity.hasMany(IdentityLabel, {
+	foreignKey: 'identityId',
 });

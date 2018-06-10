@@ -40,6 +40,12 @@ const ufwdAccount = module.exports = sequelize.define('ufwdAccount', {
 		type: Sequelize.BOOLEAN,
 		defaultValue: false,
 		allowNull: false
+	},
+	unit: {
+		type: Sequelize.STRING(255)
+	},
+	job: {
+		type: Sequelize.STRING(255)
 	}
 }, {
 	paranoid: true
