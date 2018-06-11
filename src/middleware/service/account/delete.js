@@ -6,7 +6,14 @@ module.exports = function* deleteAccount(req, res, next) {
 	const Notification = res.sequelize.model('ufwdNotification');
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
 	const Account = res.sequelize.model('account');
+	const IdentityLabel = res.sequelize.model('ufwdIdentityLabel');
 	const account = res.data();
+
+	yield IdentityLabel.destroy({
+		where: {
+			accountId: account.id
+		}
+	});
 
 	yield Advise.destroy({
 		where: {

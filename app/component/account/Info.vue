@@ -66,12 +66,15 @@
 		</el-form-item>
 
 		<el-form-item :label="$t('ufwd.user.group')">
-			<el-checkbox-group v-model="group.checkedGroupPool">
-				<el-checkbox
-					v-for="(group, index) in group.groupPool"
-					:key="index"
-					:label="group.id">{{group.name}}</el-checkbox>
-			</el-checkbox-group>
+			<el-input v-model="account.identification"></el-input>
+		</el-form-item>
+
+		<el-form-item :label="$t('ufwd.user.unit')">
+			<el-input v-model="account.unit"></el-input>
+		</el-form-item>
+
+		<el-form-item :label="$t('ufwd.user.job')">
+			<el-input v-model="account.job"></el-input>
 		</el-form-item>
 
 		<el-form-item :label="$t('ufwd.user.examine')">
