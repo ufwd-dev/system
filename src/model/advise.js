@@ -14,6 +14,4 @@ const Advise = module.exports = sequelize.define('ufwdAdvise', {
 		type: Sequelize.TEXT,
 		allowNull: false
 	}
-}, {
-	paranoid: true
 });

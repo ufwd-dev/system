@@ -14,6 +14,4 @@ const Notification = module.exports = sequelize.define('ufwdNotification', {
 		type: Sequelize.TEXT,
 		allowNull: false
 	}
-}, {
-	paranoid: true
 });
