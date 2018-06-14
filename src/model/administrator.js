@@ -10,5 +10,9 @@ const Administrator = module.exports = sequelize.define('ufwdAdministrator', {
 		type: Sequelize.INTEGER,
 		allowNull: false,
 		primaryKey: true
+	},
+	liaison: {
+		type: Sequelize.BOOLEAN,
+		defaultValue: false
 	}
 });

@@ -91,7 +91,13 @@ router.delete('/account/session', isAccountSignedIn, signOut);
 
 router.post('/advise', $testBody({
 	properties: {
+		title: {
+			type: 'string'
+		},
 		content: {
+			type: 'string'
+		},
+		category: {
 			type: 'string'
 		}
 	},

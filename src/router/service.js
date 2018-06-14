@@ -49,7 +49,8 @@ const {
 	isAdminiSignedIn,
 	createIdentityLabel,
 	createIdentityLabelList,
-	deleteIdentityLabel
+	deleteIdentityLabel,
+	updateAdministrator
 } = require('express-handler-loader')('ufwd');
 
 const router = module.exports = require('express').Router();
@@ -223,6 +224,14 @@ router.post('/administrator', $testBody({
 router.get('/administrator', isAdminiSignedIn, getAdministratorList);
 
 router.get('/administrator/:administratorId', isAdminiSignedIn, getAdministrator);
+
+router.put('/administrator/:administratorId', $testBody({
+	properties: {
+		liaison: {
+			type: 'boolean'
+		}
+	}
+}), isAdminiSignedIn, getAdministrator, updateAdministrator);
 
 router.delete('/administrator/:administratorId', isAdminiSignedIn, getAdministrator, deleteAdministrator);
 

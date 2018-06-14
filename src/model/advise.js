@@ -13,5 +13,11 @@ const Advise = module.exports = sequelize.define('ufwdAdvise', {
 	content: {
 		type: Sequelize.TEXT,
 		allowNull: false
+	},
+	title: {
+		type: Sequelize.STRING
+	},
+	category: {
+		type: Sequelize.STRING
 	}
 });
