@@ -227,7 +227,7 @@ router.get('/administrator/:administratorId', isAdminiSignedIn, getAdministrator
 
 router.put('/administrator/:administratorId', $testBody({
 	properties: {
-		liaison: {
+		transmitter: {
 			type: 'boolean'
 		}
 	}

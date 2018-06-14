@@ -11,7 +11,7 @@ const Administrator = module.exports = sequelize.define('ufwdAdministrator', {
 		allowNull: false,
 		primaryKey: true
 	},
-	liaison: {
+	transmitter: {
 		type: Sequelize.BOOLEAN,
 		defaultValue: false
 	}

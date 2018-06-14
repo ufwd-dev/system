@@ -4,7 +4,7 @@ const {throwError} = require('error-standardize');
 
 module.exports = function* createAdvise(req, res, next) {
 	const Advise = res.sequelize.model('ufwdAdvise');
-	const { content } = req.body;
+	const { content, title, category } = req.body;
 	const accountId = req.session.accountId;
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
 
@@ -19,7 +19,7 @@ module.exports = function* createAdvise(req, res, next) {
 	}
 
 	const advise = yield Advise.create({
-		accountId, content
+		accountId, content, title, category
 	});
 
 	res.data(advise);
