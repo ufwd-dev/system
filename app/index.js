@@ -1,6 +1,5 @@
 'use strict';
 import app from 'app';
-import './global-component.js';
 
 import Home from 'app/component/Home.vue';
 

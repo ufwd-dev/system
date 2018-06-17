@@ -29,6 +29,7 @@ ufwd:
     group: '分组'
     createAt: '创建时间'
     admin: '管理员'
+    inputor: '通讯员'
     examine: '审核'
     action: '操作'
     edit: '查看'
