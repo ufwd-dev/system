@@ -29,7 +29,9 @@ module.exports = function* updateInformation(req, res, next) {
 		throwError('The name has been existed. Try others please.', 403);
 	}
 	
-	yield account.update({ name });
+	const newAccount = yield account.update({ name });
+
+	result.id = newAccount.id;
 
 	result.username = name;
 

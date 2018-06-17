@@ -23,7 +23,13 @@ const {
 	getOwnGroup,
 	getOwnGroupList,
 	getParty,
-	getStreet
+	getStreet,
+	getPartyList,
+	getStreetList,
+	getIdentityList,
+	createIdentityLabelList,
+	getOwnIdentityLabelList,
+	deleteIdentityLabel
 } = require('express-handler-loader')('ufwd');
 
 const router = module.exports = require('express').Router();
@@ -63,6 +69,12 @@ router.post('/account', $testBody({
 				},
 				street: {
 					type: 'number'
+				},
+				unit: {
+					type: 'string'
+				},
+				job: {
+					type: 'string'
 				}
 			},
 			required: ['name', 'sex', 'phone', 'identification']
@@ -139,7 +151,13 @@ router.put('/account', $testBody({
 					type:  ['number', 'null']
 				},
 				street: {
-					type: 'number'
+					type: 'number' 
+				},
+				job: {
+					type: 'string'
+				},
+				unit: {
+					type: 'string'
 				}
 			},
 		}
@@ -168,3 +186,26 @@ router.delete('/notification/:notificationId', isAccountSignedIn, getOwnNotifica
 router.get('/group', isAccountSignedIn, getOwnGroupList);
 
 router.get('/group/:groupId', isAccountSignedIn, getOwnGroup);
+
+router.get('/identity', getIdentityList);
+
+router.get('/party', getPartyList);
+
+router.get('/street', getStreetList);
+
+router.post('/identity/account/:accountId', $testBody({
+	properties: {
+		identityPool: {
+			type: 'array',
+			items: { 
+				type: 'number'
+			}
+		}
+	},
+	additionalProperties: false,
+	required: ['identityPool']
+}), createIdentityLabelList);
+
+router.get('/account/identity', isAccountSignedIn, getOwnIdentityLabelList);
+
+router.delete('/identity/:identityId/account/:accountId', isAccountSignedIn, deleteIdentityLabel);

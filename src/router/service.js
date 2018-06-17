@@ -215,6 +215,9 @@ router.post('/administrator', $testBody({
 	properties: {
 		accountId: {
 			type: 'number'
+		},
+		transmitter: {
+			type: 'boolean'
 		}
 	},
 	additionalProperties: false,

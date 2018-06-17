@@ -5,15 +5,15 @@ module.exports = function* updateOwnPassword(req, res, next) {
 	const password = req.body.password;
 	const accountId = req.session.accountId;
 
-	const account = yield Account.update({
-		password
-	}, {
+	const account = yield Account.findOne({
 		where: {
 			id: accountId
 		}
 	});
+	
+	const newAccount = yield account.update({password});
 
-	res.data(account);
-
+	res.data(newAccount);
+ 
 	next();
 };

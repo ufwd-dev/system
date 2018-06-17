@@ -5,6 +5,7 @@ const {throwError} = require('error-standardize');
 module.exports = function* createAdministrator(req, res, next) {
 	const UfwdAdministrator = res.sequelize.model('ufwdAdministrator');
 	const accountId = req.body.accountId;
+	const transmitter = req.body.transmitter;
 	const Account = res.sequelize.model('account');
 
 	const account = yield Account.findOne({
@@ -19,7 +20,7 @@ module.exports = function* createAdministrator(req, res, next) {
 
 	const admin = yield UfwdAdministrator.findOrCreate({
 		where: {
-			accountId
+			accountId, transmitter
 		}
 	});
 

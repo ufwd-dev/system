@@ -28,14 +28,14 @@ module.exports = function* signIn(req, res, next) {
 		}
 	});
 
-	const accountThree = yield UfwdAccount.findOne({
-		where: {
-			identification: name,
-			examine: true
-		}
-	});
+	// const accountThree = yield UfwdAccount.findOne({
+	// 	where: {
+	// 		identification: name,
+	// 		examine: true
+	// 	}
+	// });
 
-	if (!accountOne && !accountTwo && !accountThree) {
+	if (!accountOne && !accountTwo) {
 		throwError('Account is NOT existed.', 404);
 	}
 
@@ -47,9 +47,9 @@ module.exports = function* signIn(req, res, next) {
 		accountId = accountTwo.accountId;
 	}
 
-	if (accountThree) {
-		accountId = accountThree.accountId;
-	}
+	// if (accountThree) {
+	// 	accountId = accountThree.accountId;
+	// }
 
 	const account = yield Account.findOne({
 		where: {

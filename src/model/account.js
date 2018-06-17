@@ -46,6 +46,9 @@ const ufwdAccount = module.exports = sequelize.define('ufwdAccount', {
 	},
 	job: {
 		type: Sequelize.STRING(255)
+	},
+	inputor: {
+		type: Sequelize.INTEGER
 	}
 }, {
 	paranoid: true

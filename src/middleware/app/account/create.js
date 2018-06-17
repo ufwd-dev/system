@@ -29,7 +29,7 @@ module.exports = function* ufwdCreateAccount(req, res, next) {
 	}, ufwd));
 
 	const mixedAccount = _.pick(newUfwdAccount, [
-		'name', 'sex', 'phone', 'identification'
+		'id', 'name', 'sex', 'phone', 'identification'
 	]);
 
 	mixedAccount.username = account.name;

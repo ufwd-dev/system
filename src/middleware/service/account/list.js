@@ -10,6 +10,14 @@ module.exports = function* getAccountList(req, res, next) {
 	const Account = res.sequelize.model('account');
 	const Street = res.sequelize.model('ufwdStreet');
 	const Party = res.sequelize.model('ufwdParty');
+
+	const administratorId = req.session.admin;
+
+	const inputor = yield UfwdAdministrator.findOne({
+		where: {
+			accountId: administratorId
+		}
+	});
 	
 	const {name, examine, username, phone, sex, identification} = req.query;
 	const query = {
@@ -42,13 +50,13 @@ module.exports = function* getAccountList(req, res, next) {
 
 	const streetList = yield Street.findAll();
 
-	const mixedAccountList = [];
+	let mixedAccountList = [];
 
 	accountList.forEach(account => {
 		const mixAccount = _.pick(account.ufwdAccount, [
 			'name', 'sex', 'examine',
 			'phone', 'identification',
-			'party', 'street'
+			'party', 'street', 'inputor'
 		]);
 
 		mixAccount.admin = false;
@@ -80,6 +88,12 @@ module.exports = function* getAccountList(req, res, next) {
 		mixedAccountList.push(mixAccount);
 		
 	});
+
+	if (inputor.transmitter) {
+		mixedAccountList = mixedAccountList.filter(account => {
+			return account.inputor === administratorId;
+		});
+	}
 
 	res.data(mixedAccountList);
 
