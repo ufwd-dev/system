@@ -56,7 +56,7 @@ module.exports = function* getAccountList(req, res, next) {
 		const mixAccount = _.pick(account.ufwdAccount, [
 			'name', 'sex', 'examine',
 			'phone', 'identification',
-			'party', 'street', 'inputor'
+			'party', 'street', 'created_at'
 		]);
 
 		mixAccount.admin = false;
@@ -89,11 +89,11 @@ module.exports = function* getAccountList(req, res, next) {
 		
 	});
 
-	if (inputor.transmitter) {
-		mixedAccountList = mixedAccountList.filter(account => {
-			return account.inputor === administratorId;
-		});
-	}
+	// if (inputor.transmitter) {
+	// 	mixedAccountList = mixedAccountList.filter(account => {
+	// 		return account.inputor === administratorId;
+	// 	});
+	// }
 
 	res.data(mixedAccountList);
 

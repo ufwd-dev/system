@@ -12,7 +12,7 @@ const Administrator = module.exports = sequelize.define('ufwdAdministrator', {
 		primaryKey: true
 	},
 	transmitter: {
-		type: Sequelize.BOOLEAN,
-		defaultValue: false
+		type: Sequelize.JSON,
+		defaultValue: null
 	}
 });

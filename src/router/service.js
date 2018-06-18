@@ -217,7 +217,7 @@ router.post('/administrator', $testBody({
 			type: 'number'
 		},
 		transmitter: {
-			type: 'boolean'
+			type: 'object'
 		}
 	},
 	additionalProperties: false,
@@ -231,7 +231,7 @@ router.get('/administrator/:administratorId', isAdminiSignedIn, getAdministrator
 router.put('/administrator/:administratorId', $testBody({
 	properties: {
 		transmitter: {
-			type: 'boolean'
+			type: 'object'
 		}
 	}
 }), isAdminiSignedIn, getAdministrator, updateAdministrator);
