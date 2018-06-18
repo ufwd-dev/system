@@ -17,8 +17,6 @@
   },
   "homepage": "https://github.com/ufwd-dev/system#readme",
   "dependencies": {
-    "lemonitor-application": "^0.1.4",
-    "sequelize": "^4.37.10",
-    "vue-data-tables": "^3.4.0"
+    "lemonitor-application": "^0.1.4"
   }
 }

@@ -11,7 +11,7 @@ app.i18n.mergeLocaleMessage('zh', zh_CN);
 
 app.i18n.locale = 'zh';
 
-import User from  './component/account/User.vue';
+import User from  './component/account/List.vue';
 import Info from  './component/account/Info.vue';
 import Group from './component/account/group/Group.vue';
 import GroupDetail from './component/account/group/Detail.vue';

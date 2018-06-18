@@ -287,30 +287,6 @@ export default {
 		}
 	},
 	methods: {
-		getGroupPool() {
-			return axios.get(`/api/ufwd/service/group`)
-				.then(res => {
-					this.group.groupPool = res.data.data;
-				});
-		},
-		getPartyPool() {
-			return axios.get(`/api/ufwd/service/party`)
-				.then(res => {
-					this.partyPool = res.data.data;
-				});
-		},
-		getStreetPool() {
-			return axios.get(`/api/ufwd/service/street`)
-				.then(res => {
-					this.streetPool = res.data.data;
-				});
-		},
-		getIdentityPool() {
-			return axios.get(`/api/ufwd/service/identity`)
-				.then(res => {
-					this.identity.identityPool = res.data.data;
-				});
-		},
 		createUser(formName) {
 			console.log(this.group.checkedGroupPool, this.identity.checkedIdentity);
 			

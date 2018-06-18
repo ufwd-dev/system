@@ -10,11 +10,11 @@
 
 	<b-card title="查询选项">
 		<b-row>
-			<b-col cols="2">
-				<b-form-group label="关键字过滤">
+			<b-col cols="auto">
+				<b-form-group label="关键字过滤" style="width: 16em">
 					<b-input-group>
 						<b-form-input v-model="filter"
-							placeholder="请输入关键字" />
+							placeholder="姓名 / 身份证 / 手机号" />
 						<b-input-group-append>
 							<b-btn :disabled="!filter"
 								variant="primary"
@@ -23,31 +23,18 @@
 					</b-input-group>
 				</b-form-group>
 			</b-col>
-			<b-col cols="2">
-				<b-form-group label="政治面貌">
+			<b-col cols="auto">
+				<b-form-group label="政治面貌" style="width: 10em">
 					<b-form-select />
 				</b-form-group>
 			</b-col>
-			<b-col cols="2">
-				<b-form-group label="所属街道">
+			<b-col cols="auto">
+				<b-form-group label="所属街道" style="width: 10em">
 					<b-form-select />
 				</b-form-group>
 			</b-col>
 			<b-col md="auto">
 				<b-form-group label="通过审核?">
-					<b-form-radio-group
-						button-variant="primary"
-						buttons
-						:checked="null"
-						:options="[
-							{ text: '全部', value: null },
-							{ text: '是', value: true },
-							{ text: '否', value: false },
-						]" />
-				</b-form-group>
-			</b-col>
-			<b-col md="auto">
-				<b-form-group label="联络员?">
 					<b-form-radio-group
 						button-variant="primary"
 						buttons
@@ -72,11 +59,16 @@
 						]" />
 				</b-form-group>
 			</b-col>
+			<b-col md="auto">
+				<b-form-group label="设置">
+					<b-btn>重置过滤器</b-btn>
+				</b-form-group>
+			</b-col>
 		</b-row>
 	</b-card><hr>
 
 	<b-row>
-		<b-col cols="3">
+		<b-col cols="auto">
 			<b-input-group prepend="每页" style="width: 250px;">
 				<b-form-input
 					value="20"
@@ -90,6 +82,10 @@
 			</b-input-group>
 		</b-col>
 		<b-col>
+			<b-btn v-b-modal="'create-account'"
+				variant="primary"><i class="fa fa-plus mr-2" />创建</b-btn>
+		</b-col>
+		<b-col cols="auto">
 			<b-pagination
 				:limit="7"
 				align="right"
@@ -106,9 +102,11 @@
 			{ key: 'username', label: $t('ufwd.user.username') },
 			{ key: 'name', label: $t('ufwd.user.name')},
 			{ key: 'phone', label: $t('ufwd.user.phone')},
-			{ key: 'identification', label: $t('ufwd.user.identification')},
-			{ key: 'admin', label: $t('ufwd.user.admin')},
-			{ key: 'inputor', label: $t('ufwd.user.inputor')},
+			{
+				key: 'identification',
+				label: $t('ufwd.user.identification'),
+				class: 'data-identification'},
+			{ key: 'admin', label: $t('ufwd.user.admin'), class: 'data-admin'},
 			{ key: 'party', label: $t('ufwd.user.party')},
 			{ key: 'street', label: $t('ufwd.user.street')},
 		]"
@@ -143,8 +141,8 @@
 			<i class="fa fa-check" />
 		</template>
 	</b-table>
-	<!-- <add-user></add-user> -->
-
+	
+	<create-account />
 </div>
 </template>
 
@@ -152,7 +150,7 @@
 import axios from "axios";
 import dateFormat from "dateformat";
 
-import AddUser from "./AddUser.vue";
+import CreateAccount from "./Create.vue";
 
 export default {
   name: "user",
@@ -162,6 +160,9 @@ export default {
       accountList: []
     };
   },
+	components: {
+		CreateAccount
+	},
   methods: {
     getAccount() {
       axios.get("/api/ufwd/service/account").then(res => {
@@ -171,34 +172,6 @@ export default {
     getAccountById({ id }) {
       this.$router.push(`user-list/${id}/info`);
     },
-    getPartyPool() {
-      return axios.get(`/api/ufwd/service/party`).then(res => {
-        const pool = res.data.data;
-
-        pool.forEach(element => {
-          const party = {};
-
-          party.text = element.name;
-          party.value = element.name;
-
-          this.partyPool.push(party);
-        });
-      });
-    },
-    getStreetPool() {
-      return axios.get(`/api/ufwd/service/street`).then(res => {
-        const pool = res.data.data;
-
-        pool.forEach(element => {
-          const group = {};
-
-          group.text = element.name;
-          group.value = element.name;
-
-          this.streetPool.push(group);
-        });
-      });
-    },
     updateAccount({ id, examine }) {
       return axios.put(`/api/ufwd/service/account/${id}`, {
         ufwd: { examine: !examine }
@@ -206,8 +179,6 @@ export default {
     }
   },
   mounted() {
-    // this.getPartyPool();
-    // this.getStreetPool();
     this.getAccount();
   }
 };
@@ -216,6 +187,10 @@ export default {
 <style>
 .data-examine {
 	width: 1em;
+}
+
+.data-admin {
+	width: 4em;
 }
 </style>
 
