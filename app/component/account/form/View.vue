@@ -247,6 +247,7 @@
 				<b-btn v-for="(group, index) in form.group"
 					variant="outline-info"
 					size="sm"
+					@click="uncheckGroup(index)"
 					class="mr-2 mb-2"
 					:key="index">{{group.name}}<i class="ml-2 fa fa-close" /></b-btn>
 				</b-col>
@@ -313,6 +314,9 @@ export default {
 		appendToFormGroup() {
 			this.form.group.push(this.selectedGroup);
 			this.selectedGroup = null;
+		},
+		uncheckGroup(index) {
+			this.form.group.splice(index, 1);
 		}
 	},
 	watch: {

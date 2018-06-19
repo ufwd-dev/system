@@ -5,13 +5,13 @@ import {
 
 const phoneReg = /^1[3|4|5|6|7|8|9][0-9]{9}$/;
 const chineseIdReg =
-	/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/
+	/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
 
 export default {
 	computed: {
 		accountNameInvalid() {
 			const {
-				required, minLength, maxLength, isUnique, network, $pending
+				required, minLength, maxLength, isUnique, $pending
 			} = this.$v.form.account.name;
 
 			if ($pending) {
@@ -26,12 +26,12 @@ export default {
 				return '请输入4-128位长的用户名';
 			}
 
-			if (!this.network) {
-				return '网络连接失败';
-			}
-
 			if (!isUnique) {
 				return '该用户名已经存在';
+			}
+
+			if (!this.network) {
+				return '网络连接失败';
 			}
 		},
 		accountPasswordInvalid() {
@@ -63,7 +63,7 @@ export default {
 		},
 		ufwdIdentificationInvalid() {
 			const {
-				required, chineseId, isUnique, $pending, network
+				required, chineseId, isUnique, $pending
 			} = this.$v.form.account.ufwd.identification;
 
 			if ($pending) {
@@ -78,12 +78,12 @@ export default {
 				return '非法的身份证号';
 			}
 
-			if (!network) {
-				return '网络连接失败';
-			}
-
 			if (!isUnique) {
 				return '该身份证号已存在';
+			}
+
+			if (!this.network) {
+				return '网络连接失败';
 			}
 		},
 		ufwdPhoneInvalid() {
@@ -105,6 +105,10 @@ export default {
 
 			if (!isUnique) {
 				return '该手机号已被注册';
+			}
+
+			if (!this.network) {
+				return '网络连接失败';
 			}
 		},
 		ufwdJobInvalid() {
@@ -189,7 +193,7 @@ export default {
 								params: {
 									identification: value
 								}
-							}).then(res => !res.data.data.existed, err => false);
+							}).then(res => !res.data.data.existed, () => this.network = false);
 						}
 					},
 					phone: {
@@ -210,7 +214,7 @@ export default {
 								params: {
 									phone: value
 								}
-							}).then(res => !res.data.data.existed, err => false);
+							}).then(res => !res.data.data.existed, () => this.network = false);
 						}
 					},
 					job: {

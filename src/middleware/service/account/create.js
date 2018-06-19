@@ -46,7 +46,7 @@ module.exports = function* ufwdServiceCreateAccount(req, res, next) {
 
 	const newUfwdAccount = yield UfwdAccount.create(Object.assign({
 		accountId: account.id,
-		inputor: administratorId
+		// inputor: administratorId
 	}, req.body.ufwd));
 
 	const mixedAccount = _.pick(newUfwdAccount, [
