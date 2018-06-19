@@ -153,7 +153,8 @@ import dateFormat from "dateformat";
 import CreateAccount from "./Create.vue";
 
 export default {
-  name: "user",
+	name: "user",
+	
   data() {
     return {
 			filter: null,

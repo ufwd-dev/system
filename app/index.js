@@ -1,6 +1,9 @@
 'use strict';
-import app from 'app';
+import Vue from 'vue';
+import Vuelidate from 'vuelidate';
+Vue.use(Vuelidate);
 
+import app from 'app';
 import Home from 'app/component/Home.vue';
 
 import en_US from './i18n/en_US.yaml';
@@ -12,9 +15,8 @@ app.i18n.mergeLocaleMessage('zh', zh_CN);
 app.i18n.locale = 'zh';
 
 import User from  './component/account/List.vue';
-import Info from  './component/account/Info.vue';
-import Group from './component/account/group/Group.vue';
-import GroupDetail from './component/account/group/Detail.vue';
+import Group from './component/group/Group.vue';
+import GroupDetail from './component/group/Detail.vue';
 
 app.menu.addGroup('ufwd.menu.account', [
 	{
@@ -40,10 +42,6 @@ app.router.addRoutes([
 				component: User
 			},
 			{
-				path: 'user-list/:id/info',
-				component: Info
-			},
-			{
 				path: 'group',
 				component: Group
 			},
@@ -58,6 +56,7 @@ app.router.addRoutes([
 import Notification from  './component/system/notification/Notification.vue';
 import AddNotification from  './component/system/notification/New.vue';
 import Advice from  './component/system/Advice.vue';
+import systemStore from './store/module/system';
 
 app.menu.addGroup('ufwd.menu.system', [
 	{
@@ -93,3 +92,7 @@ app.router.addRoutes([
 		]
 	}
 ]);
+
+app.store.registerModule('system', systemStore);
+
+app.store.dispatch('system/initAvailable');

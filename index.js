@@ -1,7 +1,6 @@
 'use strict';
-
 const path = require('path');
-const { appendEntry } = require('lemonitor-application');
+const { appendEntry, appendAlias } = require('lemonitor-application');
 
 require('./src/model');
 require('express-handler-loader')('ufwd', {
@@ -11,6 +10,7 @@ require('express-handler-loader')('ufwd', {
 const router = require('./src/router');
 
 appendEntry('bundle', path.resolve(__dirname, './app'));
+appendAlias('vuelidate$', 'vuelidate/dist/vuelidate.min.js');
 
 const service = require('lemonitor-service');
 
