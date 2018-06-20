@@ -49,14 +49,17 @@ module.exports = function* ufwdServiceCreateAccount(req, res, next) {
 		// inputor: administratorId
 	}, req.body.ufwd));
 
-	const mixedAccount = _.pick(newUfwdAccount, [
-		'name', 'sex', 'phone', 'identification', 'created_at'
+	const response = {};
+
+	const ufwd = _.pick(newUfwdAccount, [
+		'name', 'phone', 'identification', 'party', 'street', 'examine', 'sex', 'unit', 'job', 'created_at'
 	]);
 
-	mixedAccount.username = account.name;
-	mixedAccount.id = account.id;
+	response.name = account.name;
+	response.id = account.id;
+	response.ufwd = ufwd;
 
-	res.data(mixedAccount);
+	res.data(response);
 
 	next();
 };

@@ -19,7 +19,7 @@ module.exports = function* getInformation(req, res, next) {
 	});
 
 	const mixAccount = _.pick(account, [
-		'id', 'name', 'password', 'create_at'
+		'id', 'name', 'password', 'created_at'
 	]);
 
 	mixAccount.ufwdAccount = ufwdAccount;

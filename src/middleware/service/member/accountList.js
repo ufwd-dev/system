@@ -32,14 +32,18 @@ module.exports = function* getMemberAccountList(req, res, next) {
 				id: memberList[i].accountId
 			}
 		});
+
+		const response = {};
 	
-		const mixedAccount = _.pick(ufwdAccount, [
-			'name', 'phone', 'party', 'street'
+		const ufwd = _.pick(ufwdAccount, [
+			'name', 'phone', 'identification', 'party', 'street', 'examine', 'sex', 'unit', 'job', 'created_at'
 		]);
 	
-		mixedAccount.username = account.name;
+		response.name = account.name;
+		response.id = account.id;
+		response.ufwd = ufwd;
 
-		list.push(mixedAccount);
+		list.push(response);
 	}
 
 	res.data(list);

@@ -85,6 +85,9 @@ router.post('/account', $testBody({
 					type: 'string',
 					pattern: '(^[1-9]\\d{7}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}$|^[1-9]\\d{5}[1-9]\\d{3}((0\\d)|(1[0-2]))(([0|1|2]\\d)|3[0-1])\\d{3}([0-9]|X)$)'
 				},
+				examine: {
+					type: 'boolean'
+				},
 				party: {
 					type:  ['number', 'null']
 				},
@@ -99,7 +102,7 @@ router.post('/account', $testBody({
 				}
 			},
 			additionalProperties: false,
-			required: ['name', 'sex', 'phone', 'identification', 'party', 'street', 'unit', 'job']
+			required: ['name', 'sex', 'phone', 'identification', 'examine', 'party', 'street', 'unit', 'job']
 		}
 	},
 	additionalProperties: false,
@@ -190,6 +193,12 @@ router.put('/account/:accountId', $testBody({
 				},
 				street: {
 					type: 'number'
+				},
+				unit: {
+					type: 'string'
+				},
+				job: {
+					type: 'string'
 				}
 			}
 		}

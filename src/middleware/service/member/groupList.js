@@ -26,7 +26,7 @@ module.exports = function* getMemberGroupList(req, res, next) {
 			}
 		});
 	
-		list.push(group.id);
+		list.push(group);
 	}
 
 	res.data(list);

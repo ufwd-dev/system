@@ -33,13 +33,17 @@ module.exports = function* getMemberAccount(req, res, next) {
 		}
 	});
 
-	const mixedAccount = _.pick(ufwdAccount, [
-		'name', 'phone', 'party', 'street'
+	const response = {};
+
+	const ufwd = _.pick(ufwdAccount, [
+		'name', 'phone', 'identification', 'party', 'street', 'examine', 'sex', 'unit', 'job', 'created_at'
 	]);
 
-	mixedAccount.username = account.name;
+	response.name = account.name;
+	response.id = account.id;
+	response.ufwd = ufwd;
 
-	res.data(mixedAccount);
+	res.data(response);
 
 	next();
 };

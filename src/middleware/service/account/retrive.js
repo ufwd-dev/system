@@ -31,21 +31,23 @@ module.exports = function* getAccount(req, res, next) {
 		}
 	});
 
-	const mixAccount = _.pick(ufwdAccount, [
-		'name', 'phone', 'identification', 'party', 'street', 'examine', 'sex', 'unit', 'job'
+	const response = {};
+
+	const ufwd = _.pick(ufwdAccount, [
+		'name', 'phone', 'identification', 'party', 'street', 'examine', 'sex', 'unit', 'job', 'created_at'
 	]);
 
 	if (administrator) {
-		mixAccount.admin = true;
+		response.admin = true;
 	} else {
-		mixAccount.admin = false;
+		response.admin = false;
 	}
 	
-	mixAccount.username = account.name;
-	mixAccount.id = account.id;
-	mixAccount.create_at = account['create_at'];
+	response.name = account.name;
+	response.id = account.id;
+	response.ufwd = ufwd;
 
-	res.data(mixAccount);
+	res.data(response);
 
 	next();
 };
