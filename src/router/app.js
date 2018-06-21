@@ -4,8 +4,7 @@ const {
 	isAccountSignedIn,
 	isAccountUnsignedIn,
 	signOut,
-	$testBody,
-	createAccount
+	$testBody
 } = require('express-handler-loader')('all');
 
 const {
@@ -82,7 +81,7 @@ router.post('/account', $testBody({
 	},
 	additionalProperties: false,
 	required: ['name', 'password', 'ufwd']
-}), isAccountUnsignedIn, createAccount, getParty, getStreet, ufwdCreateAccount);
+}), isAccountUnsignedIn, getParty, getStreet, ufwdCreateAccount);
 
 router.post('/account/session', $testBody({
 	properties: {
@@ -193,7 +192,7 @@ router.get('/party', getPartyList);
 
 router.get('/street', getStreetList);
 
-router.post('/identity/account/:accountId', $testBody({
+router.post('/account/:accountId/identity', $testBody({
 	properties: {
 		identityPool: {
 			type: 'array',

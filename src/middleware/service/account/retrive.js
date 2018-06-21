@@ -4,7 +4,7 @@ const {throwError} = require('error-standardize');
 
 module.exports = function* getAccount(req, res, next) {
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
-	const UfwdAdministrator = res.sequelize.model('ufwdAdministrator');
+	// const UfwdAdministrator = res.sequelize.model('ufwdAdministrator');
 	const Account = res.sequelize.model('account');
 	const accountId = req.params.accountId;
 	const _ = require('lodash');
@@ -15,11 +15,11 @@ module.exports = function* getAccount(req, res, next) {
 		}
 	});
 
-	const administrator = yield UfwdAdministrator.findOne({
-		where: {
-			accountId
-		}
-	});
+	// const administrator = yield UfwdAdministrator.findOne({
+	// 	where: {
+	// 		accountId
+	// 	}
+	// });
 
 	if (!account) {
 		throwError('Account is not existed.', 404);
@@ -37,11 +37,11 @@ module.exports = function* getAccount(req, res, next) {
 		'name', 'phone', 'identification', 'party', 'street', 'examine', 'sex', 'unit', 'job', 'created_at'
 	]);
 
-	if (administrator) {
-		response.admin = true;
-	} else {
-		response.admin = false;
-	}
+	// if (administrator) {
+	// 	response.admin = true;
+	// } else {
+	// 	response.admin = false;
+	// }
 	
 	response.name = account.name;
 	response.id = account.id;

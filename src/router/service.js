@@ -2,8 +2,7 @@
 
 const {
 	$testBody,
-	$testQuery,
-	createAccount
+	$testQuery
 } = require('express-handler-loader')('all');
 
 const {
@@ -107,7 +106,7 @@ router.post('/account', $testBody({
 	},
 	additionalProperties: false,
 	required: ['name', 'password', 'ufwd']
-}), isAdminiSignedIn, createAccount, getParty, getStreet, ufwdServiceCreateAccount);
+}), isAdminiSignedIn, getParty, getStreet, ufwdServiceCreateAccount);
 
 router.get('/account', $testQuery({
 	properties: {
@@ -287,7 +286,7 @@ router.delete('/group/:groupId', isAdminiSignedIn, getGroup, deleteGroup);
 
 router.post('/group/:groupId/account/:accountId', isAdminiSignedIn, getGroup, getRealAccount, createMember);
 
-router.post('/group/account/:accountId', $testBody({
+router.post('/account/:accountId/group', $testBody({
 	properties: {
 		groupPool: {
 			type: 'array',
@@ -314,7 +313,7 @@ router.delete('/group/:groupId/account/:accountId', isAdminiSignedIn, getGroup, 
 
 router.post('/identity/:identityId/account/:accountId', isAdminiSignedIn, createIdentityLabel);
 
-router.post('/identity/account/:accountId', $testBody({
+router.post('/account/:accountId/identity', $testBody({
 	properties: {
 		identityPool: {
 			type: 'array',
