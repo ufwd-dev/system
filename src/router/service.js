@@ -332,7 +332,13 @@ router.delete('/identity/:identityId/account/:accountId', isAdminiSignedIn, dele
 
 router.post('/notification', $testBody({
 	properties: {
-		recevierList: {
+		groupList: {
+			type: 'array',
+			items: {
+				type: 'number'
+			}
+		},
+		accountList: {
 			type: 'array',
 			items: {
 				type: 'number'
@@ -343,7 +349,7 @@ router.post('/notification', $testBody({
 			minLength: 1
 		}
 	},
-	required: ['recevierList', 'content'],
+	required: ['content'],
 	additionalProperties: false
 }), isAdminiSignedIn, createNotification);
 
