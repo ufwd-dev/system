@@ -257,7 +257,7 @@
 </template>
 
 <script>
-import ValidFeedback from './ValidFeedback.vue';
+import ValidFeedback from '../utils/ValidFeedback.vue';
 import axios from 'axios';
 import validate from './validate';
 

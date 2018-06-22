@@ -77,32 +77,37 @@
 
 	<b-row>
 		<b-col cols="auto">
-			<b-input-group prepend="每页" style="width: 250px;">
+			<b-input-group size="sm"
+				prepend="每页"
+				append="行"
+				style="width: 135px;">
 				<b-form-input
 					value="20"
 					:readonly="autoPerPage"
 					type="number"
 					v-model.number="computedPerPage"
 					class="text-center" />
-				<b-input-group-append>
-					<div class="input-group-text">行</div>
-					<b-form-radio-group id="btnradios1"
-						buttons
-						button-variant="outline-secondary"
-						v-model="autoPerPage"
-						:options="[
-							{ text: '自动', value: true },
-							{ text: '手动', value: false }
-						]" />
-				</b-input-group-append>
 			</b-input-group>
+		</b-col>
+		<b-col cols="auto">
+			<b-form-radio-group
+				size="sm"
+				buttons
+				button-variant="outline-secondary"
+				v-model="autoPerPage"
+				:options="[
+					{ text: '自动', value: true },
+					{ text: '手动', value: false }
+				]" />
 		</b-col>
 		<b-col>
 			<b-btn v-b-modal="'create-account'"
+				size="sm"
 				variant="primary"><i class="fa fa-plus mr-2" />创建</b-btn>
 		</b-col>
 		<b-col cols="auto">
 			<b-pagination
+				size="sm"
 				:limit="7"
 				align="right"
 				v-model="currentPage"
@@ -121,7 +126,7 @@
 			:fields="[
 				{ key: 'examine', label: $t('ufwd.user.examine'), class: 'data-examine' },
 				{ key: 'username', label: $t('ufwd.user.username') },
-				{ key: 'name', label: $t('ufwd.user.name')},
+				{ key: 'name', label: $t('ufwd.user.name'), class: 'data-name'},
 				{ key: 'phone', label: $t('ufwd.user.phone')},
 				{
 					key: 'identification',
@@ -129,11 +134,11 @@
 					class: 'data-identification'},
 				{ key: 'admin', label: $t('ufwd.user.admin'), class: 'data-admin'},
 				{ key: 'party', label: $t('ufwd.user.party'), class: 'data-party'},
-				{ key: 'street', label: $t('ufwd.user.street')},
+				{ key: 'street', label: $t('ufwd.user.street'), class: 'data-street'},
 				{ key: 'created_at', label: $t('ufwd.user.createAt'), class: 'data-created-at'},
 			]"
 			@filtered="updateTotalRows"
-			@row-dblclicked="getAccountById">
+			@row-dblclicked="openRetrieveAccount">
 
 			<template slot="examine" slot-scope="data">
 				<b-form-radio-group
@@ -141,31 +146,37 @@
 					button-variant="outline-success"
 					size="sm"
 					@change.native="updateAccount(data.item)"
-					v-model.lazy="data.item.examine"
+					v-model.lazy="data.item.ufwd.examine"
 					:options="[
 						{ text: '是', value: true },
 						{ text: '否', value: false }
 					]" />
 			</template>
 
+			<template slot="username" slot-scope="data">
+				<b-btn variant="link" @click="openRetrieveAccount(data.item)">
+					{{data.item.name||'N/A'}}
+				</b-btn>
+			</template>
+
 			<template slot="name" slot-scope="data">
-				{{data.item.name||'N/A'}}
+				{{data.item.ufwd.name||'N/A'}}
 			</template>
 
 			<template slot="phone" slot-scope="data">
-				{{data.item.phone||'N/A'}}
+				{{data.item.ufwd.phone||'N/A'}}
 			</template>
 
 			<template slot="identification" slot-scope="data">
-				{{data.item.identification||'N/A'}}
+				{{data.item.ufwd.identification||'N/A'}}
 			</template>
 
 			<template slot="party" slot-scope="data">
-				{{data.item.party||'N/A'}}
+				{{data.item.ufwd.party||'N/A'}}
 			</template>
 
 			<template slot="street" slot-scope="data">
-				{{data.item.street||'N/A'}}
+				{{data.item.ufwd.street||'N/A'}}
 			</template>
 
 			<template slot="admin" slot-scope="data">
@@ -181,12 +192,13 @@
 			</template>
 
 			<template slot="created_at" slot-scope="data">
-				{{data.item.created_at|isoDateTime}}
+				{{data.item.ufwd.created_at|isoDateTime}}
 			</template>
 		</b-table>
 	</div>
 	
 	<create-account />
+	<retrieve-account :account="account" ref="retrieveAccount" />
 </div>
 </template>
 
@@ -194,7 +206,8 @@
 import axios from "axios";
 import dateFormat from "dateformat";
 
-import CreateAccount from "./Create.vue";
+import CreateAccount from "./Create";
+import RetrieveAccount from "./Retrieve";
 
 function DefaultFilterSettingFactory() {
 	return {
@@ -211,6 +224,7 @@ export default {
 	
   data() {
     return {
+			account: null,
 			filterSetting: DefaultFilterSettingFactory(),
 			autoPerPage: true,
 			currentPage: 1,
@@ -222,38 +236,42 @@ export default {
 	computed: {
 		partyOptions() {
 			return this.$store.getters['system/availableParty'].map(party => {
+				// return { text: party.name, value: party.id };
 				return party.name;
 			});
 		},
 		streetOptions() {
 			return this.$store.getters['system/availableStreet'].map(street => {
+				// return { text: street.name, value: street.id };
 				return street.name;
 			});
 		},
 	},
 	components: {
-		CreateAccount
+		CreateAccount, RetrieveAccount
 	},
 	filters: {
 		isoDateTime(date) {
-			return dateFormat(date, 'isoDate') + ' ' + dateFormat(date, 'isoTime');
+			return dateFormat(date, 'yyyy-mm-dd HH:MM:ss');
 		}
 	},
   methods: {
 		updateTotalRows(filteredItems) {
 			this.totalRows = filteredItems.length;
 		},
-    getAccount() {
+    getAccountList() {
       axios.get("/api/ufwd/service/account").then(res => {
         this.accountList = res.data.data;
       });
     },
-    getAccountById({ id }) {
-      this.$router.push(`user-list/${id}/info`);
+    openRetrieveAccount(account) {
+			this.account = account;
+
+			this.$refs.retrieveAccount.open();
     },
-    updateAccount({ id, examine }) {
+    updateAccount({ id, ufwd }) {
       return axios.put(`/api/ufwd/service/account/${id}`, {
-        ufwd: { examine: !examine }
+        ufwd: { examine: !ufwd.examine }
       });
 		},
 		filter(item) {
@@ -263,7 +281,7 @@ export default {
 			let flag = true;
 
 			if (examine !== null) {
-				flag = flag && item.examine === examine;
+				flag = flag && item.ufwd.examine === examine;
 			}
 
 			if (admin !== null) {
@@ -271,21 +289,21 @@ export default {
 			}
 
 			if (party !== null) {
-				flag = flag && item.party === party;
+				flag = flag && item.ufwd.party === party;
 			}
 
 			if (street !== null) {
-				flag = flag && item.street === street;
+				flag = flag && item.ufwd.street === street;
 			}
 
 			if (keyword.length) {
 				const reg = new RegExp(keyword);
 
 				flag = flag && (
-					reg.test(item.username) ||
 					reg.test(item.name) ||
-					reg.test(item.phone) ||
-					reg.test(item.identification)
+					reg.test(item.ufwd.name) ||
+					reg.test(item.ufwd.phone) ||
+					reg.test(item.ufwd.identification)
 				);
 			}
 
@@ -296,7 +314,7 @@ export default {
 		}
   },
   mounted() {
-		this.getAccount();
+		this.getAccountList();
 
 		this.updateComputedPerPage = () => {
 			if (!this.autoPerPage) {
@@ -332,6 +350,14 @@ table#account-list {
 
 	.data-party {
 		width: 8em;
+	}
+
+	.data-street {
+		width: 9em;
+	}
+
+	.data-name {
+		width: 5em;
 	}
 
 	.data-admin {

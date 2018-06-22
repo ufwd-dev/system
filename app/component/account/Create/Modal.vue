@@ -4,6 +4,7 @@
 		centered
 		no-close-on-backdrop
 		@shown="initForm"
+		ref="modal"
 		size="lg"
 		title="创建新账户">
 
@@ -14,15 +15,21 @@
 			<b-btn variant="danger"
 				@click="initForm()">清空</b-btn>
 			<b-btn
-        :disabled="!newForm.valid"
+				:disabled="!newForm.valid"
 				variant="success"
-				@click="createAccount()">创建</b-btn>
+				@click="createAccount()"><i
+					class="fa fa-fw mr-1 "
+					:class="{
+						'fa-spin': request,
+						'fa-refresh': request,
+						'fa-plus': !request
+					}" />创建</b-btn>
 		</div>
 	</b-modal>
 </template>
 
 <script>
-import FormView from './form/View.vue';
+import FormView from './View.vue';
 import axios from 'axios';
 
 function FormFactory() {
@@ -52,6 +59,7 @@ function FormFactory() {
 export default {
   data() {
     return {
+			request: false,
       newForm: FormFactory()
     };
   },
@@ -64,8 +72,7 @@ export default {
 		},
 		createAccount() {
       const body = this.newForm.account;
-
-      delete body.ufwd.examine;
+			this.request = true;
 
       axios.post('/api/ufwd/service/account', body)
         .then(res => res.data.data)
@@ -79,10 +86,11 @@ export default {
           axios.post(`/api/ufwd/service/identity/account/${account.id}`, {
             identityPool: this.newForm.identity
           })
-        ]))
-        .catch((err) => {
+        ])).then(() => {
+					this.$refs.modal.hide();
+				}, err => {
           console.error(err);
-        });
+        }).then(() => this.request = false);
 		}
   },
   mounted() {
