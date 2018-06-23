@@ -30,9 +30,10 @@
 							autocomplete="off"
 							:state="!$v.form.password.$invalid"
 							id="account-password"
-							v-model="form.password" />
+							v-model="password" />
 						<b-input-group-append>
-							<b-btn variant="danger">更新</b-btn>
+							<b-btn variant="danger"
+								@click="updateAccountPassword()">更新</b-btn>
 						</b-input-group-append>
 					</b-input-group>
 				</b-form-group>
@@ -257,18 +258,19 @@
 </template>
 
 <script>
-import ValidFeedback from '../utils/ValidFeedback.vue';
 import axios from 'axios';
+import ValidFeedback from '../utils/ValidFeedback.vue';
 import validate from './validate';
 
 export default {
 	components: {
 		ValidFeedback
 	},
-	props: ['form', 'originForm'],
+	props: ['form', 'originForm', 'accountId'],
 	mixins: [validate],
 	data() {
 		return {
+			password: '',
 			selectedGroup: null,
 		};
 	},
@@ -311,6 +313,11 @@ export default {
 		},
 	},
 	methods: {
+		updateAccountPassword() {
+			axios.patch(`/api/ufwd/service/account/${this.accountId}/password`, {
+				password: this.password
+			});
+		},
 		appendToFormGroup() {
 			this.form.group.push(this.selectedGroup);
 			this.selectedGroup = null;

@@ -18,7 +18,7 @@
 				:disabled="!newForm.valid"
 				variant="success"
 				@click="createAccount()"><i
-					class="fa fa-fw mr-1 "
+					class="fa fa-fw mr-1"
 					:class="{
 						'fa-spin': request,
 						'fa-refresh': request,
@@ -80,14 +80,16 @@ export default {
           axios.post('/api/ufwd/service/administrator', {
             accountId: account.id
           }),
-          axios.post(`/api/ufwd/service/group/account/${account.id}`, {
+          axios.post(`/api/ufwd/service/account/${account.id}/group`, {
             groupPool: this.newForm.group.map(group => group.id)
           }),
-          axios.post(`/api/ufwd/service/identity/account/${account.id}`, {
+          axios.post(`/api/ufwd/service/account/${account.id}/identity`, {
             identityPool: this.newForm.identity
           })
         ])).then(() => {
 					this.$refs.modal.hide();
+
+					this.$emit('account-create-success');
 				}, err => {
           console.error(err);
         }).then(() => this.request = false);

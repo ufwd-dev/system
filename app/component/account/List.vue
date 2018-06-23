@@ -42,7 +42,7 @@
 			<b-col md="auto">
 				<b-form-group label="通过审核?">
 					<b-form-radio-group
-						button-variant="outline-primary"
+						button-variant="outline-success"
 						buttons
 						v-model="filterSetting.examine"
 						:options="[
@@ -68,7 +68,7 @@
 			</b-col>
 			<b-col md="auto">
 				<b-form-group label="设置">
-					<b-btn variant="success"
+					<b-btn variant="secondary"
 						@click="resetFilter()">重置过滤器</b-btn>
 				</b-form-group>
 			</b-col>
@@ -125,8 +125,8 @@
 			:filter="filter"
 			:fields="[
 				{ key: 'examine', label: $t('ufwd.user.examine'), class: 'data-examine' },
-				{ key: 'username', label: $t('ufwd.user.username') },
-				{ key: 'name', label: $t('ufwd.user.name'), class: 'data-name'},
+				{ key: 'name', label: $t('ufwd.user.username'), sortable: true },
+				{ key: 'ufwdname', label: $t('ufwd.user.name'), class: 'data-name'},
 				{ key: 'phone', label: $t('ufwd.user.phone')},
 				{
 					key: 'identification',
@@ -135,7 +135,10 @@
 				{ key: 'admin', label: $t('ufwd.user.admin'), class: 'data-admin'},
 				{ key: 'party', label: $t('ufwd.user.party'), class: 'data-party'},
 				{ key: 'street', label: $t('ufwd.user.street'), class: 'data-street'},
-				{ key: 'created_at', label: $t('ufwd.user.createAt'), class: 'data-created-at'},
+				{ 
+					key: 'ufwd.created_at',
+					label: $t('ufwd.user.createAt'),
+					class: 'data-created-at'},
 			]"
 			@filtered="updateTotalRows"
 			@row-dblclicked="openRetrieveAccount">
@@ -153,13 +156,13 @@
 					]" />
 			</template>
 
-			<template slot="username" slot-scope="data">
-				<b-btn variant="link" @click="openRetrieveAccount(data.item)">
-					{{data.item.name||'N/A'}}
+			<template slot="name" slot-scope="data">
+				<b-btn variant="link"
+					@click="openRetrieveAccount(data.item)">{{data.item.name||'N/A'}}
 				</b-btn>
 			</template>
 
-			<template slot="name" slot-scope="data">
+			<template slot="ufwdname" slot-scope="data">
 				{{data.item.ufwd.name||'N/A'}}
 			</template>
 
@@ -172,11 +175,11 @@
 			</template>
 
 			<template slot="party" slot-scope="data">
-				{{data.item.ufwd.party||'N/A'}}
+				{{partyMapping[data.item.ufwd.party]||'N/A'}}
 			</template>
 
 			<template slot="street" slot-scope="data">
-				{{data.item.ufwd.street||'N/A'}}
+				{{streetMapping[data.item.ufwd.street]||'N/A'}}
 			</template>
 
 			<template slot="admin" slot-scope="data">
@@ -185,20 +188,24 @@
 					button-variant="outline-primary"
 					size="sm"
 					v-model="data.item.admin"
+					@change="updateAdmin(data.item)"
 					:options="[
 						{ text: '是', value: true },
 						{ text: '否', value: false }
 					]" />
 			</template>
 
-			<template slot="created_at" slot-scope="data">
+			<template slot="ufwd.created_at" slot-scope="data">
 				{{data.item.ufwd.created_at|isoDateTime}}
 			</template>
 		</b-table>
 	</div>
 	
-	<create-account />
-	<retrieve-account :account="account" ref="retrieveAccount" />
+	<create-account 
+		@account-create-success="getAccountList()" />
+	<retrieve-account :account="account"
+		@account-update-success="getAccountList()"
+		ref="retrieveAccount" />
 </div>
 </template>
 
@@ -236,16 +243,32 @@ export default {
 	computed: {
 		partyOptions() {
 			return this.$store.getters['system/availableParty'].map(party => {
-				// return { text: party.name, value: party.id };
-				return party.name;
+				return { text: party.name, value: party.id };
 			});
 		},
 		streetOptions() {
 			return this.$store.getters['system/availableStreet'].map(street => {
-				// return { text: street.name, value: street.id };
-				return street.name;
+				return { text: street.name, value: street.id };
 			});
 		},
+		partyMapping() {
+			const mapping = {};
+			
+			this.$store.getters['system/availableParty'].forEach(party => {
+				mapping[party.id] = party.name;
+			});
+
+			return mapping;
+		},
+		streetMapping() {
+			const mapping = {};
+			
+			this.$store.getters['system/availableStreet'].forEach(street => {
+				mapping[street.id] = street.name;
+			});
+
+			return mapping;
+		}
 	},
 	components: {
 		CreateAccount, RetrieveAccount
@@ -256,11 +279,14 @@ export default {
 		}
 	},
   methods: {
+		updateAdmin({ id, admin }) {
+			axios.put(`/api/ufwd/service/account/`)
+		},
 		updateTotalRows(filteredItems) {
 			this.totalRows = filteredItems.length;
 		},
     getAccountList() {
-      axios.get("/api/ufwd/service/account").then(res => {
+      axios.get('/api/ufwd/service/account').then(res => {
         this.accountList = res.data.data;
       });
     },

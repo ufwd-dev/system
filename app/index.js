@@ -15,8 +15,7 @@ app.i18n.mergeLocaleMessage('zh', zh_CN);
 app.i18n.locale = 'zh';
 
 import User from  './component/account/List.vue';
-import Group from './component/group/Group.vue';
-import GroupDetail from './component/group/Detail.vue';
+import Group from './component/group/List.vue';
 
 app.menu.addGroup('ufwd.menu.account', [
 	{
@@ -45,10 +44,6 @@ app.router.addRoutes([
 				path: 'group',
 				component: Group
 			},
-			{
-				path: 'group/:id/detail',
-				component: GroupDetail
-			}
 		]
 	}
 ]);
@@ -95,4 +90,9 @@ app.router.addRoutes([
 
 app.store.registerModule('system', systemStore);
 
-app.store.dispatch('system/initAvailable');
+app.store.subscribe(({type, payload}) => {
+	if (type === 'account/updateAccount' && payload !== undefined) {
+		app.store.dispatch('system/initAvailable');
+	}
+});
+

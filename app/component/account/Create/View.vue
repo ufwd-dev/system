@@ -34,7 +34,6 @@
 						id="account-password"
 						size="sm"
 						v-model="form.account.password" />
-					</b-form-input>
 				</b-form-group>
 			</b-col>
 

@@ -1,20 +1,13 @@
 <template>
 
 <div>
-	<nav>
-		<ol class="breadcrumb mb-4">
-			<li class="breadcrumb-item">
-				<router-link tag="a" to="/">{{$t('ufwd.home')}}</router-link>
-			</li>
-			<li class="breadcrumb-item">
-				<router-link tag="a" to="/ufwd/account/group">{{$t('ufwd.account.group')}}</router-link>
-			</li>
-			<li class="breadcrumb-item active">{{group.name}}</li>
-		</ol>
-	</nav>
+	<b-breadcrumb :items="[
+		{ text: $t('ufwd.home'), href: '#/'},
+		{ text: $t('ufwd.account.group'), href: '#/ufwd/account/group' },
+		{ text: group.name, active: true },
+	]"/>
 
-	<h3>{{$t('ufwd.group.modify')}}</h3>
-	<hr>
+	<h3>{{$t('ufwd.group.modify')}}</h3><hr>
 
 	<el-form :model="group">
 		<el-form-item :label="$t('ufwd.group.name')">
@@ -68,63 +61,10 @@
 import axios from 'axios';
 
 export default {
-	name: 'group-detail',
-	computed: {
-		groupId() {
-			return this.$route.params.id;
-		}
-	},
 	data() {
 		return {
 			group: {},
-			accountList: [],
-			accountColumns: [
-				{
-					label: '用户名',
-					prop: 'username',
-					minWidth: '180'
-				},
-				{
-					label: '姓名',
-					prop: 'name',
-					minWidth: '180'
-				},
-				{
-					label: '手机号码',
-					prop: 'phone',
-					width: '200'
-				}
-			],
-			searchDef: {
-				show: false
-			},
-			paginationDef: {
-				pageSize: 10,
-				pageSizes: [5, 10, 20]
-			},
-			actionDef: {
-				def: [
-					{
-						name: '删除',
-						type: 'danger',
-						handler: () => {
-							this.multipleAccount.forEach(row => {
-								return axios.delete(`/api/ufwd/service/group/${this.groupId}/account/${row.accountId}`)
-									.then(res => {
-										this.getAccountList();
-									})
-									.catch(err => {
-										this.$notify.error({
-											title: '错误',
-											message: '用户删除失败。'
-										});
-									});
-							});
-						}
-					}
-				]
-			},
-			multipleAccount: []
+			accountList: []
 		}
 	},
 	methods: {
