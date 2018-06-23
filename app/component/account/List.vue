@@ -280,7 +280,14 @@ export default {
 	},
   methods: {
 		updateAdmin({ id, admin }) {
-			axios.put(`/api/ufwd/service/account/`)
+			if (!admin) {
+				axios.post(`/api/ufwd/service/administrator`, {
+					accountId: id,
+					transmitter: {}
+				});
+			} else {
+				axios.delete(`/api/ufwd/service/administrator/${id}`);
+			}
 		},
 		updateTotalRows(filteredItems) {
 			this.totalRows = filteredItems.length;

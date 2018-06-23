@@ -79,24 +79,30 @@ export default {
 		},
 		getAccountById() {
 			const { id } = this.account;
-			
-			Promise.all([
-				axios.get(`/api/ufwd/service/account/${id}`),
-				axios.get(`/api/ufwd/service/account/${id}/group`),
-				axios.get(`/api/ufwd/service/account/${id}/identity`),
-			]).then(([accountRes, groupRes, identityRes]) => {
-				const account = accountRes.data.data;
-				const accountForm = FormFactory();
 
-				Object.assign(accountForm.account, account);
 
-				accountForm.identity = identityRes.data.data;
-				accountForm.group = groupRes.data.data;
-				this.id = accountForm.account.id;
-
-				delete accountForm.account.id;
-
-				this.origin = _.cloneDeep(this.accountForm = accountForm);
+			axios.get(`/api/ufwd/service/account/${id}/administrator`).then(
+				() => true,
+				() => false
+			).then(admin => {
+				return Promise.all([
+					axios.get(`/api/ufwd/service/account/${id}`),
+					axios.get(`/api/ufwd/service/account/${id}/group`),
+					axios.get(`/api/ufwd/service/account/${id}/identity`),
+				]).then(([accountRes, groupRes, identityRes]) => {
+					const account = accountRes.data.data;
+					const accountForm = FormFactory();
+	
+					Object.assign(accountForm.account, account);
+	
+					accountForm.identity = identityRes.data.data;
+					accountForm.group = groupRes.data.data;
+					accountForm.admin = admin;
+					this.id = accountForm.account.id;
+					delete accountForm.account.id;
+	
+					this.origin = _.cloneDeep(this.accountForm = accountForm);
+				});
 			});
 		},
 		updateAccount() {
@@ -110,7 +116,8 @@ export default {
 				if (admin !== this.origin.admin) {
 					if (admin) {
 						return axios.post(`/api/ufwd/service/administrator`, {
-							accountId: id
+							accountId: id,
+							transmitter: {}
 						});
 					} else {
 						return axios.delete(`/api/ufwd/service/administrator/${id}`);
