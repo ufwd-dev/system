@@ -234,7 +234,7 @@ router.post('/administrator', $testBody({
 
 router.get('/administrator', isAdminiSignedIn, getAdministratorList);
 
-router.get('/administrator/:administratorId', isAdminiSignedIn, getAdministrator);
+router.get('/account/:accountId/administrator', isAdminiSignedIn, getAdministrator);
 
 router.put('/administrator/:administratorId', $testBody({
 	properties: {
