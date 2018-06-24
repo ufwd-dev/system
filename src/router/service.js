@@ -355,7 +355,7 @@ router.post('/notification', $testBody({
 
 router.get('/notification', $testQuery({
 	properties: {
-		recevier: {
+		receiver: {
 			type: 'string'
 		}
 	},

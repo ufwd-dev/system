@@ -9,25 +9,19 @@ module.exports = function* getMemberGroupList(req, res, next) {
 	const Group = res.sequelize.model('ufwdGroup');
 
 	const _ = require('lodash');
-	
-	const memberList = yield Member.findAll({
-		where: {
-			accountId
-		}
+
+	const groupList = yield Group.findAll({
+		include: [{
+			model: Member,
+			where: {
+				accountId
+			}
+		}]
 	});
 
-	const list = [];
-
-	for (let i = 0; i < memberList.length; i++) {
-
-		const group = yield Group.findOne({
-			where: {
-				id: memberList[i].groupId
-			}
-		});
-	
-		list.push(group);
-	}
+	const list = groupList.map(group => {
+		return {id: group.id, name: group.name, description: group.description};
+	});
 
 	res.data(list);
 

@@ -43,10 +43,10 @@ UfwdAccount.hasMany(Advise, {
 });
 
 Notification.belongsTo(UfwdAccount, {
-	foreignKey: 'recevier',
+	foreignKey: 'receiver',
 });
 UfwdAccount.hasMany(Notification, {
-	foreignKey: 'recevier',
+	foreignKey: 'receiver',
 });
 
 Member.belongsTo(UfwdAccount, {

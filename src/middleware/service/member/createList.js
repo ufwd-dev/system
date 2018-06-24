@@ -1,6 +1,7 @@
 'use strict';
 
 const { throwError} = require('error-standardize');
+const Sequelize = require('sequelize');
 
 module.exports = function* createMemberList(req, res, next) {
 	const {accountId} = req.params;
@@ -9,8 +10,6 @@ module.exports = function* createMemberList(req, res, next) {
 	const Member = res.sequelize.model('ufwdMember');
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
 	const Group = res.sequelize.model('ufwdGroup');
-
-	const memberList = [];
 
 	const ufwdAccount = yield UfwdAccount.findOne({
 		where: {
@@ -23,27 +22,39 @@ module.exports = function* createMemberList(req, res, next) {
 		throwError('The account is not exist.', 403);
 	}
 
-	for (let i = 0; i < groupPool.length; i++) {
-
-		const group = yield Group.findOne({
-			where: {
-				id: groupPool[i]
+	const groupList = yield Group.findAll({
+		where: {
+			id: {
+				[Sequelize.Op.in]: groupPool
 			}
-		});
-
-		if (!group) {
-			throwError('The group is not exist.', 403);
 		}
+	});
 
-		const member = yield Member.findOrCreate({
-			where: {
-				accountId, 
-				groupId: group.id
+	const group = groupList.map(group => group.id);
+
+	const accountMemberList = yield Member.findAll({
+		where: {
+			accountId,
+			groupId: {
+				[Sequelize.Op.in]: groupPool
 			}
-		});
+		}
+	});
 
-		memberList.push(member);
-	}
+	const member = accountMemberList.map(member => member.groupId);
+
+	const list = group.filter(item => {
+		if (member.indexOf(item) === -1) {
+			return true;
+		}
+	}).map(item => {
+		return {
+			accountId,
+			groupId: item
+		};
+	});
+
+	const memberList = yield Member.bulkCreate(list);
 
 	res.data(memberList);
 

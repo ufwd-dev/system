@@ -10,24 +10,16 @@ module.exports = function* getIdentityLabelList(req, res, next) {
 
 	const _ = require('lodash');
 	
-	const identityLabelList = yield IdentityLabel.findAll({
-		where: {
-			accountId
-		}
+	const identityList = yield Identity.findAll({
+		include: [{
+			model: IdentityLabel,
+			where: {
+				accountId
+			}
+		}]
 	});
 
-	const list = [];
-
-	for (let i = 0; i < identityLabelList.length; i++) {
-
-		const identity = yield Identity.findOne({
-			where: {
-				id: identityLabelList[i].identityId
-			}
-		});
-	
-		list.push(identity.id);
-	}
+	const list = identityList.map(identity => identity.id);
 
 	res.data(list);
 

@@ -14,14 +14,22 @@ module.exports = function* createAdministrator(req, res, next) {
 		}
 	});
 
+	const existedAdmin = yield UfwdAdministrator.findOne({
+		where: {
+			accountId
+		}
+	});
+
 	if (!account) {
 		throwError('The account is not exist.', 404);
 	}
 
-	const admin = yield UfwdAdministrator.findOrCreate({
-		where: {
-			accountId, transmitter
-		}
+	if (existedAdmin) {
+		throwError('The administrator has existed.', 403);
+	}
+
+	const admin = yield UfwdAdministrator.create({
+		accountId, transmitter
 	});
 
 	res.data(admin);

@@ -29,7 +29,7 @@ module.exports = function* deleteAccount(req, res, next) {
 
 	yield Notification.destroy({
 		where: {
-			recevier: account.id
+			receiver: account.id
 		}
 	});
 

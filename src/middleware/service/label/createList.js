@@ -2,6 +2,8 @@
 
 const { throwError} = require('error-standardize');
 
+const Sequelize = require('sequelize');
+
 module.exports = function* createIdentityLabelList(req, res, next) {
 	const {accountId} = req.params;
 	const {identityPool} = req.body;
@@ -9,8 +11,6 @@ module.exports = function* createIdentityLabelList(req, res, next) {
 	const IdentityLabel = res.sequelize.model('ufwdIdentityLabel');
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
 	const Identity = res.sequelize.model('ufwdIdentity');
-
-	const IdentityLabelList = [];
 
 	const ufwdAccount = yield UfwdAccount.findOne({
 		where: {
@@ -23,29 +23,41 @@ module.exports = function* createIdentityLabelList(req, res, next) {
 		throwError('The account is not exist.', 403);
 	}
 
-	for (let i = 0; i < identityPool.length; i++) {
-
-		const identity = yield Identity.findOne({
-			where: {
-				id: identityPool[i]
+	const identityList = yield Identity.findAll({
+		where: {
+			id: {
+				[Sequelize.Op.in]: identityPool
 			}
-		});
-
-		if (!identity) {
-			throwError('The identity is not exist.', 403);
 		}
+	});
 
-		const identityLabel = yield IdentityLabel.findOrCreate({
-			where: {
-				accountId, 
-				identityId: identity.id
+	const identity = identityList.map(identity => identity.id);
+
+	const accountIdentityList = yield IdentityLabel.findAll({
+		where: {
+			accountId,
+			identityId: {
+				[Sequelize.Op.in]: identityPool
 			}
-		});
+		}
+	});
 
-		IdentityLabelList.push(identityLabel);
-	}
+	const label = accountIdentityList.map(identity => identity.identityId);
 
-	res.data(IdentityLabelList);
+	const identityLabelList = identity.filter(item => {
+		if (label.indexOf(item) === -1) {
+			return true;
+		}
+	}).map(item => {
+		return {
+			accountId,
+			identityId: item
+		};
+	});
+
+	const LabelList = yield IdentityLabel.bulkCreate(identityLabelList);
+
+	res.data(LabelList);
 
 	next();
 };

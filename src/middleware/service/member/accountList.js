@@ -11,40 +11,30 @@ module.exports = function* getMemberAccountList(req, res, next) {
 
 	const _ = require('lodash');
 
-	const memberList = yield Member.findAll({
-		where: {
-			groupId
-		}
+	const accountList = yield UfwdAccount.findAll({
+		include: [{
+			model: Member,
+			where: {
+				groupId
+			}
+		}, {
+			model: Account
+		}]
 	});
 
-	const list = [];
-
-	for (let i = 0; i < memberList.length; i++) {
-
-		const ufwdAccount = yield UfwdAccount.findOne({
-			where: {
-				accountId: memberList[i].accountId
-			}
-		});
-	
-		const account = yield Account.findOne({
-			where: {
-				id: memberList[i].accountId
-			}
-		});
-
+	const list = accountList.map(item => {
 		const response = {};
-	
-		const ufwd = _.pick(ufwdAccount, [
+
+		const ufwd = _.pick(item, [
 			'name', 'phone', 'identification', 'party', 'street', 'examine', 'sex', 'unit', 'job', 'created_at'
 		]);
-	
-		response.name = account.name;
-		response.id = account.id;
+
+		response.name = item.account.name;
+		response.id = item.account.id;
 		response.ufwd = ufwd;
 
-		list.push(response);
-	}
+		return response;
+	});
 
 	res.data(list);
 

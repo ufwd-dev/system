@@ -10,7 +10,7 @@ module.exports = function* getOwnNotification(req, res, next) {
 	const notification = yield Notification.findOne({
 		where: {
 			id: notificationId,
-			recevier: accountId
+			receiver: accountId
 		}
 	});
 

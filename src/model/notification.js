@@ -6,7 +6,7 @@ const lemonitor = require('lemonitor-service');
 const sequelize = lemonitor.sequelize;
 
 const Notification = module.exports = sequelize.define('ufwdNotification', {
-	recevier: {
+	receiver: {
 		type: Sequelize.INTEGER,
 		allowNull: false
 	},

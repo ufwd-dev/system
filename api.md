@@ -159,12 +159,12 @@ the api of system
 生成通知     
 ```
 {
-    recevier:账户id(int)
+    receiver:账户id(int)
     content:通知内容(string)
 }
 ```
 
-## GET /api/ufwd/service/notification?recevier=int
+## GET /api/ufwd/service/notification?receiver=int
 获取所有的通知     
 
 ## GET /api/ufwd/service/notification/:nid
