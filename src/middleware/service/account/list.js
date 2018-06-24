@@ -6,6 +6,8 @@ module.exports = function* getAccountList(req, res, next) {
 	const _ = require('lodash');
 	const UfwdAccount = res.sequelize.model('ufwdAccount');
 	const UfwdAdministrator = res.sequelize.model('ufwdAdministrator');
+
+	const IdentityLabel = res.sequelize.model('ufwdIdentityLabel');
 	const Account = res.sequelize.model('account');
 	// const administratorId = req.session.admin;
 
@@ -18,7 +20,7 @@ module.exports = function* getAccountList(req, res, next) {
 	const {name, examine, username, phone, sex, identification} = req.query;
 	const query = {
 		include: [{
-			model: UfwdAccount,
+			model: UfwdAccount
 		}]
 	};
 
@@ -44,6 +46,8 @@ module.exports = function* getAccountList(req, res, next) {
 
 	let mixedAccountList = [];
 
+	const identityLabelList = yield IdentityLabel.findAll();
+
 	accountList.forEach(account => {
 		const response = {};
 
@@ -57,6 +61,14 @@ module.exports = function* getAccountList(req, res, next) {
 
 		response.id = account.id;
 		response.name = account.name;
+
+		response.identity = identityLabelList.filter(label => {
+			if (label.accountId === account.id) {
+				return true;
+			}
+		}).map(label => label.identityId);
+
+		
 
 		administratorList.forEach(administrator => {
 			if (account.id === administrator.accountId) {
