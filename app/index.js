@@ -83,12 +83,26 @@ app.router.addRoutes([
 ]);
 
 import systemStore from './store/module/system';
+import axios from 'axios';
 
 app.store.registerModule('system', systemStore);
 
 app.store.subscribe(({type, payload}) => {
 	if (type === 'account/updateAccount' && payload !== undefined) {
 		app.store.dispatch('system/initAvailable');
+
+		axios.get(`/api/ufwd/service/account/${payload}/administrator`).then(res => {
+			const { transmitter } = res.data.data;
+
+			if (transmitter) {
+				app.store.commit('system/setRestrict', transmitter);
+
+				app.store.commit('menu/setGroupVisibility', {
+					name: 'ufwd.menu.system',
+					show: false
+				});
+			}
+		});
 	}
 });
 

@@ -11,15 +11,21 @@
 	<b-card title="查询选项">
 		<b-row>
 			<b-col cols="auto">
-				<b-form-group label="关键字过滤" style="width: 16em">
+				<b-form-group
+					label="关键字过滤"
+					style="width: 12em">
 					<b-form-input
+						size="sm"
 						v-model.trim="filterSetting.keyword"
 						placeholder="姓名 / 身份证 / 手机号" />
 				</b-form-group>
 			</b-col>
 			<b-col cols="auto">
-				<b-form-group label="政治面貌" style="width: 10em">
+				<b-form-group
+					label="政治面貌"
+					style="width: 10em">
 					<b-form-select
+						size="sm"
 						v-model="filterSetting.party"
 						:options="partyOptions">
 						<template slot="first">
@@ -31,6 +37,7 @@
 			<b-col cols="auto">
 				<b-form-group label="所属街道" style="width: 10em">
 					<b-form-select
+						size="sm"
 						v-model="filterSetting.street"
 						:options="streetOptions">
 						<template slot="first">
@@ -40,8 +47,21 @@
 				</b-form-group>
 			</b-col>
 			<b-col md="auto">
+				<b-form-group label="身份类别">
+					<b-form-checkbox-group
+						size="sm"
+						button-variant="outline-primary"
+						buttons
+						v-model="filterSetting.identity"
+						:options="identityOptions" />
+				</b-form-group>
+			</b-col>
+		</b-row>
+		<b-row>
+			<b-col md="auto">
 				<b-form-group label="通过审核?">
 					<b-form-radio-group
+						size="sm"
 						button-variant="outline-success"
 						buttons
 						v-model="filterSetting.examine"
@@ -55,6 +75,7 @@
 			<b-col md="auto">
 				<b-form-group label="管理员?">
 					<b-form-radio-group
+						size="sm"
 						button-variant="outline-primary"
 						buttons
 						v-model="filterSetting.admin"
@@ -69,6 +90,7 @@
 			<b-col md="auto">
 				<b-form-group label="设置">
 					<b-btn variant="secondary"
+						size="sm"
 						@click="resetFilter()">重置过滤器</b-btn>
 				</b-form-group>
 			</b-col>
@@ -221,6 +243,7 @@ function DefaultFilterSettingFactory() {
 		party: null,
 		street: null,
 		keyword: '',
+		identity: [],
 		examine: null,
 		admin: null
 	};
@@ -241,6 +264,19 @@ export default {
     };
 	},
 	computed: {
+		identityOptions() {
+			const all = this.$store.state.system.available.identity;
+			const restrict = this.$store.state.system.restrict.identity;
+
+			return this.$store.state.system.available.identity.map(identity => {
+				return {
+					text: identity.name,
+					value: identity.id,
+					checked: true,
+					disabled: restrict ? !restrict.find(id => id === identity.id) : false
+				};
+			});
+		},
 		partyOptions() {
 			return this.$store.getters['system/availableParty'].map(party => {
 				return { text: party.name, value: party.id };
@@ -307,9 +343,13 @@ export default {
         ufwd: { examine: !ufwd.examine }
       });
 		},
+		isRestrict(name) {
+			return this.$store.getters['system/isFieldRestricted'](name);
+		},
 		filter(item) {
 			const {
-				party, street, keyword, examine, admin
+				party, street, keyword, examine, admin,
+				identity
 			} = this.filterSetting;
 			let flag = true;
 
@@ -323,10 +363,26 @@ export default {
 
 			if (party !== null) {
 				flag = flag && item.ufwd.party === party;
+			} else if (this.isRestrict('party')) {
+				flag = flag &&
+					Boolean(this.$store.getters['system/availableParty'].find(party => {
+						return party.id === item.ufwd.party;
+					}));
 			}
 
 			if (street !== null) {
 				flag = flag && item.ufwd.street === street;
+			} else if (this.isRestrict('street')) {
+				flag = flag &&
+					Boolean(this.$store.getters['system/availableStreet'].find(street => {
+						return street.id === item.ufwd.street;
+					}));
+			}
+
+			if (item.identity) {
+				flag = flag && item.identity.find(id => {
+					return identity.includes(id);
+				});
 			}
 
 			if (keyword.length) {
@@ -344,10 +400,14 @@ export default {
 		},
 		resetFilter() {
 			this.filterSetting = DefaultFilterSettingFactory();
+			this.filterSetting.identity =
+				this.$store.state.system.restrict.identity ||
+				this.identityOptions.map(({ value }) => value);
 		}
   },
   mounted() {
 		this.getAccountList();
+		this.resetFilter();
 
 		this.updateComputedPerPage = () => {
 			if (!this.autoPerPage) {
@@ -363,6 +423,11 @@ export default {
 	},
 	destroyed() {
 		window.removeEventListener('resize', this.updateComputedPerPage);
+	},
+	watch: {
+		identityOptions() {
+			this.resetFilter();
+		}
 	}
 };
 </script>

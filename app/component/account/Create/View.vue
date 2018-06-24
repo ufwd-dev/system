@@ -289,11 +289,15 @@ export default {
 			});
 		},
 		identityOptions() {
-			return this.$store.getters['system/availableIdentity'].map(identity => {
+			const all = this.$store.state.system.available.identity;
+			const restrict = this.$store.state.system.restrict.identity;
+
+			return this.$store.state.system.available.identity.map(identity => {
 				return {
 					text: identity.name,
-					value: identity.id
-				}
+					value: identity.id,
+					disabled: restrict ? !restrict.find(id => id === identity.id) : false
+				};
 			});
 		},
 		groupOptions() {

@@ -10,19 +10,55 @@ export default {
 			party: [],
 			identity: []
 		},
+		restrict: {
+			
+		}
 	},
 	getters: {
+		isRestricted(state) {
+			return !Object.keys(state.restrict).length;
+		},
+		isFieldRestricted(state) {
+			return name => state.restrict.hasOwnProperty(name);
+		},
 		availableGroup(state) {
 			return state.available.group;
 		},
 		availableStreet(state) {
-			return state.available.street;
+			const all = state.available.street;
+			const restrict = state.restrict.street;
+
+			if (!restrict) {
+				return all;
+			}
+
+			return all.filter(street => {
+				return restrict.find(id => street.id === id);
+			});
 		},
 		availableParty(state) {
-			return state.available.party;
+			const all = state.available.party;
+			const restrict = state.restrict.party;
+
+			if (!restrict) {
+				return all;
+			}
+
+			return all.filter(party => {
+				return restrict.find(id => party.id === id);
+			});
 		},
 		availableIdentity(state) {
-			return state.available.identity;
+			const all = state.available.identity;
+			const restrict = state.restrict.identity;
+
+			if (!restrict) {
+				return all;
+			}
+
+			return all.filter(identity => {
+				return restrict.find(id => identity.id === id);
+			});
 		}
 	},
 	actions: {
@@ -38,7 +74,7 @@ export default {
 					party: party.data.data,
 					street: street.data.data,
 					identity: identity.data.data
-				}
+				};
 			}).then(available => {
 				commit('updateAvailable', available);
 			});
@@ -47,6 +83,9 @@ export default {
 	mutations: {
 		updateAvailable(state, available) {
 			Object.assign(state.available, available);
+		},
+		setRestrict(state, restrict = {}) {
+			state.restrict = restrict;
 		}
 	}
 };
