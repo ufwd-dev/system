@@ -67,12 +67,9 @@ export default {
 	},
 	methods: {
 		getGroupList() {
-			return axios.get(`/api/ufwd/service/group`)
-				.then(res => {
-					let groupData = res.data.data;
-
-					this.groupList = groupData;
-				})
+			return axios.get(`/api/ufwd/service/group`).then(res => {
+				this.groupList = res.data.data;
+			});
 		},
 		removeGroup(id) {
 			axios.delete(`/api/ufwd/service/group/${id}`).then(() => {

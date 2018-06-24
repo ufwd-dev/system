@@ -48,10 +48,8 @@ app.router.addRoutes([
 	}
 ]);
 
-import Notification from  './component/system/notification/Notification.vue';
-import AddNotification from  './component/system/notification/New.vue';
-import Advice from  './component/system/Advice.vue';
-import systemStore from './store/module/system';
+import Notification from  './component/Notification.vue';
+import Advice from  './component/Advice.vue';
 
 app.menu.addGroup('ufwd.menu.system', [
 	{
@@ -77,16 +75,14 @@ app.router.addRoutes([
 				component: Notification
 			},
 			{
-				path: 'add-notification',
-				component: AddNotification
-			},
-			{
 				path: 'advice',
 				component: Advice
 			},
 		]
 	}
 ]);
+
+import systemStore from './store/module/system';
 
 app.store.registerModule('system', systemStore);
 

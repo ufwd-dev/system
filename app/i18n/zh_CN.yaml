@@ -69,13 +69,16 @@ ufwd:
       message: '请输入分组名称'
 
   advice:
-    advice: '全部建言'
+    label: '建言'
+    list: '建言列表'
+    title: '标题'
+    category: '分类'
     account: '用户ID'
     content: '内容'
     createAt: '创建时间'
 
   notification:
-    notification: '全部通知'
+    notification: '发送通知'
     recevier: '接收方'
     content: '内容'
     createAt: '创建时间'
