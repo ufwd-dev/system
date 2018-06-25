@@ -6,18 +6,18 @@
 		@shown="getAccountById"
 		no-close-on-backdrop
 		size="lg">
-		<template slot="modal-title" v-if="account">
-			查看账户：{{account.name}} [#{{account.id||'N/A'}}]
+		<template slot="modal-title">
+			查看账户：{{from.account.name}} [#{{from.account.id||'N/A'}}]
 		</template>
 
 		<form-view ref="formData"
 			:accountId="id"
 			:origin-form="origin"
-			:form="accountForm" />
+			:form="from" />
 
 		<div slot="modal-footer">
 			<b-btn
-				:disabled="!accountForm.valid"
+				:disabled="!from.valid"
 				variant="success"
 				@click="updateAccount()"><i
 					class="fa fa-fw mr-1 "
@@ -67,19 +67,19 @@ export default {
 			id: null,
 			request: false,
 			origin: null,
-			accountForm: FormFactory(),
+			from: FormFactory(),
 		};
 	},
 	components: {
 		FormView
 	},
 	methods: {
-		open() {
+		open(id) {
+			this.id = id;
 			this.$refs.modal.show();
 		},
 		getAccountById() {
-			const { id } = this.account;
-
+			const { id } = this;
 
 			axios.get(`/api/ufwd/service/account/${id}/administrator`).then(
 				() => true,
@@ -91,27 +91,28 @@ export default {
 					axios.get(`/api/ufwd/service/account/${id}/identity`),
 				]).then(([accountRes, groupRes, identityRes]) => {
 					const account = accountRes.data.data;
-					const accountForm = FormFactory();
+					const from = FormFactory();
 	
-					Object.assign(accountForm.account, account);
+					Object.assign(from.account, account);
 	
-					accountForm.identity = identityRes.data.data;
-					accountForm.group = groupRes.data.data;
-					accountForm.admin = admin;
-					this.id = accountForm.account.id;
-					delete accountForm.account.id;
+					from.identity = identityRes.data.data;
+					from.group = groupRes.data.data;
+					from.admin = admin;
+					this.id = from.account.id;
+					delete from.account.id;
 	
-					this.origin = _.cloneDeep(this.accountForm = accountForm);
+					this.origin = _.cloneDeep(this.from = from);
 				});
 			});
 		},
 		updateAccount() {
-			const { id } = this.account;
-			const { account } = this.accountForm;
+			const { id } = this;
+
+			const { account } = this.from;
 			this.request = true;
 
 			axios.put(`/api/ufwd/service/account/${id}`, account).then(() => {
-				const { admin } = this.accountForm;
+				const { admin } = this.from;
 
 				if (admin !== this.origin.admin) {
 					if (admin) {
@@ -124,7 +125,7 @@ export default {
 					}
 				}
 			}).then(() => {
-				const newList = this.accountForm.identity;
+				const newList = this.from.identity;
 				const oldList = this.origin.identity;
 
 				const appending = newList.filter(identity => {
@@ -144,7 +145,7 @@ export default {
 					})
 				]);
 			}).then(() => {
-				const newList = this.accountForm.group.map(group => group.id);
+				const newList = this.from.group.map(group => group.id);
 				const oldList = this.origin.group.map(group => group.id);
 
 				const appending = newList.filter(groupId => {

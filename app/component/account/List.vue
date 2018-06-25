@@ -56,6 +56,19 @@
 						:options="identityOptions" />
 				</b-form-group>
 			</b-col>
+			<b-col md="auto">
+				<b-form-group label="包含空身份?">
+					<b-form-radio-group
+						size="sm"
+						button-variant="outline-primary"
+						buttons
+						:options="[
+							{ text: '是', value: true },
+							{ text: '否', value: false },
+						]"
+						v-model="filterSetting.includeNullIdentity" />
+				</b-form-group>
+			</b-col>
 		</b-row>
 		<b-row>
 			<b-col md="auto">
@@ -126,6 +139,9 @@
 			<b-btn v-b-modal="'create-account'"
 				size="sm"
 				variant="primary"><i class="fa fa-plus mr-2" />创建</b-btn>
+			<b-btn
+				@click="openMe()"
+				size="sm">查看我</b-btn>
 		</b-col>
 		<b-col cols="auto">
 			<b-pagination
@@ -240,6 +256,7 @@ import RetrieveAccount from "./Retrieve";
 
 function DefaultFilterSettingFactory() {
 	return {
+		includeNullIdentity: true,
 		party: null,
 		street: null,
 		keyword: '',
@@ -334,10 +351,11 @@ export default {
       });
     },
     openRetrieveAccount(account) {
-			this.account = account;
-
-			this.$refs.retrieveAccount.open();
-    },
+			this.$refs.retrieveAccount.open(account.id);
+		},
+		openMe() {
+			this.$refs.retrieveAccount.open(this.$store.state.account.id);
+		},
     updateAccount({ id, ufwd }) {
       return axios.put(`/api/ufwd/service/account/${id}`, {
         ufwd: { examine: !ufwd.examine }
@@ -349,7 +367,7 @@ export default {
 		filter(item) {
 			const {
 				party, street, keyword, examine, admin,
-				identity
+				identity, includeNullIdentity
 			} = this.filterSetting;
 			let flag = true;
 
@@ -379,10 +397,12 @@ export default {
 					}));
 			}
 
-			if (item.identity) {
+			if (item.identity.length) {
 				flag = flag && item.identity.find(id => {
 					return identity.includes(id);
 				});
+			} else {
+				flag = flag && includeNullIdentity;
 			}
 
 			if (keyword.length) {
@@ -415,7 +435,7 @@ export default {
 			}
 			
 			const { top } = this.$refs.dataTableContainer.getBoundingClientRect();
-			this.computedPerPage = Math.floor((window.innerHeight - top) / 36) - 1;
+			this.computedPerPage = Math.floor((window.innerHeight - top) / 43) - 1;
 		}
 
 		window.addEventListener('resize', this.updateComputedPerPage);
