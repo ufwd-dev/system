@@ -54,8 +54,8 @@ app.router.addRoutes([
 	}
 ]);
 
-import Notification from  './component/Notification.vue';
-import Advice from  './component/Advice.vue';
+import Notification from  './component/system/Notification.vue';
+import Advice from  './component/system/Advice.vue';
 
 app.menu.addGroup('ufwd.menu.system', [
 	{

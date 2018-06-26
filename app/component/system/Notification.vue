@@ -116,6 +116,7 @@
 									</b-form-select>
 									<b-input-group-append>
 										<b-btn
+											:disabled="!selectedGroup"
 											@click="appendGroup(selectedGroup)"
 											variant="primary">添加</b-btn>
 									</b-input-group-append>
@@ -235,6 +236,10 @@ export default {
 			});
 		},
 		appendGroup(group) {
+			if (!group) {
+				return;
+			}
+
 			this.receiver.groupList.push(group);
 			this.selectedGroup = null;
 		},

@@ -12,7 +12,7 @@
 				<b-col cols="6">
 					<b-form-group
 						class="form-group-required"
-						label="分组名称">
+						label="名称">
 						<b-form-input
 							autocomplete="off"
 							size="sm"
@@ -23,7 +23,7 @@
 
 			<b-form-group
 				class="form-group-required"
-				label="分组名称">
+				label="描述">
 				<b-form-textarea
 					rows="3"
 					no-resize
