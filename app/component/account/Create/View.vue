@@ -328,6 +328,9 @@ export default {
 				this.form.valid = !this.$v.$invalid;
 			},
 			deep: true
+		},
+		'$v.$invalid'() {
+			this.form.valid = !this.$v.$invalid;
 		}
 	}
 }
