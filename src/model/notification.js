@@ -13,5 +13,8 @@ const Notification = module.exports = sequelize.define('ufwdNotification', {
 	content: {
 		type: Sequelize.TEXT,
 		allowNull: false
+	},
+	title: {
+		type: Sequelize.STRING
 	}
 });

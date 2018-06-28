@@ -347,6 +347,10 @@ router.post('/notification', $testBody({
 		content: {
 			type: 'string',
 			minLength: 1
+		},
+		title: {
+			type: 'string',
+			minLength: 1
 		}
 	},
 	required: ['content'],

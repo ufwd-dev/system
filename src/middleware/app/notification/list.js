@@ -7,7 +7,8 @@ module.exports = function* getOwnNotificationList(req, res, next) {
 	const notificationList = yield Notification.findAll({
 		where: {
 			receiver: accountId
-		}
+		},
+		order: [['created_at', 'desc']]
 	});
 
 	res.data(notificationList);

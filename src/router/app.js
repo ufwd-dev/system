@@ -176,6 +176,8 @@ router.patch('/account/password', $testBody({
 	required: ['password']
 }), isAccountSignedIn, updateOwnPassword);
 
+router.get('/vip', isAccountSignedIn);
+
 router.get('/notification', isAccountSignedIn, getOwnNotificationList);
 
 router.get('/notification/:notificationId', isAccountSignedIn, getOwnNotification);
