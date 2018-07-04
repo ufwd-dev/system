@@ -12,6 +12,28 @@ const Advise = require('./advise');
 const {Group, Member} = require('./group');
 const Party = require('./party');
 const Street = require('./street');
+const { Activity, Attendance, ActivityTag } = require('./activity');
+
+Activity.hasMany(Attendance, {
+	foreignKey: 'activityId'
+});
+Attendance.belongsTo(Activity, {
+	foreignKey: 'activityId'
+});
+
+UfwdAccount.hasMany(Attendance, {
+	foreignKey: 'accountId'
+});
+Attendance.belongsTo(UfwdAccount, {
+	foreignKey: 'accountId'
+});
+
+Activity.hasMany(ActivityTag, {
+	foreignKey: 'activityId'
+});
+ActivityTag.belongsTo(Activity, {
+	foreignKey: 'activityId'
+});
 
 UfwdAccount.belongsTo(Account, {
 	foreignKey: 'accountId',

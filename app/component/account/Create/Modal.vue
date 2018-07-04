@@ -77,9 +77,9 @@ export default {
       axios.post('/api/ufwd/service/account', body)
         .then(res => res.data.data)
         .then(account => Promise.all([
-          axios.post('/api/ufwd/service/administrator', {
+          this.newForm.admin ? axios.post('/api/ufwd/service/administrator', {
             accountId: account.id
-          }),
+          }) : null,
           axios.post(`/api/ufwd/service/account/${account.id}/group`, {
             groupPool: this.newForm.group.map(group => group.id)
           }),

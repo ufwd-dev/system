@@ -85,3 +85,10 @@ ufwd:
     new: '新建'
     create: '创建'
     addNotification: '添加新通知'
+
+ufwdActivity:
+  menu:
+    activity: '活动'
+
+  activity:
+    activities: '列表'

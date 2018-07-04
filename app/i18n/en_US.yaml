@@ -75,3 +75,10 @@ notification:
   new: 'New'
   create: 'Create'
   addNotification: 'Add notification'
+
+ufwdActivity:
+  menu:
+    activity: 'Activity'
+
+  activity:
+    activities: 'List'

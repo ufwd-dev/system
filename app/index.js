@@ -96,6 +96,36 @@ app.router.beforeEach((to, from, next) => {
 	next();
 });
 
+app.menu.addGroup('ufwdActivity.menu.activity', [
+	{
+		label: 'ufwdActivity.activity.activities',
+		path: '/ufwd/activity/list'
+	},
+]);
+
+import Activity from './component/activity/List.vue';
+import Detail from './component/activity/Detail.vue';
+
+app.router.addRoutes([
+	{
+		path: '/ufwd/activity',
+		component: Home,
+		meta: {
+			requireAccount: true
+		},
+		children: [
+			{
+				path: 'list',
+				component: Activity
+			},
+			{
+				path: ':id',
+				component: Detail
+			}
+		]
+	}
+]);
+
 import systemStore from './store/module/system';
 import axios from 'axios';
 
