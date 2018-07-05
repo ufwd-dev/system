@@ -7,7 +7,7 @@ module.exports = function* createActivity(req, res, next) {
 	const {start, end} = req.body;
 	const date = new Date();
 
-	if (Date.parse(start) < Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes())) {
+	if (Date.parse(new Date(start)) < Date.parse(date)) {
 		throwError('The activity start is illegal.', 403);
 	}
 

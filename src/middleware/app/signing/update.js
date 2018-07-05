@@ -3,7 +3,7 @@
 const {throwError} = require('error-standardize');
 const moment = require('moment');
 
-module.exports = function* createAttendance(req, res, next) {
+module.exports = function* updateAttendance(req, res, next) {
 	const accountId = req.session.accountId;
 	const token = req.body.token;
 	const Attendance = res.sequelize.model('ufwdAttendance');
@@ -28,13 +28,15 @@ module.exports = function* createAttendance(req, res, next) {
 		}
 	});
 
-	if (attendance) {
+	if (!attendance) {
+		throwError('You are not in the list of participants.', 404);
+	}
+
+	if (attendance.time) {
 		throwError('You have signined.', 403);
 	}
 
-	const newSignin = yield Attendance.create({
-		accountId,
-		activityId: activity.id,
+	const newSignin = yield Attendance.update({
 		time: date
 	});
 

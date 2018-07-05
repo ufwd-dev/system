@@ -42,8 +42,7 @@ const Activity = sequelize.define('ufwdActivity', {
 
 const Attendance = sequelize.define('ufwdAttendance', {
 	time: {
-		type: Sequelize.DATE,
-		allowNull: false
+		type: Sequelize.DATE
 	}
 }, {
 	paranoid: true

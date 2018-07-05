@@ -7,7 +7,7 @@ module.exports = function* updateActivity(req, res, next) {
 	const construction = req.body;
 	const date = new Date();
 
-	if (Date.parse(construction.start) < Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes())) {
+	if (Date.parse(new Date(construction.start)) < Date.parse(date)) {
 		throwError('The activity start is illegal.', 403);
 	}
 

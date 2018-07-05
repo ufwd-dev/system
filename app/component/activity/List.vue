@@ -70,8 +70,8 @@
 				:limit="7"
 				align="right"
 				v-model="currentPage"
-				:total-rows="10"
-				:per-page="10" />
+				:total-rows="totalRows"
+				:per-page="computedPerPage" />
 		</b-col>
 	</b-row>
 
@@ -79,6 +79,8 @@
 		hover bordered small
 		:items="activityList"
 		:filter="filter"
+		:per-page="computedPerPage"
+		:current-page="currentPage"
 		:fields="[
 			{ key: 'expired', label: '过期?', class: 'data-expired' },
 			{ key: 'published', label: '发布?', class: 'data-published' },
@@ -86,7 +88,8 @@
 			{ key: 'abstract', label: '摘要' },
 			{ key: 'location', label: '地点' },
 			{ key: 'created_at', label: '创建时间', class: 'data-created' },
-		]">
+		]"
+		@filtered="updateTotalRows">
 
 		<template slot="title" slot-scope="data">
 			<a :href="`#/ufwd/activity/${data.item.id}`">{{data.item.title}}</a>
@@ -104,6 +107,7 @@
 		<template slot="published" slot-scope="data">
 			<b-form-radio-group
 				size="sm"
+				@change="updateActivity(data.item)"
 				button-variant="outline-primary"
 				buttons
 				v-model="data.item.published"
@@ -119,7 +123,7 @@
 
 	</b-table>
 
-	<create ref="createDialog" />
+	<create ref="createDialog" @create-success="getActivityList()"/>
 </div>
 
 </template>
@@ -141,6 +145,8 @@ export default {
 	data() {
 		return {
 			currentPage: 1,
+			totalRows: 0,
+			computedPerPage: 10,
 			activityList: [],
 			filterSettings: FilterFactory()
 		}
@@ -159,6 +165,9 @@ export default {
 		resetFilter() {
 			this.filterSettings = FilterFactory();
 		},
+		updateTotalRows(filteredItems) {
+			this.totalRows = filteredItems.length;
+		},
 		isExpired(end) {
 			return new Date(end) < new Date();
 		},
@@ -168,6 +177,7 @@ export default {
 		getActivityList() {
 			return axios.get(`/api/ufwd/service/activity`).then(res => {
 				this.activityList = res.data.data;
+				this.totalRows = this.activityList.length;
 			});
 		},
 		openCreate() {
@@ -195,6 +205,11 @@ export default {
 			}
 
 			return true;
+		},
+		updateActivity({id, published}) {
+			return axios.put(`/api/ufwd/service/activity/${id}`, {
+				published: !published
+			}).then(() => {});
 		}
 	},
 	mounted() {

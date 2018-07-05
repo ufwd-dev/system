@@ -30,13 +30,15 @@ const {
 	getActivity,
 	isPublished,
 	updateActivity,
-	deleteActivity,
-	createActivityTag,
-	deleteActivityTag,
-	getAccountAttendanceList,
+	deleteAttendance,
+	// deleteActivity,
+	// createActivityTag,
+	// deleteActivityTag,
+	// getAccountAttendanceList,
 	getActivityAttendanceList,
 	getPublishedActivityList,
 	createAttendance,
+	updateAttendance,
 	getOwnAttendance
 } = require('express-handler-loader')('ufwd');
 
@@ -129,23 +131,41 @@ router.put('/ufwd/service/activity/:activityId', $testBody({
 	additionalProperties: false
 }), isAdminiSignedIn, isPublished, updateActivity);
 
-router.delete('/ufwd/service/activity/:activityId', isAdminiSignedIn, isPublished, deleteActivity);
+// router.delete('/ufwd/service/activity/:activityId', isAdminiSignedIn, isPublished, deleteActivity);
 
-router.post('/ufwd/service/activity/:activityId/tag', $testBody({
+// router.post('/ufwd/service/activity/:activityId/tag', $testBody({
+// 	properties: {
+// 		tag: {
+// 			type: 'string'
+// 		}
+// 	},
+// 	additionalProperties: false,
+// 	required: ['tag']
+// }), isAdminiSignedIn, isPublished, createActivityTag);
+
+// router.delete('/ufwd/service/activity/tag/:tagId', isAdminiSignedIn, deleteActivityTag);
+
+router.get('/ufwd/service/activity/:activityId/attendance', isAdminiSignedIn, getActivityAttendanceList);
+
+// router.get('/ufwd/service/account/:accountId/activity', isAdminiSignedIn, getAccountAttendanceList);
+
+router.post('/ufwd/service/attendance', $testBody({
 	properties: {
-		tag: {
-			type: 'string'
+		groupId: {
+			type: 'number'
+		},
+		accountId: {
+			type: 'number'
+		},
+		activityId: {
+			type: 'number'
 		}
 	},
 	additionalProperties: false,
-	required: ['tag']
-}), isAdminiSignedIn, isPublished, createActivityTag);
+	required: ['activityId']
+}), isAdminiSignedIn, createAttendance);
 
-router.delete('/ufwd/service/activity/tag/:tagId', isAdminiSignedIn, deleteActivityTag);
-
-router.get('/ufwd/sevice/activity/:activityId/attendance', isAdminiSignedIn, getActivityAttendanceList);
-
-router.get('/ufwd/sevice/account/:accountId/activity', isAdminiSignedIn, getAccountAttendanceList);
+router.delete('/ufwd/service/activity/:activityId/account/:accountId', isAdminiSignedIn, deleteAttendance);
 
 router.get('/ufwd/app/activity', $testQuery({
 	properties: {
@@ -175,6 +195,6 @@ router.post('/ufwd/app/attendance', $testBody({
 	},
 	additionalProperties: false,
 	required: ['token']
-}), isAccountSignedIn, createAttendance);
+}), isAccountSignedIn, updateAttendance);
 
 router.get('/ufwd/app/activity/:activityId', isAccountSignedIn, getOwnAttendance);

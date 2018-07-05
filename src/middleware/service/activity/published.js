@@ -9,12 +9,12 @@ module.exports = function* isPublished(req, res, next) {
 	const activity = yield Activity.findOne({
 		where: {
 			id: activityId,
-			published: true
+			// published: false
 		}
 	});
 
 	if (!activity) {
-		throwError('The activity is not existed or has published', 403);
+		throwError('The activity is not existed', 403);
 	}
 
 	res.data(activity);
