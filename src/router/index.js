@@ -39,7 +39,8 @@ const {
 	getPublishedActivityList,
 	createAttendance,
 	updateAttendance,
-	getOwnAttendance
+	getOwnAttendance,
+	getAttendancedList
 } = require('express-handler-loader')('ufwd');
 
 router.post('/ufwd/service/activity', $testBody({
@@ -198,3 +199,5 @@ router.post('/ufwd/app/attendance', $testBody({
 }), isAccountSignedIn, updateAttendance);
 
 router.get('/ufwd/app/activity/:activityId', isAccountSignedIn, getOwnAttendance);
+
+router.get('/ufwd/app/attendance/activity', isAccountSignedIn, getAttendancedList);
