@@ -39,6 +39,8 @@ const {
 	getPublishedActivityList,
 	createAttendance,
 	updateAttendance,
+	changeStatus,
+	redirect,
 	getOwnAttendance,
 	getAttendancedList
 } = require('express-handler-loader')('ufwd');
@@ -166,6 +168,8 @@ router.post('/ufwd/service/attendance', $testBody({
 	required: ['activityId']
 }), isAdminiSignedIn, createAttendance);
 
+router.put('/ufwd/service/activity/:activityId/account/:accountId/attendance', isAdminiSignedIn, changeStatus);
+
 router.delete('/ufwd/service/activity/:activityId/account/:accountId', isAdminiSignedIn, deleteAttendance);
 
 router.get('/ufwd/app/activity', $testQuery({
@@ -188,7 +192,7 @@ router.get('/ufwd/app/activity', $testQuery({
 	additionalProperties: false
 }), isAccountSignedIn, getPublishedActivityList);
 
-router.post('/ufwd/app/attendance', $testBody({
+router.put('/ufwd/app/attendance', $testBody({
 	properties: {
 		token: {
 			type: 'string'
@@ -197,6 +201,8 @@ router.post('/ufwd/app/attendance', $testBody({
 	additionalProperties: false,
 	required: ['token']
 }), isAccountSignedIn, updateAttendance);
+
+router.get('/ufwd/app/attendance', redirect);
 
 router.get('/ufwd/app/activity/:activityId', isAccountSignedIn, getOwnAttendance);
 

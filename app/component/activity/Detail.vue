@@ -98,8 +98,15 @@
 						<b-btn variant="success"
 							size="sm"
 							@click="updateActivity()">保存修改</b-btn>
-					</b-col>
-					<b-col></b-col>
+						<b-btn
+							v-b-modal.modal1
+							size="sm">签到二维码</b-btn>
+					</b-col> 
+					<b-modal id="modal1" centered title="签到二维码" :ok-only="true" ok-title="关闭二维码">
+						<p class="my-4 text-center">
+							<qrcode-vue :value="code.value" :size="code.size" level="H"></qrcode-vue>
+						</p>
+					</b-modal>
 				</b-row>
 			</b-card>
 		</b-col>
@@ -271,7 +278,12 @@
 					</template>
 
 					<template slot="signing" slot-scope="data">
-						{{data.item.sign ? data.item.sign : '暂未签到'||'N/A'}}
+						<b-btn
+							@click="showModal(data.item.accountId, data.item.sign)"
+							:variant="data.item.sign ? 'success' : 'secondary'"
+							size="sm">
+							<i class="fa" :class="{'fa-check': data.item.sign, 'fa-times': !data.item.sign}"></i>
+							</b-btn>
 					</template>
 
 					<template slot="remove" slot-scope="data">
@@ -293,7 +305,11 @@
 				</b-row> -->
 			</b-card>
 		</b-col>
-
+		<b-modal ref="modal2" centered title="签到二维码"  ok-title="签到" cancel-title="取消" @ok="updateSign()">
+			<p class="my-4 text-center">
+				是否确定为该用户进行签到，签到过后状态不能修改！
+			</p>
+		</b-modal>
 	</b-row>
 </div>
 </template>
@@ -304,6 +320,9 @@ import dateFormat from "dateformat";
 import axios from 'axios';
 import Datetime from './Datetime.vue';
 import validate from './validate';
+import QrcodeVue from 'qrcode.vue';
+
+const URLPATH = 'http://ufwd.lemonce.com';
 
 function FilterFactory() {
 	return {
@@ -315,7 +334,8 @@ function FilterFactory() {
 export default {
 	name: 'activity-detail',
 	components: {
-		Datetime
+		Datetime,
+		QrcodeVue
 	},
 	mixins: [validate],
 	data() {
@@ -339,7 +359,18 @@ export default {
 			attendanceList: [],
 			currentPage: 1,
 			totalRows: 0,
-			computedPerPage: 10
+			computedPerPage: 10,
+			code: {
+				value: `${URLPATH}/api/ufwd/app/attendance`,
+				size: '150'
+			},
+			retrive: {
+				accountId: 0,
+				sign: false
+			},
+			notification: {
+				accountList: null
+			}
 		}
 	},
 	computed: {
@@ -447,13 +478,37 @@ export default {
 					}
 				});
 
+				this.getNotificationReciver(this.attendanceList);
+
 				this.totalRows = this.attendanceList.length;
 			});
 		},
+		getNotificationReciver(attendanceList) {
+			this.notification.accountList = [];
+
+			attendanceList.forEach(attendance => {
+				const item = {};
+
+				item.id = attendance.accountId;
+
+				item.ufwd = {};
+
+				item.ufwd.phone = attendance.phone;
+				item.ufwd.name = attendance.name;
+
+				this.notification.accountList.push(item);
+			});
+		},
 		sendMessage() {
-			this.$router.push(`/ufwd/system/notification`);
+			const accountList = encodeURIComponent(JSON.stringify(this.notification.accountList));
+
+			return this.$router.push(`/ufwd/system/notification?accountList=${accountList}`);
 		},
 		appendAccount() {
+			if (!this.attendance.accountId) {
+				return;
+			}
+
 			return axios.post('/api/ufwd/service/attendance', {
 				accountId: this.attendance.accountId,
 				activityId: this.activityId
@@ -467,6 +522,10 @@ export default {
 			});
 		},
 		appendGroup() {
+			if (!this.attendance.group) {
+				return;
+			}
+
 			return axios.post('/api/ufwd/service/attendance', {
 				groupId: this.attendance.group.id,
 				activityId: this.activityId
@@ -477,6 +536,12 @@ export default {
 			});
 		},
 		removeAttendance(id) {
+			this.notification.accountList.forEach((attendance, index, arr) => {
+				if (attendance.id === id) {
+					arr.splice(index, 1);
+				}
+			});
+
 			return axios.delete(`/api/ufwd/service/activity/${this.activityId}/account/${id}`).then(() => {
 				this.getAttendenceList();
 			});
@@ -486,6 +551,21 @@ export default {
 			
 			this.attendance.accountId = account.id;
 			this.attendance.accountName = account.ufwd.name;
+		},
+		updateSign() {
+			if (this.retrive.sign) {
+				return;
+			}
+
+			return axios.put(`/api/ufwd/service/activity/${this.activityId}/account/${this.retrive.accountId}/attendance`).then(() => {
+				this.getAttendenceList();
+			});
+		},
+		showModal(id, sign) {
+			this.retrive.accountId = id;
+			this.retrive.sign = sign;
+
+			this.$refs.modal2.show();
 		}
 	},
 	mounted() {

@@ -22,7 +22,7 @@ module.exports = function* createNotification(req, res, next) {
 
 	} else if (groupList.length === 0 && accountList.length !== 0) {
 
-		queryText = queryText + `where ufwd_member.accountId = account.id or account.id in (${accountList}`;
+		queryText = queryText + `where account.id in (${accountList})`;
 
 	} else if (groupList.length !== 0 && accountList.length !== 0) {
 

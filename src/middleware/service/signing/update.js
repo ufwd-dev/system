@@ -3,17 +3,17 @@
 const {throwError} = require('error-standardize');
 const moment = require('moment');
 
-module.exports = function* updateAttendance(req, res, next) {
-	const accountId = req.session.accountId;
-	const token = req.body.token;
+module.exports = function* changeStatus(req, res, next) {
+	const {accountId, activityId} = req.params;
+
 	const Attendance = res.sequelize.model('ufwdAttendance');
 	const Activity = res.sequelize.model('ufwdActivity');
+
 	const date = moment(new Date(), 'YYYY-MM-DD HH:mm:ss');
 
 	const activity = yield Activity.findOne({
 		where: {
-			token,
-			published: true
+			id: activityId
 		}
 	});
 
@@ -24,7 +24,7 @@ module.exports = function* updateAttendance(req, res, next) {
 	const attendance = yield Attendance.findOne({
 		where: {
 			accountId,
-			activityId: activity.id
+			activityId
 		}
 	});
 
@@ -33,7 +33,7 @@ module.exports = function* updateAttendance(req, res, next) {
 	}
 
 	if (attendance.time) {
-		throwError('You have signined.', 403);
+		throwError('The account have signined.', 403);
 	}
 
 	const newSignin = yield attendance.update({

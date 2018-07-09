@@ -221,6 +221,12 @@ export default {
 		}
 	},
 	mounted() {
+		if (this.$route.query.accountList) {
+			const accountList = JSON.parse(this.$route.query.accountList);
+
+			this.receiver.accountList = accountList;
+		}
+
 		this.getGroupList();
 		this.getAccountList();
 	},
