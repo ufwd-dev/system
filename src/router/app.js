@@ -4,7 +4,8 @@ const {
 	isAccountSignedIn,
 	isAccountUnsignedIn,
 	signOut,
-	$testBody
+	$testBody,
+	$testQuery
 } = require('express-handler-loader')('all');
 
 const {
@@ -28,7 +29,8 @@ const {
 	getIdentityList,
 	createIdentityLabelList,
 	getOwnIdentityLabelList,
-	deleteIdentityLabel
+	deleteIdentityLabel,
+	getVip
 } = require('express-handler-loader')('ufwd');
 
 const router = module.exports = require('express').Router();
@@ -176,7 +178,26 @@ router.patch('/account/password', $testBody({
 	required: ['password']
 }), isAccountSignedIn, updateOwnPassword);
 
-router.get('/vip', isAccountSignedIn);
+router.get('/vip', $testQuery({
+	properties: {
+		keyword: {
+			type: 'string'
+		},
+		party: {
+			type: 'string'
+		},
+		street: {
+			type: 'string'
+		},
+		identity: {
+			type: 'string'
+		},
+		accountId: {
+			type: 'string'
+		}
+	},
+	additionalProperties: false
+}), getVip);
 
 router.get('/notification', isAccountSignedIn, getOwnNotificationList);
 
