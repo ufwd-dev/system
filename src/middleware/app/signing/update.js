@@ -5,7 +5,7 @@ const moment = require('moment');
 
 module.exports = function* updateAttendance(req, res, next) {
 	const accountId = req.session.accountId;
-	const token = req.body.token;
+	const token = req.params.token;
 	const Attendance = res.sequelize.model('ufwdAttendance');
 	const Activity = res.sequelize.model('ufwdActivity');
 	const date = moment(new Date(), 'YYYY-MM-DD HH:mm:ss');

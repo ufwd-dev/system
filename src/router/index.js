@@ -192,17 +192,9 @@ router.get('/ufwd/app/activity', $testQuery({
 	additionalProperties: false
 }), isAccountSignedIn, getPublishedActivityList);
 
-router.put('/ufwd/app/attendance', $testBody({
-	properties: {
-		token: {
-			type: 'string'
-		}
-	},
-	additionalProperties: false,
-	required: ['token']
-}), isAccountSignedIn, updateAttendance);
+router.put('/ufwd/app/activity/:token/account', isAccountSignedIn, updateAttendance);
 
-router.get('/ufwd/app/attendance', redirect);
+router.get('/ufwd/app/activity/:token/account', redirect);
 
 router.get('/ufwd/app/activity/:activityId', isAccountSignedIn, getOwnAttendance);
 

@@ -361,7 +361,7 @@ export default {
 			totalRows: 0,
 			computedPerPage: 10,
 			code: {
-				value: `${URLPATH}/api/ufwd/app/attendance`,
+				value: '',
 				size: '150'
 			},
 			retrive: {
@@ -450,6 +450,8 @@ export default {
 						this.isUnpublished = true;
 					}
 					this.form = res.data.data;
+
+					this.code.value = `${URLPATH}/api/ufwd/app/activity/${res.data.data.token}/account`
 				})
 		},
 		updateActivity() {
