@@ -197,7 +197,7 @@ router.get('/vip', $testQuery({
 		}
 	},
 	additionalProperties: false
-}), getVip);
+}), isAccountSignedIn, getVip);
 
 router.get('/notification', isAccountSignedIn, getOwnNotificationList);
 
