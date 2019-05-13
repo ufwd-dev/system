@@ -36,6 +36,7 @@ user:
   administrator: 'Administrator'
   party: 'Party'
   street: 'Street'
+  score: 'Score'
   addUser: 'Add user'
   info: 'Account info'
   create: 'Create'

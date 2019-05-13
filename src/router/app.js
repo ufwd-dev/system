@@ -17,6 +17,7 @@ const {
 	getInformation,
 	updateInformation,
 	updateOwnPassword,
+	updateScore,
 	getOwnNotification,
 	getOwnNotificationList,
 	deleteOwnNotification,
@@ -177,6 +178,16 @@ router.patch('/account/password', $testBody({
 	additionalProperties: false,
 	required: ['password']
 }), isAccountSignedIn, updateOwnPassword);
+
+router.patch('/account/score', $testBody({
+	properties: {
+		score: {
+			type: 'number'
+		}
+	},
+	additionalProperties: false,
+	required: ['score']
+}), isAccountSignedIn, updateScore);
 
 router.get('/vip', $testQuery({
 	properties: {

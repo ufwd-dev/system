@@ -5,7 +5,7 @@ const lemonitor = require('lemonitor-service');
 
 const sequelize = lemonitor.sequelize;
 
-const ufwdAccount = module.exports = sequelize.define('ufwdAccount', {
+module.exports = sequelize.define('ufwdAccount', {
 	accountId: {
 		primaryKey: true,
 		type: Sequelize.INTEGER,
@@ -46,6 +46,9 @@ const ufwdAccount = module.exports = sequelize.define('ufwdAccount', {
 	},
 	job: {
 		type: Sequelize.STRING(255)
+	},
+	score: {
+		type: Sequelize.INTEGER
 	},
 	inputor: {
 		type: Sequelize.INTEGER

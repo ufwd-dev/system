@@ -173,6 +173,7 @@
 				{ key: 'admin', label: $t('ufwd.user.admin'), class: 'data-admin'},
 				{ key: 'party', label: $t('ufwd.user.party'), class: 'data-party'},
 				{ key: 'street', label: $t('ufwd.user.street'), class: 'data-street'},
+				{ key: 'score', label: $t('ufwd.user.score'), class: 'data-street'},
 				{ 
 					key: 'ufwd.created_at',
 					label: $t('ufwd.user.createAt'),
@@ -218,6 +219,10 @@
 
 			<template slot="street" slot-scope="data">
 				{{streetMapping[data.item.ufwd.street]||'N/A'}}
+			</template>
+
+			<template slot="score" slot-scope="data">
+				{{(!data.item.ufwd.score && data.item.ufwd.score !== 0) ? 'N/A' : data.item.ufwd.score}}
 			</template>
 
 			<template slot="admin" slot-scope="data">

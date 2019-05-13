@@ -54,7 +54,7 @@ module.exports = function* getAccountList(req, res, next) {
 		const ufwd = _.pick(account.ufwdAccount, [
 			'name', 'sex', 'examine',
 			'phone', 'identification',
-			'party', 'street', 'unit', 'job', 'created_at'
+			'party', 'street', 'unit', 'job', 'created_at', 'score'
 		]);
 
 		response.admin = false;

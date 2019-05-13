@@ -60,3 +60,4 @@ typings/
 config.yaml
 dist
 .npmrc
+.htdocs

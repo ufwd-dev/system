@@ -42,6 +42,7 @@ ufwd:
     administrator: '管理员'
     party: '政治面貌'
     street: '街道'
+    score: '分数'
     addUser: '添加新用户'
     info: '用户信息'
     create: '创建'
