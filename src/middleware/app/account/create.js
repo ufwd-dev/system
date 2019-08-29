@@ -22,17 +22,17 @@ module.exports = function* ufwdCreateAccount(req, res, next) {
 		where: { phone }
 	});
 
-	const accountTwo = yield UfwdAccount.findOne({
-		where: { identification }
-	});
+	// const accountTwo = yield UfwdAccount.findOne({
+	// 	where: { identification }
+	// });
 
 	if (accountOne) {
 		throwError('The phone is existed. Try other phone.', 403);
 	}
 
-	if (accountTwo) {
-		throwError('The id number is existed. Try other id number.', 403);
-	}
+	// if (accountTwo) {
+	// 	throwError('The id number is existed. Try other id number.', 403);
+	// }
 
 	yield res.sequelize.transaction(async function (t) {
 		const newAccount = await Account.create({

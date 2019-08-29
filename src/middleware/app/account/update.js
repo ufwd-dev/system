@@ -43,20 +43,20 @@ module.exports = function* updateInformation(req, res, next) {
 			} 
 		});
 
-		const searchTwo = yield UfwdAccount.findOne({
-			where: {
-				identification: ufwd.identification
-			} 
-		});
+		// const searchTwo = yield UfwdAccount.findOne({
+		// 	where: {
+		// 		identification: ufwd.identification
+		// 	} 
+		// });
 
 		if (!ufwdAccount) {
 			if (searchOne) {
 				throwError('The phone is existed. Try other phone.', 403);
 			}
 
-			if (searchTwo) {
-				throwError('The id number is existed. Try other id number.', 403);
-			}
+			// if (searchTwo) {
+			// 	throwError('The id number is existed. Try other id number.', 403);
+			// }
 
 			yield UfwdAccount.create(Object.assign({accountId}, ufwd));
 		} else {
@@ -65,9 +65,9 @@ module.exports = function* updateInformation(req, res, next) {
 				throwError('The phone is existed. Try other phone.', 403);
 			}
 	
-			if (searchTwo && ufwdAccount.identification !== ufwd.identification) {
-				throwError('The id number is existed. Try other id number.', 403);
-			}
+			// if (searchTwo && ufwdAccount.identification !== ufwd.identification) {
+			// 	throwError('The id number is existed. Try other id number.', 403);
+			// }
 	
 			yield ufwdAccount.update(
 				ufwd

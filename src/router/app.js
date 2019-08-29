@@ -79,7 +79,7 @@ router.post('/account', $testBody({
 					type: 'string'
 				}
 			},
-			required: ['name', 'sex', 'phone', 'identification']
+			required: ['name', 'phone']
 		}
 	},
 	additionalProperties: false,
