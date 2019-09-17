@@ -48,10 +48,11 @@ module.exports = function* ufwdCreateAccount(req, res, next) {
 		}, req.body.ufwd), {transaction: t});
 	
 		const mixedAccount = _.pick(newUfwdAccount, [
-			'id', 'name', 'sex', 'phone', 'identification'
+			'name', 'sex', 'phone', 'identification'
 		]);
 	
 		mixedAccount.username = newAccount.name;
+		mixedAccount.id = newAccount.id;
 	
 		res.data(mixedAccount);
 	});
